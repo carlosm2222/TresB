@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.fdope.tresb.LoginActivity"
+    android:background="@color/cast_libraries_material_featurehighlight_outer_highlight_default_color">
+
+    <TextView
+        android:text="¡Bienvenido a TresB!"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView13"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textStyle="normal|bold"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:ems="10"
+        android:id="@+id/usuario"
+        android:textColorLink="?attr/colorBackgroundFloating"
+        android:textColorHint="?attr/colorBackgroundFloating"
+        android:hint="Usuario"
+        android:layout_above="@+id/password"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="22dp"
+        android:selectAllOnFocus="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/password"
+        android:textColorLink="?attr/colorBackgroundFloating"
+        android:textColorHighlight="@android:color/background_light"
+        android:textColorHint="?attr/colorBackgroundFloating"
+        android:hint="Contraseña"
+        android:layout_centerVertical="true"
+        android:layout_alignStart="@+id/usuario" />
+
+    <TextView
+        android:text="¿No tienes cuenta? Click Aquí"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="19dp"
+        android:id="@+id/sinCuenta"
+        android:onClick="cargarFormularioDeRegistro"
+        android:clickable="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:textStyle="normal|bold" />
+
+    <Button
+        android:text="Iniciar Sesión"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/login"
+        android:background="@color/com_facebook_blue"
+        android:textColor="?attr/colorBackgroundFloating"
+        style="@style/Widget.AppCompat.Button.Small"
+        android:layout_marginTop="13dp"
+        android:onClick="iniciarSesion"
+        android:layout_below="@+id/password"
+        android:layout_centerHorizontal="true" />
+
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/loginButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:layout_marginTop="27dp"
+        android:layout_below="@+id/login"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="lista_tipo_productos">
+    <item>Smartphone</item>
+    </string-array>
+
+    <string-array name="lista_marcas">
+        <item>Acer</item>
+        <item>Alcatel</item>
+        <item>Apple</item>
+        <item>Asus</item>
+        <item>Avvio</item>
+        <item>Azumi</item>
+        <item>Blu</item>
+        <item>Bmobile</item>
+        <item>Caterpillar</item>
+        <item>Element</item>
+        <item>HTC</item>
+        <item>Huawei</item>
+        <item>Kioto</item>
+        <item>Lanix</item>
+        <item>Lenovo</item>
+        <item>LG</item>
+        <item>Meizu</item>
+        <item>Microsoft</item>
+        <item>Motorola</item>
+        <item>Neuimage</item>
+        <item>One Plus</item>
+        <item>OWN</item>
+        <item>RIM</item>
+        <item>Samsung</item>
+        <item>Sony</item>
+        <item>Verykool</item>
+        <item>Xiaomi</item>
+        <item>ZTE</item>
+    </string-array>
+</resources>
