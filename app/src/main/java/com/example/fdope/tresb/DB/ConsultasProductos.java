@@ -136,9 +136,6 @@ public class ConsultasProductos {
         return listap;
     }
 
-
-
-
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -147,7 +144,6 @@ public class ConsultasProductos {
         Connection c =db.connect();
 
         try {
-
             CallableStatement oCall=c.prepareCall("{ ? = call agregarevento(?,?,?,?,?,?,?,?,?,?)}");
             oCall.registerOutParameter(1,Types.BOOLEAN);
             oCall.setString(2,user);
