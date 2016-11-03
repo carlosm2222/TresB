@@ -123,10 +123,9 @@ public class LoginActivity extends AppCompatActivity {
         Intent main = new Intent(this, MapsActivity.class);
         main.putExtra("first_name", u.getNombre());
         main.putExtra("last_name", u.getApellidos());
+        main.putExtra("user",u.getUsername());
         startActivity(main);
         finish();
-
-
     }
 
     @Override

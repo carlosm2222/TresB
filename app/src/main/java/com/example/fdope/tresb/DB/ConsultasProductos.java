@@ -36,63 +36,7 @@ import java.util.ArrayList;
 
 public class ConsultasProductos {
 
-    public ConsultasProductos() {
-    }
-
-    public  Boolean guardarProducto(String marca, String modelo, int precio , String tipo, double lat , double lng, String proveedor, byte[] img, int largo){
-        DB db= new DB();
-
-
-        String comando = ("INSERT INTO producto (marca,modelo,precio,nombre_categoria,lat,lng,proveedor,img,largo) " +
-                "VALUES ('" + marca + "','" + modelo + "','" + precio + "','" + tipo + "','"+lat+"','"+lng+"','"+proveedor+"','"+ img+"','"+ largo+"');");
-
-        if (db.execute(comando) != null)
-            return true;
-        else
-            return false;
-
-    }
-/*
-    public boolean agregarProducto(String marca, String modelo, int precio , String tipo, double lat , double lng, String proveedor, byte[] img, int largo)throws SQLException {
-        DB db = new DB();
-        Connection c = db.connect();
-
-        try {
-
-            //byte[] b = new byte[largo];
-            //  b=img.getBytes();
-
-            PreparedStatement pstmt = c.prepareStatement("INSERT INTO producto (marca,modelo,precio,nombre_categoria,lat,lng,proveedor,img,largo) VALUES (?,?,?,?,?,?,?,?,?);");
-            pstmt.setString(1,marca);
-            pstmt.setString(2,modelo);
-            pstmt.setInt(3,precio);
-            pstmt.setString(4,tipo);
-            pstmt.setDouble(5,lat);
-            pstmt.setDouble(6,lng);
-            pstmt.setBytes(7,img);
-            // pstmt.setString(7,img);
-
-            pstmt.setInt(8,largo);
-            return pstmt.execute();
-
-
-        }catch (Exception e){
-
-        }
-
-        String comando = ("INSERT INTO producto (marca,modelo,precio,nombre_categoria,lat,lng,proveedor,img,largo) " +
-                "VALUES ('" + marca + "','" + modelo + "','" + precio + "','" + tipo + "','"+lat+"','"+lng+"','"+proveedor+"','"+ img+"','"+ largo+"');");
-
-        if (db.execute(comando) != null)
-            return true;
-        else
-            return false;
-
-    }
-
-*/
-
-    public ArrayList<Producto> listarProductos()throws SQLException {
+    public static ArrayList<Producto> listarProductos()throws SQLException {
         DB base = new DB();
 
         ArrayList<Producto> listap = new ArrayList<Producto>();

@@ -55,29 +55,11 @@ public class FactoriaElectronica implements ProductosFactory {
 
 
 
-    public FileInputStream convertirImg(){
-        File f=null;
-        FileInputStream s=null ;
-        try {
-
-            f = new File("/sdstore/prueba.png");
-            s = new FileInputStream(f);
-            return  s;
-
-        }catch (Exception e){
-
-        }
-        return s;
-
-
-    }
-
     public byte[] getByteArray(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
         return stream.toByteArray();
     }
-
 
     public Bitmap getBitmap(byte[] bitmap) {
 
@@ -109,7 +91,6 @@ public class FactoriaElectronica implements ProductosFactory {
     }
 
 
-
     public String BitMapToString(Bitmap bitmap){
         ByteArrayOutputStream baos=new  ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
@@ -126,26 +107,5 @@ public class FactoriaElectronica implements ProductosFactory {
         return data;
     }
 
-    public FileOutputStream prueba (Bitmap bmp){
-
-        FileOutputStream out = null;
-        try {
-            out = new FileOutputStream("/sdstore/prueba.png");
-            bmp.compress(Bitmap.CompressFormat.PNG, 100, out); // bmp is your Bitmap instance
-            // PNG is a lossless format, the compression factor (100) is ignored
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (out != null) {
-                    out.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return out;
-
-    }
 
 }

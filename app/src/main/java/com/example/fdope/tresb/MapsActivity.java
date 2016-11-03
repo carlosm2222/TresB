@@ -51,7 +51,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Usuario usuario;
     ImageView mImageView;
     String firstName;
+    String user;
     Bitmap bp;
+    ConsultasProductos consultasProductos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (inBundle!=null){
             this.firstName = inBundle.getString("first_name");
             String lastName = inBundle.getString("last_name");
+            this.user = inBundle.getString("user");
 
             Toast.makeText(this,"Bienvenido "+firstName,Toast.LENGTH_SHORT).show();
             //usuario = new Usuario(name,surname);
@@ -150,7 +153,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Intent intent = new Intent(this, FormularioActivity.class);
         Location location = obetnerUbicacion();
         intent.putExtra("coordenadas",location);
-        intent.putExtra("usuario",firstName);
+        intent.putExtra("usuario",user);
         startActivityForResult(intent,request_code);
 
     }
@@ -273,11 +276,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void cargarDatos() {
 
-        ConsultasProductos consulta = new ConsultasProductos();
-
         try {
             // obtendo la lista de productos de la bd
-            this.app.setListaSmartphone(consulta.listarProductos());
+            this.app.setListaSmartphone(consultasProductos.listarProductos());
         } catch (Exception e) {
             e.getMessage();
         }

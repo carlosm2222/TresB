@@ -67,6 +67,7 @@ public class FormularioActivity extends AppCompatActivity {
         int precio = Integer.parseInt(this.inputPrecio.getText().toString());
         String proveedor = this.inputProveedor.getText().toString();
         String usuario = getIntent().getStringExtra("usuario");
+        Toast.makeText(this,usuario,Toast.LENGTH_SHORT).show();
 
         //USO DE FACTORIA
         usarFactoria(usuario,tipo,marca,modelo,precio,proveedor,latLng,mImageBitmap);
@@ -89,7 +90,6 @@ public class FormularioActivity extends AppCompatActivity {
                 Toast.makeText(this,"Error, no se pudo guardar.", Toast.LENGTH_LONG).show();
                 finish();
             }
-
         }
 
         /// OTRAS FACTORIAS ...
