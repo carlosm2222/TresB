@@ -16,9 +16,12 @@ public interface Producto {
 
 
    // public Boolean guardarDatosBD() throws IOException, SQLException;
-    public String mostrarInfoProducto();
-    public String mostrarPrecio();
+    public String mostrarMarca();
+    public String mostrarmodelo();
+    public int mostrarPrecio();
     public LatLng coordenadasProducto();
     public byte[] mostrarImagen();
+    public String mostrarCreadorPublicacion();
+    public String mostrarProveedor();
 
 }

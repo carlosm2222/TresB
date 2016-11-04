@@ -212,15 +212,25 @@ public class Celular implements Producto, Parcelable {
     }
 
     @Override
-    public String mostrarInfoProducto() {
-        return marca + " " + modelo;
+    public String mostrarMarca() {
+        return marca;
     }
 
     @Override
-    public String mostrarPrecio() {
-        return "$" + precio + " CLP en Tienda: " + proveedor + ". Publicado por: " + usuario;
+    public int mostrarPrecio() {
+        return  precio;
     }
 
+    public String mostrarCreadorPublicacion(){
+        return usuario;
+    }
+    public String mostrarProveedor(){
+        return proveedor;
+    }
+
+    public String mostrarmodelo(){
+        return modelo;
+    }
     /*
 
         @Override

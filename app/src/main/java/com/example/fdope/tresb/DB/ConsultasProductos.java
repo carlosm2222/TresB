@@ -38,11 +38,14 @@ public class ConsultasProductos {
 
     public static ArrayList<Producto> listarProductos()throws SQLException {
         DB base = new DB();
+        Connection c= base.connect();
 
         ArrayList<Producto> listap = new ArrayList<Producto>();
         try{
+            CallableStatement oCall = c.prepareCall("{ obtenerProductos() }");
+            ResultSet resultado = oCall.executeQuery();
 
-            ResultSet resultado = base.select("SELECT * FROM producto;");
+           // ResultSet resultado = base.select("SELECT * FROM producto;");
             if(resultado !=null){
 
                 while(resultado.next()){
@@ -83,7 +86,7 @@ public class ConsultasProductos {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    public static Boolean agregarProducto(String user,String marca, String modelo, int precio , String tipo, double lat , double lng, String proveedor, byte[] img, int largo){
+    public static boolean agregarProducto(String user,String marca, String modelo, int precio , String tipo, double lat , double lng, String proveedor, byte[] img, int largo){
         DB db=new DB();
         Connection c =db.connect();
 
@@ -111,32 +114,32 @@ public class ConsultasProductos {
     }
 
 
+/*
+    public static boolean filtrarProductos(String marca, int rangoPrecioInicial, int rangoPrecioFinal){
+        DB db=new DB();
+        Connection c= db.connect();
+
+        try {
+            CallableStatement oCall = c.prepareCall(" { filtrarProductos(?,?,?)} ");
+            oCall.setString(1,marca);
+            oCall.setInt(2,rangoPrecioInicial);
+            oCall.setInt(3,rangoPrecioFinal);
+
+            ResultSet resultSet = oCall.executeQuery();
+            if (resultSet!=null){
+                while (resultSet.next()){
+
+                }
+            }
 
 
+        }catch (Exception e){
 
+        }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        return  false;
+    }
+    */
 
 }
 

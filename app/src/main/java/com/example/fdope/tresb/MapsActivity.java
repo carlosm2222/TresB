@@ -106,7 +106,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     if (marker.getTitle().equals(firstName) )
                         mImageView=null;
-                    else {
+ /*                   else {
                         for (int i = 0; i < app.getListaProductos().size(); i++) {
                             if (app.getListaProductos().get(i).mostrarInfoProducto().equals(infoProd)) {
                                 byte[] b = app.getListaProductos().get(i).mostrarImagen();
@@ -116,7 +116,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             }
                         }
                     }
-
+*/
                     return view;
                 }
             });
@@ -210,9 +210,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //marcadorProducto=
                 mMap.addMarker(new MarkerOptions().
                 position(p.coordenadasProducto()).
-                title(p.mostrarInfoProducto()).
+                title(p.mostrarMarca()+" "+p.mostrarmodelo()).
                 icon(BitmapDescriptorFactory.fromResource(R.mipmap.pinoferta)).
-                snippet(p.mostrarPrecio()));
+                snippet("$ "+p.mostrarPrecio()+" en Tienda: "+p.mostrarProveedor()+". Publicado por: "+p.mostrarCreadorPublicacion()));
 /*
         if(this.listaMarcadorProductos == null) {
             this.listaMarcadorProductos = new ArrayList<Marker>();
@@ -223,7 +223,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 */
     }
 
+    public void filtrarProducto(View view){
 
+
+    }
 
     private void actualizarUbicacion(Location location) {
         if (location != null) {
