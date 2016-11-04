@@ -1,6 +1,7 @@
 package com.example.fdope.tresb;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -25,6 +26,8 @@ import com.facebook.login.widget.LoginButton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.net.URI;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -162,6 +165,8 @@ public class LoginActivity extends AppCompatActivity {
             Intent main = new Intent(this, MapsActivity.class);
             main.putExtra("first_name", profile.getFirstName());
             main.putExtra("last_name", profile.getLastName());
+            Uri uri = profile.getProfilePictureUri(100,100);
+            main.putExtra("imagenPerfil",uri.toString());
             startActivity(main);
             finish();
         }

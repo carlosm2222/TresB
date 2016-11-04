@@ -83,7 +83,7 @@ public class FormularioActivity extends AppCompatActivity {
                 mostrarMensaje();
                 Intent intent = new Intent();
                 intent.putExtra("productoOut",(Celular)producto);
-                intent.putExtra("imagen",mImageBitmap);
+                intent.putExtra("imagen",producto.mostrarImagen());
                 setResult(RESULT_OK,intent);
             }
             else {
@@ -121,7 +121,6 @@ public class FormularioActivity extends AppCompatActivity {
                         Bundle bundle = data.getExtras();
                         mImageBitmap = (Bitmap)bundle.get("data");
                         mImageView.setImageBitmap(mImageBitmap);
-                        System.out.print(mImageBitmap);
                     }
                 }
             }

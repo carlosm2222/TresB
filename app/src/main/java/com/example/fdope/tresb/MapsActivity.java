@@ -36,6 +36,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.net.URI;
 import java.util.ArrayList;
 
 
@@ -43,17 +44,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Marker marcador;
     private ArrayList<Marker> listaMarcadorProductos;
     private GoogleMap mMap;
-    double lat;
-    double lng;
-    TresB app ;
+    private double lat;
+    private double lng;
+    private TresB app ;
     static  final  int request_code = 1;
     private Producto p;
     private Usuario usuario;
-    ImageView mImageView;
-    String firstName;
-    String user;
-    Bitmap bp;
-    ConsultasProductos consultasProductos;
+    private ImageView mImageView,imgPerfil;
+    private String firstName;
+    private String user;
+    private Bitmap bp;
+    private ConsultasProductos consultasProductos;
+    private String url_img_perfil;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,9 +68,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
         Bundle inBundle = getIntent().getExtras();//agregar desde aqui
         if (inBundle!=null){
-            this.firstName = inBundle.getString("first_name");
+            firstName = inBundle.getString("first_name");
             String lastName = inBundle.getString("last_name");
-            this.user = inBundle.getString("user");
+            user = inBundle.getString("user");
+           // url_img_perfil=inBundle.getString("imagenPerfil");
 
             Toast.makeText(this,"Bienvenido "+firstName,Toast.LENGTH_SHORT).show();
             //usuario = new Usuario(name,surname);
@@ -107,12 +111,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             if (app.getListaProductos().get(i).mostrarInfoProducto().equals(infoProd)) {
                                 byte[] b = app.getListaProductos().get(i).mostrarImagen();
                                 bmp = BitmapFactory.decodeByteArray(b, 100, b.length);
-                                if (bmp!=null) {
+                                if (bmp!=null)
                                     mImageView.setImageBitmap(bmp);
-                                    System.out.printf("NO ES NULL");
-                                }
-                                else
-                                    System.out.printf("NULL");
                             }
                         }
                     }
@@ -170,10 +170,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         this.app.addProducto(p);
                         Bundle bundle = data.getExtras();
                         this.bp = (Bitmap)bundle.get("imagen");
-                        if (this.bp == null)
-                            Toast.makeText(this,"no existe la foto.",Toast.LENGTH_SHORT).show();
-                        else
-                            Toast.makeText(this,"SI existe la foto.",Toast.LENGTH_SHORT).show();
                         agregarMarcadorProductos(p);
                         Toast.makeText(this,"Agregado al mapa correctamente.",Toast.LENGTH_SHORT).show();
                     }
@@ -205,7 +201,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 title(this.firstName).
                 icon(BitmapDescriptorFactory.fromResource(R.mipmap.yop)));
         mMap.animateCamera(miUbicacion);
-
     }
 
 
@@ -218,11 +213,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 title(p.mostrarInfoProducto()).
                 icon(BitmapDescriptorFactory.fromResource(R.mipmap.pinoferta)).
                 snippet(p.mostrarPrecio()));
-        if (bp!=null){
-            Toast.makeText(this,"IMAGEN ENTRA A MARCADOR",Toast.LENGTH_SHORT).show();
-//            mImageView.setImageBitmap(bp);
-        }
-
 /*
         if(this.listaMarcadorProductos == null) {
             this.listaMarcadorProductos = new ArrayList<Marker>();
