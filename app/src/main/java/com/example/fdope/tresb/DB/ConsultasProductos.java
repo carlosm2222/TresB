@@ -105,7 +105,10 @@ public class ConsultasProductos {
             oCall.setInt(11,largo);
             oCall.execute();
 
-            return oCall.getBoolean(1);
+            if (oCall.getBoolean(1))
+                return true;
+            else
+                return false;
 
         }catch (Exception e){
 

@@ -33,7 +33,7 @@ public class FactoriaElectronica implements ProductosFactory {
         Celular celular = new Celular(username,nombre_categoria,  marca,  modelo,  precio,  proveedor, latLng,img,largo);
 
         //se guarda el producto
-        if (consultasProductos.agregarProducto(username,marca,modelo,precio,nombre_categoria,celular.getLatitud(),celular.getLongitud(),proveedor,img,largo))
+        if (consultasProductos.agregarProducto(username,marca,modelo,precio,nombre_categoria,celular.getLatitud(),celular.getLongitud(),proveedor,img,largo)== true)
             return celular;
         else
             return null;
@@ -47,7 +47,7 @@ public class FactoriaElectronica implements ProductosFactory {
         //se crea el producto
         Celular celular =  new Celular(username,nombre_categoria,  marca,  modelo,  precio,  proveedor, latLng,b,largo);
         //se guarda
-        if (consultasProductos.agregarProducto(username,marca,modelo,precio,nombre_categoria,celular.getLatitud(),celular.getLongitud(),proveedor,getByteArray(img),celular.getLargo()))
+        if (consultasProductos.agregarProducto(username,marca,modelo,precio,nombre_categoria,celular.getLatitud(),celular.getLongitud(),proveedor,getByteArray(img),celular.getLargo())== true)
             return celular;
         else
             return null;
