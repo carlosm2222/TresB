@@ -224,7 +224,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void filtrarProducto(View view){
-        Intent intent = new Intent();
+        Intent intent = new Intent(this,ActivityFiltrarProductos.class);
         startActivity(intent);
         finish();
 
