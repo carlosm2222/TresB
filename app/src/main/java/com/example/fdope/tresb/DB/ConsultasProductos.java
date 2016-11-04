@@ -114,33 +114,6 @@ public class ConsultasProductos {
     }
 
 
-/*
-    public static boolean filtrarProductos(String marca, int rangoPrecioInicial, int rangoPrecioFinal){
-        DB db=new DB();
-        Connection c= db.connect();
-
-        try {
-            CallableStatement oCall = c.prepareCall(" { filtrarProductos(?,?,?)} ");
-            oCall.setString(1,marca);
-            oCall.setInt(2,rangoPrecioInicial);
-            oCall.setInt(3,rangoPrecioFinal);
-
-            ResultSet resultSet = oCall.executeQuery();
-            if (resultSet!=null){
-                while (resultSet.next()){
-
-                }
-            }
-
-
-        }catch (Exception e){
-
-        }
-
-        return  false;
-    }
-    */
-
 }
 
 

@@ -204,9 +204,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     private boolean comparar(Producto producto, Filtro filtro) {
-        Celular c = (Celular)producto;
-        if ((c.getMarca().equals(filtro.getMarca())))
-            if ((c.getPrecio()>=Integer.parseInt(filtro.getPrecioMin()))&&(c.getPrecio())<=Integer.parseInt(filtro.getPrecioMax()))
+
+        if ((p.mostrarMarca().equals(filtro.getMarca())))
+            if ((p.mostrarPrecio()>=Integer.parseInt(filtro.getPrecioMin()))&&(p.mostrarPrecio())<=Integer.parseInt(filtro.getPrecioMax()))
                 return true;
         return false;
     }
