@@ -23,6 +23,8 @@ import android.widget.Toast;
 
 import com.example.fdope.tresb.Clases.TresB;
 import com.example.fdope.tresb.DB.ConsultasProductos;
+import com.example.fdope.tresb.Factoria.Celular;
+import com.example.fdope.tresb.Factoria.Filtro;
 import com.example.fdope.tresb.Factoria.Producto;
 import com.example.fdope.tresb.Clases.Usuario;
 import com.facebook.login.LoginManager;
@@ -39,6 +41,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.net.URI;
 import java.util.ArrayList;
 
+import static com.example.fdope.tresb.ActivityFiltrarProductos.FILTRO_OK;
+
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
     private Marker marcador;
@@ -48,6 +52,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private double lng;
     private TresB app ;
     static  final  int request_code = 1;
+    static  final  int request_code_filtro = 2;
     private Producto p;
     private Usuario usuario;
     private ImageView mImageView,imgPerfil;
@@ -177,7 +182,33 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         Toast.makeText(this,"No se a podido agregar el producto",Toast.LENGTH_SHORT).show();
                 }
             }
+        }else if (requestCode == request_code_filtro) {
+            switch (requestCode) {
+                case (FILTRO_OK): {
+                    Filtro filtro = data.getExtras().getParcelable("filtro");
+                    filtrarProductos(filtro);
+                }
+            }
         }
+    }
+
+    private void filtrarProductos(Filtro filtro) {
+        if (this.app.getListaProductos()!=null){
+            mMap.clear();
+            for (int i = 0; i < this.app.getListaProductos().size(); i++){
+                if (comparar(app.getListaProductos().get(i),filtro))
+                    agregarMarcadorProductos(app.getListaProductos().get(i));
+            }
+        }
+    }
+
+
+    private boolean comparar(Producto producto, Filtro filtro) {
+        Celular c = (Celular)producto;
+        if ((c.getMarca().equals(filtro.getMarca())))
+            if ((c.getPrecio()>=Integer.parseInt(filtro.getPrecioMin()))&&(c.getPrecio())<=Integer.parseInt(filtro.getPrecioMax()))
+                return true;
+        return false;
     }
 
     public Location obetnerUbicacion() {

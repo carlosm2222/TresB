@@ -1,6 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_filtrar_productos"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.fdope.tresb.ActivityFiltrarProductos">
 
-</LinearLayout>
+    <TextView
+        android:text="Tipo de producto:"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:id="@+id/textView2"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Button" />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnermarca"
+        android:entries="@array/lista_marcas"
+        android:gravity="center_vertical|center|start"
+        style="@style/Platform.Widget.AppCompat.Spinner"
+        android:layout_below="@+id/textView3"
+        android:layout_alignParentStart="true"
+        android:popupBackground="@android:color/background_light"/>
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnertipo"
+        android:entries="@array/lista_tipo_productos"
+        style="@style/Platform.Widget.AppCompat.Spinner"
+        android:layout_below="@+id/textView2"
+        android:layout_alignParentStart="true"
+        android:popupBackground="@android:color/background_light"
+        />
+
+    <TextView
+        android:text="Marca:"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView3"
+        android:textAppearance="@style/TextAppearance.AppCompat.Button"
+        android:layout_below="@+id/spinnertipo"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:text="Filtrar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/filtrar"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:onClick="enviarFiltros" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/inputpreciominimo"
+        android:hint="$CLP"
+        android:textColorLink="?attr/colorPrimaryDark"
+        android:layout_below="@+id/preciomin"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/inputpreciomaximo"
+        android:hint="$CLP"
+        android:textColorLink="?attr/colorPrimaryDark"
+        android:layout_below="@+id/preciomax"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="Precio mínimo:"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/preciomin"
+        android:textAppearance="@style/TextAppearance.AppCompat.Button"
+        android:layout_below="@+id/spinnermarca"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="Precio máximo:"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/preciomax"
+        android:textAppearance="@style/TextAppearance.AppCompat.Button"
+        android:layout_below="@+id/inputpreciominimo"
+        android:layout_alignParentStart="true" />
+
+
+</RelativeLayout>
