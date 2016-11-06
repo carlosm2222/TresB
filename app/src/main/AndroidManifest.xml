@@ -72,6 +72,10 @@
             android:label="Registro">
 
         </activity>
+        <activity android:name=".ActivityFiltrarProductos"
+            android:label="Filtrar">
+
+        </activity>
     </application>
 
 </manifest>

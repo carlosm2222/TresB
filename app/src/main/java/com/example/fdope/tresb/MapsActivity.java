@@ -16,7 +16,11 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +44,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Map;
 
 import static com.example.fdope.tresb.ActivityFiltrarProductos.FILTRO_OK;
 
@@ -50,35 +55,35 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private double lat;
     private double lng;
-    private TresB app ;
-    static  final  int request_code = 1;
-    static  final  int request_code_filtro = 2;
+    private TresB app;
+    static final int request_code = 1;
+    static final int request_code_filtro = 2;
     private Producto p;
     private Usuario usuario;
-    private ImageView mImageView,imgPerfil;
-    private String firstName;
+    private ImageView mImageView, imgPerfil;
+    private String firstName, lastName;
     private String user;
     private Bitmap bp;
     private ConsultasProductos consultasProductos;
-    private String url_img_perfil;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         Bundle inBundle = getIntent().getExtras();//agregar desde aqui
-        if (inBundle!=null){
+        if (inBundle != null) {
             firstName = inBundle.getString("first_name");
-            String lastName = inBundle.getString("last_name");
+            lastName = inBundle.getString("last_name");
             user = inBundle.getString("user");
-           // url_img_perfil=inBundle.getString("imagenPerfil");
+            // url_img_perfil=inBundle.getString("imagenPerfil");
 
-            Toast.makeText(this,"Bienvenido "+firstName,Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Bienvenido " + firstName, Toast.LENGTH_SHORT).show();
             //usuario = new Usuario(name,surname);
         }//hasta aqui
         this.app = new TresB();
@@ -88,7 +93,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        if (mMap!=null){
+        if (mMap != null) {
+
             mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
                 @Override
                 public View getInfoWindow(Marker marker) {
@@ -97,20 +103,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 @Override
                 public View getInfoContents(Marker marker) {
-                    View view = getLayoutInflater().inflate(R.layout.ventanainfoprouctos,null);
+                    View view = getLayoutInflater().inflate(R.layout.ventanainfoprouctos, null);
                     TextView infoProd = (TextView) view.findViewById(R.id.infoProd);
                     TextView prodsnippet = (TextView) view.findViewById(R.id.prod_snippet);
                     mImageView = (ImageView) findViewById(R.id.imagenProd);
-
                     infoProd.setTextColor(Color.BLACK);
                     infoProd.setGravity(Gravity.CENTER);
                     infoProd.setTypeface(null, Typeface.BOLD);
                     infoProd.setText(marker.getTitle());
                     prodsnippet.setText(marker.getSnippet());
-                    Bitmap bmp=null;
+                    Bitmap bmp = null;
 
-                    if (marker.getTitle().equals(firstName) )
-                        mImageView=null;
+                    if (marker.getTitle().equals(firstName))
+                        mImageView = null;
  /*                   else {
                         for (int i = 0; i < app.getListaProductos().size(); i++) {
                             if (app.getListaProductos().get(i).mostrarInfoProducto().equals(infoProd)) {
@@ -128,13 +133,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
 
-
-
         miUbicacion();
         //cargarDatos();
     }
 
-    public  void autoRefresh(){
+    public void autoRefresh() {
         this.app.getListaProductos().clear();
         this.app.setListaSmartphone(null);
         this.listaMarcadorProductos = null;
@@ -143,9 +146,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         cargarDatos();
     }
 
-    public  void manualRefresh(View view){
+    public void manualRefresh(View view) {
 
-        Toast.makeText(this," Actualizando mapa ",Toast.LENGTH_LONG).show();
+        Toast.makeText(this, " Actualizando mapa ", Toast.LENGTH_LONG).show();
         this.app.getListaProductos().clear();
         this.app.setListaSmartphone(null);
         this.listaMarcadorProductos = null;
@@ -157,9 +160,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void formulario(View view) {
         Intent intent = new Intent(this, FormularioActivity.class);
         Location location = obetnerUbicacion();
-        intent.putExtra("coordenadas",location);
-        intent.putExtra("usuario",user);
-        startActivityForResult(intent,request_code);
+        intent.putExtra("coordenadas", location);
+        if (usuario==null)
+            intent.putExtra("usuario",firstName+" "+lastName);
+        else intent.putExtra("usuario", user);
+        startActivityForResult(intent, request_code);
 
     }
 
@@ -174,15 +179,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         p = data.getExtras().getParcelable("productoOut");
                         this.app.addProducto(p);
                         Bundle bundle = data.getExtras();
-                        this.bp = (Bitmap)bundle.get("imagen");
+                        //this.bp = (Bitmap)bundle.get("imagen");
                         agregarMarcadorProductos(p);
-                        Toast.makeText(this,"Agregado al mapa correctamente.",Toast.LENGTH_SHORT).show();
-                    }
-                    else
-                        Toast.makeText(this,"No se a podido agregar el producto",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Agregado al mapa correctamente.", Toast.LENGTH_SHORT).show();
+                    } else
+                        Toast.makeText(this, "No se a podido agregar el producto", Toast.LENGTH_SHORT).show();
                 }
             }
-        }else if (requestCode == request_code_filtro) {
+        } else if (requestCode == request_code_filtro) {
             switch (requestCode) {
                 case (FILTRO_OK): {
                     Filtro filtro = data.getExtras().getParcelable("filtro");
@@ -193,10 +197,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void filtrarProductos(Filtro filtro) {
-        if (this.app.getListaProductos()!=null){
+        if (this.app.getListaProductos() != null) {
             mMap.clear();
-            for (int i = 0; i < this.app.getListaProductos().size(); i++){
-                if (comparar(app.getListaProductos().get(i),filtro))
+            for (int i = 0; i < this.app.getListaProductos().size(); i++) {
+                if (comparar(app.getListaProductos().get(i), filtro))
                     agregarMarcadorProductos(app.getListaProductos().get(i));
             }
         }
@@ -206,7 +210,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private boolean comparar(Producto producto, Filtro filtro) {
 
         if ((p.mostrarMarca().equals(filtro.getMarca())))
-            if ((p.mostrarPrecio()>=Integer.parseInt(filtro.getPrecioMin()))&&(p.mostrarPrecio())<=Integer.parseInt(filtro.getPrecioMax()))
+            if ((p.mostrarPrecio() >= Integer.parseInt(filtro.getPrecioMin())) && (p.mostrarPrecio()) <= Integer.parseInt(filtro.getPrecioMax()))
                 return true;
         return false;
     }
@@ -225,13 +229,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void agregarMarcado(Double lat, Double lng) {
         LatLng coordenadas = new LatLng(lat, lng);
         CameraUpdate miUbicacion = CameraUpdateFactory.newLatLngZoom(coordenadas, 16);
-        if (marcador != null)
-            marcador.remove();
-        marcador = mMap.addMarker(new MarkerOptions().
+        /*if (marcador != null)
+            marcador.remove();*/
+        /*marcador = mMap.addMarker(new MarkerOptions().
                 position(coordenadas).
                 title(this.firstName).
-                icon(BitmapDescriptorFactory.fromResource(R.mipmap.yop)));
+                icon(BitmapDescriptorFactory.fromResource(R.mipmap.yop)));*/
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mMap.setMyLocationEnabled(true);
         mMap.animateCamera(miUbicacion);
+
     }
 
 
@@ -239,7 +255,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         //Marker marcadorProducto = null;
         //marcadorProducto=
-                mMap.addMarker(new MarkerOptions().
+                mMap.addMarker(new MarkerOptions().draggable(true).
                 position(p.coordenadasProducto()).
                 title(p.mostrarMarca()+" "+p.mostrarmodelo()).
                 icon(BitmapDescriptorFactory.fromResource(R.mipmap.pinoferta)).
@@ -257,8 +273,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void filtrarProducto(View view){
         Intent intent = new Intent(this,ActivityFiltrarProductos.class);
         startActivity(intent);
-        finish();
-
     }
 
     private void actualizarUbicacion(Location location) {
