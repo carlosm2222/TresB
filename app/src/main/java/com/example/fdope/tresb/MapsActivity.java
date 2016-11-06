@@ -270,8 +270,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void filtrarProducto(View view){
-        Intent intent = new Intent(this,ActivityFiltrarProductos.class);
-        startActivity(intent);
+        int respuestaFiltro=0;
+        Intent intent = new Intent(this, ActivityFiltrarProductos.class);
+        startActivityForResult(intent,request_code_filtro);
     }
 
     private void actualizarUbicacion(Location location) {

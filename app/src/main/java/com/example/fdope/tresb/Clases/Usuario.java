@@ -3,12 +3,18 @@ package com.example.fdope.tresb.Clases;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.example.fdope.tresb.Factoria.Producto;
+
+import java.util.ArrayList;
+
 /**
  * Created by fdope on 30-10-2016.
  */
 
 public class Usuario implements Parcelable {
     private String nombre, apellidos, email,password,username;
+    private ArrayList<Producto> listaFavoritos;
+    private double rating;
 
     public Usuario(String nombre, String apellidos, String email, String password, String username) {
         this.nombre = nombre;
@@ -16,9 +22,26 @@ public class Usuario implements Parcelable {
         this.email = email;
         this.password = password;
         this.username = username;
+        this.listaFavoritos = new ArrayList<Producto>();
     }
 
     public  Usuario (){
+    }
+
+    public ArrayList<Producto> getListaFavoritos() {
+        return listaFavoritos;
+    }
+
+    public void setListaFavoritos(ArrayList<Producto> listaFavoritos) {
+        this.listaFavoritos = listaFavoritos;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
     }
 
     public String getNombre() {
@@ -74,6 +97,8 @@ public class Usuario implements Parcelable {
         dest.writeString(this.email);
         dest.writeString(this.password);
         dest.writeString(this.username);
+        dest.writeList(this.listaFavoritos);
+        dest.writeDouble(this.rating);
     }
 
     protected Usuario(Parcel in) {
@@ -82,6 +107,9 @@ public class Usuario implements Parcelable {
         this.email = in.readString();
         this.password = in.readString();
         this.username = in.readString();
+        this.listaFavoritos = new ArrayList<Producto>();
+        in.readList(this.listaFavoritos, Producto.class.getClassLoader());
+        this.rating = in.readDouble();
     }
 
     public static final Creator<Usuario> CREATOR = new Creator<Usuario>() {
