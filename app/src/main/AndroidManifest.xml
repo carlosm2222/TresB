@@ -50,6 +50,22 @@
         </activity>
 
         <activity
+            android:name=".ActivityFiltrarProductos"
+            android:label="filtrar"
+            android:parentActivityName=".MapsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MapsActivity" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.ActivityFiltrarProductos" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+
+        <activity
             android:name=".FormularioActivity"
             android:label="Formulario"
             android:parentActivityName=".MapsActivity">

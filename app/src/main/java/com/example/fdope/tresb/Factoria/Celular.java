@@ -57,19 +57,6 @@ public class Celular implements Producto, Parcelable {
 
     }
 
-    /*  public Celular(String usuario,String nombre_categoria, String marca, String modelo, int precio, String proveedor, LatLng latLng, Bitmap img) {
-          this.nombre_categoria = nombre_categoria;
-          this.precio = precio;
-          this.modelo = modelo;
-          this.marca = marca;
-          this.proveedor = proveedor;
-          this.latitud = latLng.latitude;
-          this.longitud = latLng.longitude;
-          this.img = img;
-          this.largo=img.getByteCount();
-          this.usuario=usuario;
-      }
-  */
     public Celular(LatLng latLng) {
         this.latitud = latLng.latitude;
         this.longitud = latLng.longitude;
@@ -231,17 +218,12 @@ public class Celular implements Producto, Parcelable {
     public String mostrarmodelo(){
         return modelo;
     }
-    /*
 
-        @Override
-        public Boolean guardarDatosBD() throws SQLException, IOException {
-            ConsultasProductos c = new ConsultasProductos();
+    public int largoImg(){
+        return largo;
+    }
 
-            //return c.guardarProducto(marca, modelo, precio, nombre_categoria, latitud, longitud, proveedor, stringToByte(BitMapToString(img)),getByteArray(img).length);
-            return  c.agregarProducto(marca, modelo, precio, nombre_categoria, latitud, longitud, proveedor,bitmapToBytea(img),this.largo);
 
-        }
-    */
     public Bitmap getBitmap(byte[] bitmap) {
 
         return BitmapFactory.decodeByteArray(bitmap, 0, bitmap.length);

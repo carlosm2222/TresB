@@ -228,9 +228,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private Usuario obtenerUsuario(String u) {
-        if (consultasLogin.obtenerUsuario(u) == null)
-            Toast.makeText(this, "wea null", Toast.LENGTH_SHORT).show();
-
+        consultasLogin.obtenerUsuario(u);
             return consultasLogin.obtenerUsuario(u);
     }
 

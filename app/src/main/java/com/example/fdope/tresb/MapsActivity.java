@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Typeface;
 import android.location.Criteria;
 import android.location.Location;
@@ -55,7 +56,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     static  final  int request_code_filtro = 2;
     private Producto p;
     private Usuario usuario;
-    private ImageView mImageView,imgPerfil;
+    private ImageView imgPerfil;
     private String firstName;
     private String user;
     private Bitmap bp;
@@ -89,6 +90,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         if (mMap!=null){
+
             mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
                 @Override
                 public View getInfoWindow(Marker marker) {
@@ -97,42 +99,46 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 @Override
                 public View getInfoContents(Marker marker) {
+                    ImageView mImageView;
+
                     View view = getLayoutInflater().inflate(R.layout.ventanainfoprouctos,null);
                     TextView infoProd = (TextView) view.findViewById(R.id.infoProd);
                     TextView prodsnippet = (TextView) view.findViewById(R.id.prod_snippet);
-                    mImageView = (ImageView) findViewById(R.id.imagenProd);
+                    mImageView = (ImageView) view.findViewById(R.id.imagenProd);
 
                     infoProd.setTextColor(Color.BLACK);
                     infoProd.setGravity(Gravity.CENTER);
                     infoProd.setTypeface(null, Typeface.BOLD);
                     infoProd.setText(marker.getTitle());
                     prodsnippet.setText(marker.getSnippet());
+
                     Bitmap bmp=null;
 
                     if (marker.getTitle().equals(firstName) )
                         mImageView=null;
- /*                   else {
+                   else {
                         for (int i = 0; i < app.getListaProductos().size(); i++) {
-                            if (app.getListaProductos().get(i).mostrarInfoProducto().equals(infoProd)) {
+
+                            String titulo  = app.getListaProductos().get(i).mostrarMarca()+" "+app.getListaProductos().get(i).mostrarmodelo();
+                            String spin = "$ "+app.getListaProductos().get(i).mostrarPrecio()+" en Tienda: "+app.getListaProductos().get(i).mostrarProveedor()+". Publicado por: "+app.getListaProductos().get(i).mostrarCreadorPublicacion();
+
+                            if (titulo.equals(marker.getTitle()) && spin.equals(marker.getSnippet())) {
                                 byte[] b = app.getListaProductos().get(i).mostrarImagen();
-                                bmp = BitmapFactory.decodeByteArray(b, 100, b.length);
-                                if (bmp!=null)
-                                    mImageView.setImageBitmap(bmp);
+                                bmp = BitmapFactory.decodeByteArray(b, 0, b.length);
+                                mImageView.setImageBitmap(bmp);
                             }
                         }
                     }
-*/
+
                     return view;
                 }
             });
         }
 
-
-
-
         miUbicacion();
-        //cargarDatos();
+        cargarDatos();
     }
+
 
     public  void autoRefresh(){
         this.app.getListaProductos().clear();
@@ -173,8 +179,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     if (data != null) {
                         p = data.getExtras().getParcelable("productoOut");
                         this.app.addProducto(p);
-                        Bundle bundle = data.getExtras();
-                        this.bp = (Bitmap)bundle.get("imagen");
                         agregarMarcadorProductos(p);
                         Toast.makeText(this,"Agregado al mapa correctamente.",Toast.LENGTH_SHORT).show();
                     }
@@ -237,27 +241,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void agregarMarcadorProductos(Producto p){
 
-        //Marker marcadorProducto = null;
-        //marcadorProducto=
                 mMap.addMarker(new MarkerOptions().
                 position(p.coordenadasProducto()).
                 title(p.mostrarMarca()+" "+p.mostrarmodelo()).
                 icon(BitmapDescriptorFactory.fromResource(R.mipmap.pinoferta)).
                 snippet("$ "+p.mostrarPrecio()+" en Tienda: "+p.mostrarProveedor()+". Publicado por: "+p.mostrarCreadorPublicacion()));
-/*
-        if(this.listaMarcadorProductos == null) {
-            this.listaMarcadorProductos = new ArrayList<Marker>();
-            this.listaMarcadorProductos.add(marcadorProducto);
-        }
-        else
-            this.listaMarcadorProductos.add(marcadorProducto);
-*/
     }
 
     public void filtrarProducto(View view){
         Intent intent = new Intent(this,ActivityFiltrarProductos.class);
         startActivity(intent);
-        finish();
+        //finish();
 
     }
 
