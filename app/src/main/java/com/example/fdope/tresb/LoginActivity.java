@@ -85,7 +85,16 @@ public class LoginActivity extends AppCompatActivity {
             public void onSuccess(LoginResult loginResult) {
              AccessToken accessToken = loginResult.getAccessToken();
                 Profile profile = Profile.getCurrentProfile();
-                nextActivity(profile);
+
+                //GUARDAR PERFIL FACEBOOK EN BD E INGRESO
+                if(consultasLogin.checkUsuario(profile.getName(),profile.getId())){ // SI YA ESTA EN LA BD SOLO ENTRA
+                    nextActivity(profile);
+                }
+                else { // SE GUARDA EL USUARIO QUE ENTREA CON FACEBOOK EN LA BD
+                    consultasLogin.registrar(profile.getFirstName(),profile.getLastName(),"",profile.getId(),profile.getName());
+                    nextActivity(profile);
+                }
+
                 Toast.makeText(getApplicationContext(), "Cargando mapa...", Toast.LENGTH_SHORT).show();
                 /*GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
 
@@ -165,8 +174,8 @@ public class LoginActivity extends AppCompatActivity {
             Intent main = new Intent(this, MapsActivity.class);
             main.putExtra("first_name", profile.getFirstName());
             main.putExtra("last_name", profile.getLastName());
-            Uri uri = profile.getProfilePictureUri(100,100);
-            main.putExtra("imagenPerfil",uri.toString());
+            //Uri uri = profile.getProfilePictureUri(100,100);
+            main.putExtra("user",profile.getName());
             startActivity(main);
             finish();
         }
