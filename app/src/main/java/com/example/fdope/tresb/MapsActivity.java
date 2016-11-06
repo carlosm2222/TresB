@@ -58,6 +58,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private TresB app;
     static final int request_code = 1;
     static final int request_code_filtro = 2;
+    static final int reques_usuario = 3;
+    static final int RESULT_USUARIO=3;
     private Producto p;
     private Usuario usuario;
     private ImageView mImageView, imgPerfil;
@@ -78,12 +80,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
         Bundle inBundle = getIntent().getExtras();//agregar desde aqui
         if (inBundle != null) {
-            firstName = inBundle.getString("first_name");
-            lastName = inBundle.getString("last_name");
-            user = inBundle.getString("user");
+        //    firstName = inBundle.getString("first_name");
+         //   lastName = inBundle.getString("last_name");
+        //    user = inBundle.getString("user");
             // url_img_perfil=inBundle.getString("imagenPerfil");
+            usuario = inBundle.getParcelable("UsuarioIn");
+            if (usuario!=null)
+                Toast.makeText(this, "Bienvenido " + usuario.getNombre(), Toast.LENGTH_SHORT).show();
+            else
+                Toast.makeText(this, "NOSE PUDO OBTENER USUARIIO ", Toast.LENGTH_SHORT).show();
 
-            Toast.makeText(this, "Bienvenido " + firstName, Toast.LENGTH_SHORT).show();
             //usuario = new Usuario(name,surname);
         }//hasta aqui
         this.app = new TresB();
@@ -170,10 +176,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Intent intent = new Intent(this, FormularioActivity.class);
         Location location = obetnerUbicacion();
         intent.putExtra("coordenadas", location);
-        if (user.equals(""))
-            intent.putExtra("usuario",firstName+" "+lastName);
-        else
-            intent.putExtra("usuario", user);
+        intent.putExtra("usuario",usuario.getUsername());
+
         startActivityForResult(intent, request_code);
 
     }

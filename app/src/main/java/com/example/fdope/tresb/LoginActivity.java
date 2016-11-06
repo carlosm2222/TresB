@@ -30,7 +30,7 @@ import org.json.JSONObject;
 import java.net.URI;
 
 public class LoginActivity extends AppCompatActivity {
-
+    public static final int  reques_usuario = 3;
     private ConsultasLogin consultasLogin;
     private CallbackManager callbackManager;
     private AccessTokenTracker accessTokenTracker;
@@ -88,11 +88,11 @@ public class LoginActivity extends AppCompatActivity {
 
                 //GUARDAR PERFIL FACEBOOK EN BD E INGRESO
                 if(consultasLogin.checkUsuario(profile.getName(),profile.getId())){ // SI YA ESTA EN LA BD SOLO ENTRA
-                    nextActivity(profile);
+                    nextActivity(consultasLogin.obtenerUsuario(profile.getName()));
                 }
                 else { // SE GUARDA EL USUARIO QUE ENTREA CON FACEBOOK EN LA BD
                     consultasLogin.registrar(profile.getFirstName(),profile.getLastName(),"",profile.getId(),profile.getName());
-                    nextActivity(profile);
+                    nextActivity(consultasLogin.obtenerUsuario(profile.getName()));
                 }
 
                 Toast.makeText(getApplicationContext(), "Cargando mapa...", Toast.LENGTH_SHORT).show();
@@ -133,9 +133,10 @@ public class LoginActivity extends AppCompatActivity {
 
     private void nextActivity(Usuario u) {
         Intent main = new Intent(this, MapsActivity.class);
-        main.putExtra("first_name", u.getNombre());
-        main.putExtra("last_name", u.getApellidos());
-        main.putExtra("user",u.getUsername());
+       // main.putExtra("first_name", u.getNombre());
+        //main.putExtra("last_name", u.getApellidos());
+        //main.putExtra("user",u.getUsername());
+        main.putExtra("UsuarioIn",u);
         startActivity(main);
         finish();
     }
