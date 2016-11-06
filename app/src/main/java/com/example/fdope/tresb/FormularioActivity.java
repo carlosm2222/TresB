@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.location.Location;
 import android.media.Image;
 import android.media.ImageReader;
@@ -67,7 +68,6 @@ public class FormularioActivity extends AppCompatActivity {
         int precio = Integer.parseInt(this.inputPrecio.getText().toString());
         String proveedor = this.inputProveedor.getText().toString();
         String usuario = getIntent().getStringExtra("usuario");
-        Toast.makeText(this,usuario,Toast.LENGTH_SHORT).show();
 
         //USO DE FACTORIA
         usarFactoria(usuario,tipo,marca,modelo,precio,proveedor,latLng,mImageBitmap);
@@ -83,7 +83,6 @@ public class FormularioActivity extends AppCompatActivity {
                 mostrarMensaje();
                 Intent intent = new Intent();
                 intent.putExtra("productoOut",(Celular)producto);
-                intent.putExtra("imagen",producto.mostrarImagen());
                 setResult(RESULT_OK,intent);
             }
             else {
@@ -126,4 +125,6 @@ public class FormularioActivity extends AppCompatActivity {
             }
         }
     }
+
+
 }

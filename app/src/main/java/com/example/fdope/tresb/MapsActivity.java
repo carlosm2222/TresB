@@ -137,6 +137,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //cargarDatos();
     }
 
+
+
     public void autoRefresh() {
         this.app.getListaProductos().clear();
         this.app.setListaSmartphone(null);

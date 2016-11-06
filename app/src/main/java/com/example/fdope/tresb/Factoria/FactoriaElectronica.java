@@ -2,6 +2,7 @@ package com.example.fdope.tresb.Factoria;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.util.Base64;
 
 import com.example.fdope.tresb.Clases.SaveImage;
@@ -33,74 +34,78 @@ public class FactoriaElectronica implements ProductosFactory {
         Celular celular = new Celular(username,nombre_categoria,  marca,  modelo,  precio,  proveedor, latLng,img,largo);
 
         //se guarda el producto
-        if (consultasProductos.agregarProducto(username,marca,modelo,precio,nombre_categoria,celular.getLatitud(),celular.getLongitud(),proveedor,img,largo)== true)
-            return celular;
-        else
-            return null;
+        consultasProductos.agregarProducto(username,marca,modelo,precio,nombre_categoria,celular.getLatitud(),celular.getLongitud(),proveedor,img,largo);
+        return celular;
+
     }
 
     @Override
     public Celular crearProducto(String username,String nombre_categoria, String marca, String modelo, int precio, String proveedor, LatLng latLng, Bitmap img) {
-        byte[] b = getByteArray(img);
+
+        Bitmap imgRecortada = resizeImage(img,100,100);
+        String imagen = BitMapToString(imgRecortada);
+        byte[] b = stringToByte(imagen);
         int largo = b.length;
 
         //se crea el producto
         Celular celular =  new Celular(username,nombre_categoria,  marca,  modelo,  precio,  proveedor, latLng,b,largo);
         //se guarda
-        if (consultasProductos.agregarProducto(username,marca,modelo,precio,nombre_categoria,celular.getLatitud(),celular.getLongitud(),proveedor,getByteArray(img),celular.getLargo())== true)
-            return celular;
-        else
-            return null;
+        consultasProductos.agregarProducto(username,marca,modelo,precio,nombre_categoria,celular.getLatitud(),celular.getLongitud(),proveedor,b,largo);
+        return celular;
+
     }
 
+    public static Bitmap resizeImage(Bitmap b, int w, int h) {
+
+        // cargamos la imagen de origen
+        Bitmap BitmapOrg = b;
+
+        int width = BitmapOrg.getWidth();
+        int height = BitmapOrg.getHeight();
+        int newWidth = w;
+        int newHeight = h;
+
+        // calculamos el escalado de la imagen destino
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+
+        // para poder manipular la imagen
+        // debemos crear una matriz
+
+        Matrix matrix = new Matrix();
+        // resize the Bitmap
+        matrix.postScale(scaleWidth, scaleHeight);
+
+        // volvemos a crear la imagen con los nuevos valores
+        Bitmap resizedBitmap = Bitmap.createBitmap(BitmapOrg, 0, 0,
+                width, height, matrix, true);
+
+        // si queremos poder mostrar nuestra imagen tenemos que crear un
+        // objeto drawable y así asignarlo a un botón, imageview...
+        return resizedBitmap;
+
+    }
 
 
     public byte[] getByteArray(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
+        bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
         return stream.toByteArray();
     }
 
     public Bitmap getBitmap(byte[] bitmap) {
-
         return BitmapFactory.decodeByteArray(bitmap, 0, bitmap.length);
     }
 
-    public InputStream ByteArrToInputStream (byte[] by){
-
-
-        byte[] content = by;
-        int size = content.length;
-        InputStream is = null;
-        byte[] b = new byte[size];
-        try {
-            is = new ByteArrayInputStream(content);
-            is.read(b);
-            System.out.println("Data Recovered: "+new String(b));
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try{
-                if(is != null) is.close();
-                return is;
-            } catch (Exception ex){
-
-            }
-        }
-        return is;
-    }
-
-
     public String BitMapToString(Bitmap bitmap){
         ByteArrayOutputStream baos=new  ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
+        bitmap.compress(Bitmap.CompressFormat.PNG,0, baos);
         byte [] b=baos.toByteArray();
 
         String temp= Base64.encodeToString(b, Base64.DEFAULT);
         temp.getBytes().toString();
         return temp;
     }
-
 
     public byte[] stringToByte(String str){
         byte[] data = Base64.decode(str, Base64.DEFAULT);
