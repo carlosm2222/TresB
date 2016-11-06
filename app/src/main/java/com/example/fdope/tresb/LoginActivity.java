@@ -71,8 +71,7 @@ public class LoginActivity extends AppCompatActivity {
         profileTracker = new ProfileTracker() {
             @Override
             protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile) {
-                nextActivity(newProfile);
-
+                registrarUsuarioFacebookYEntrar(newProfile);;
             }
         };
         accessTokenTracker.startTracking();
@@ -85,15 +84,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onSuccess(LoginResult loginResult) {
              AccessToken accessToken = loginResult.getAccessToken();
                 Profile profile = Profile.getCurrentProfile();
-
-                //GUARDAR PERFIL FACEBOOK EN BD E INGRESO
-                if(consultasLogin.checkUsuario(profile.getName(),profile.getId())){ // SI YA ESTA EN LA BD SOLO ENTRA
-                    nextActivity(consultasLogin.obtenerUsuario(profile.getName()));
-                }
-                else { // SE GUARDA EL USUARIO QUE ENTREA CON FACEBOOK EN LA BD
-                    consultasLogin.registrar(profile.getFirstName(),profile.getLastName(),"",profile.getId(),profile.getName());
-                    nextActivity(consultasLogin.obtenerUsuario(profile.getName()));
-                }
+                registrarUsuarioFacebookYEntrar(profile);
 
                 Toast.makeText(getApplicationContext(), "Cargando mapa...", Toast.LENGTH_SHORT).show();
                 /*GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
@@ -131,11 +122,19 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    public void registrarUsuarioFacebookYEntrar(Profile profile){
+        //GUARDAR PERFIL FACEBOOK EN BD E INGRESO
+        if(consultasLogin.checkUsuario(profile.getName(),profile.getId())){ // SI YA ESTA EN LA BD SOLO ENTRA
+            nextActivity(consultasLogin.obtenerUsuario(profile.getName()));
+        }
+        else { // SE GUARDA EL USUARIO QUE ENTRA CON FACEBOOK EN LA BD
+            consultasLogin.registrar(profile.getFirstName(),profile.getLastName(),"",profile.getId(),profile.getName());
+            nextActivity(consultasLogin.obtenerUsuario(profile.getName()));
+        }
+    }
+
     private void nextActivity(Usuario u) {
         Intent main = new Intent(this, MapsActivity.class);
-       // main.putExtra("first_name", u.getNombre());
-        //main.putExtra("last_name", u.getApellidos());
-        //main.putExtra("user",u.getUsername());
         main.putExtra("UsuarioIn",u);
         startActivity(main);
         finish();
@@ -146,7 +145,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onResume();
         Profile profile = Profile.getCurrentProfile();
         if (profile!=null)      //Si hay un perfil de fb activo se envian los datos del perfil
-            nextActivity(profile);
+            registrarUsuarioFacebookYEntrar(profile);
         else if (usuario!=null) //si hay un perfil de usuario activo se envian datos del usuario
             nextActivity(usuario);
     }
@@ -170,17 +169,6 @@ public class LoginActivity extends AppCompatActivity {
         callbackManager.onActivityResult(requestCode, responseCode, intent);
     }
 
-    private void nextActivity(Profile profile) {
-        if (profile != null) {
-            Intent main = new Intent(this, MapsActivity.class);
-            main.putExtra("first_name", profile.getFirstName());
-            main.putExtra("last_name", profile.getLastName());
-            //Uri uri = profile.getProfilePictureUri(100,100);
-            main.putExtra("user",profile.getName());
-            startActivity(main);
-            finish();
-        }
-    }
 
     public void checkFieldsForEmptyValues() {
         Button b = (Button) findViewById(R.id.login);
@@ -229,7 +217,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean consulta(String u, String pass) {
         //consulta bd
-        if(consultasLogin.checkUsuario(u,pass)!= null) {
+        if(consultasLogin.checkUsuario(u,pass)) {
             return true;
         }
         else {

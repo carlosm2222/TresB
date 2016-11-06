@@ -72,7 +72,7 @@ public class FormularioRegistro extends AppCompatActivity {
 
         //guardar datos en bd
         ConsultasLogin c = new ConsultasLogin();
-        if (c.registrar(nombres,apellidos,email,pass,usuario)!= null)
+        if (c.registrar(nombres,apellidos,email,pass,usuario))
             nextActtivity();
         else
             Toast.makeText(this,"nofunciono",Toast.LENGTH_SHORT).show();

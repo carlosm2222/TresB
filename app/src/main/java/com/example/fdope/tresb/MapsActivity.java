@@ -124,9 +124,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     Bitmap bmp=null;
 
-                    if (marker.getTitle().equals(firstName) )
-                        mImageView.setImageResource(R.mipmap.map);
-                    else {
                         for (int i = 0; i < app.getListaProductos().size(); i++) {
 
                             String titulo  = app.getListaProductos().get(i).mostrarMarca()+" "+app.getListaProductos().get(i).mostrarmodelo();
@@ -138,13 +135,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 mImageView.setImageBitmap(bmp);
                             }
                         }
-                    }
-
                     return view;
                 }
             });
         }
-
 
         miUbicacion();
         cargarDatos();
