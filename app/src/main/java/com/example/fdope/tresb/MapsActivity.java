@@ -103,30 +103,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 @Override
                 public View getInfoContents(Marker marker) {
-                    View view = getLayoutInflater().inflate(R.layout.ventanainfoprouctos, null);
+                    ImageView mImageView;
+
+                    View view = getLayoutInflater().inflate(R.layout.ventanainfoprouctos,null);
                     TextView infoProd = (TextView) view.findViewById(R.id.infoProd);
                     TextView prodsnippet = (TextView) view.findViewById(R.id.prod_snippet);
-                    mImageView = (ImageView) findViewById(R.id.imagenProd);
+                    mImageView = (ImageView) view.findViewById(R.id.imagenProd);
+
                     infoProd.setTextColor(Color.BLACK);
                     infoProd.setGravity(Gravity.CENTER);
                     infoProd.setTypeface(null, Typeface.BOLD);
                     infoProd.setText(marker.getTitle());
                     prodsnippet.setText(marker.getSnippet());
-                    Bitmap bmp = null;
 
-                    if (marker.getTitle().equals(firstName))
-                        mImageView = null;
- /*                   else {
+                    Bitmap bmp=null;
+
+                    if (marker.getTitle().equals(firstName) )
+                        mImageView.setImageResource(R.mipmap.map);
+                    else {
                         for (int i = 0; i < app.getListaProductos().size(); i++) {
-                            if (app.getListaProductos().get(i).mostrarInfoProducto().equals(infoProd)) {
+
+                            String titulo  = app.getListaProductos().get(i).mostrarMarca()+" "+app.getListaProductos().get(i).mostrarmodelo();
+                            String spin = "$ "+app.getListaProductos().get(i).mostrarPrecio()+" en Tienda: "+app.getListaProductos().get(i).mostrarProveedor()+". Publicado por: "+app.getListaProductos().get(i).mostrarCreadorPublicacion();
+
+                            if (titulo.equals(marker.getTitle()) && spin.equals(marker.getSnippet())) {
                                 byte[] b = app.getListaProductos().get(i).mostrarImagen();
-                                bmp = BitmapFactory.decodeByteArray(b, 100, b.length);
-                                if (bmp!=null)
-                                    mImageView.setImageBitmap(bmp);
+                                bmp = BitmapFactory.decodeByteArray(b, 0, b.length);
+                                mImageView.setImageBitmap(bmp);
                             }
                         }
                     }
-*/
+
                     return view;
                 }
             });
@@ -134,7 +141,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
         miUbicacion();
-        //cargarDatos();
+        cargarDatos();
     }
 
 
@@ -163,9 +170,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Intent intent = new Intent(this, FormularioActivity.class);
         Location location = obetnerUbicacion();
         intent.putExtra("coordenadas", location);
-        if (usuario==null)
+        if (user.equals(""))
             intent.putExtra("usuario",firstName+" "+lastName);
-        else intent.putExtra("usuario", user);
+        else
+            intent.putExtra("usuario", user);
         startActivityForResult(intent, request_code);
 
     }
@@ -180,8 +188,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     if (data != null) {
                         p = data.getExtras().getParcelable("productoOut");
                         this.app.addProducto(p);
-                        Bundle bundle = data.getExtras();
-                        //this.bp = (Bitmap)bundle.get("imagen");
                         agregarMarcadorProductos(p);
                         Toast.makeText(this, "Agregado al mapa correctamente.", Toast.LENGTH_SHORT).show();
                     } else
@@ -255,21 +261,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void agregarMarcadorProductos(Producto p){
 
-        //Marker marcadorProducto = null;
-        //marcadorProducto=
                 mMap.addMarker(new MarkerOptions().draggable(true).
                 position(p.coordenadasProducto()).
                 title(p.mostrarMarca()+" "+p.mostrarmodelo()).
                 icon(BitmapDescriptorFactory.fromResource(R.mipmap.pinoferta)).
                 snippet("$ "+p.mostrarPrecio()+" en Tienda: "+p.mostrarProveedor()+". Publicado por: "+p.mostrarCreadorPublicacion()));
-/*
-        if(this.listaMarcadorProductos == null) {
-            this.listaMarcadorProductos = new ArrayList<Marker>();
-            this.listaMarcadorProductos.add(marcadorProducto);
-        }
-        else
-            this.listaMarcadorProductos.add(marcadorProducto);
-*/
+
     }
 
     public void filtrarProducto(View view){

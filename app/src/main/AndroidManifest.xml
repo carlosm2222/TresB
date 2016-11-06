@@ -51,7 +51,7 @@
 
         <activity
             android:name=".ActivityFiltrarProductos"
-            android:label="filtrar"
+            android:label="Filtrar"
             android:parentActivityName=".MapsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -88,10 +88,7 @@
             android:label="Registro">
 
         </activity>
-        <activity android:name=".ActivityFiltrarProductos"
-            android:label="Filtrar">
 
-        </activity>
     </application>
 
 </manifest>
