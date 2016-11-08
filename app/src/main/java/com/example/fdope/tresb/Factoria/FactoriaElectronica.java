@@ -18,6 +18,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.sql.SQLException;
 
 /**
  * Created by SS on 12-10-2016.
@@ -28,7 +29,7 @@ public class FactoriaElectronica implements ProductosFactory {
 
 
     @Override
-    public Celular crearProducto(String username,String nombre_categoria, String marca, String modelo, int precio, String proveedor, LatLng latLng, byte[] img, int largo) {
+    public Producto crearProducto(String username,String nombre_categoria, String marca, String modelo, int precio, String proveedor, LatLng latLng, byte[] img, int largo) throws SQLException{
 
         //se crea el producto
         Celular celular = new Celular(username,nombre_categoria,  marca,  modelo,  precio,  proveedor, latLng,img,largo);
@@ -40,7 +41,7 @@ public class FactoriaElectronica implements ProductosFactory {
     }
 
     @Override
-    public Celular crearProducto(String username,String nombre_categoria, String marca, String modelo, int precio, String proveedor, LatLng latLng, Bitmap img) {
+    public Producto crearProducto(String username,String nombre_categoria, String marca, String modelo, int precio, String proveedor, LatLng latLng, Bitmap img)throws SQLException {
 
         Bitmap imgRecortada = resizeImage(img,100,100);
         String imagen = BitMapToString(imgRecortada);

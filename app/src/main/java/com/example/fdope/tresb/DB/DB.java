@@ -53,7 +53,7 @@ public class DB implements Runnable {
         }
 
     }
-    private void desconectarBd(){
+    public void desconectarBd(){
         if (this.c != null)
         {
             try {

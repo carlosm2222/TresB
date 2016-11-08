@@ -74,19 +74,22 @@ public class ConsultasProductos {
 
                 return listap;
             }
+            c.close();
 
         }
         catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        c.close();
         return listap;
+
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    public static boolean agregarProducto(String user,String marca, String modelo, int precio , String tipo, double lat , double lng, String proveedor, byte[] img, int largo){
+    public static boolean agregarProducto(String user,String marca, String modelo, int precio , String tipo, double lat , double lng, String proveedor, byte[] img, int largo)throws SQLException {
         DB db=new DB();
         Connection c =db.connect();
 
@@ -113,6 +116,7 @@ public class ConsultasProductos {
         }catch (Exception e){
 
         }
+        c.close();
         return false;
     }
 

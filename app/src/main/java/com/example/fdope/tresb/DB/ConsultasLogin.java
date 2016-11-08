@@ -15,7 +15,7 @@ import java.sql.Types;
 public class ConsultasLogin {
 
 
-    public  static boolean registrar(String nombre, String apellidos, String email, String password, String username){
+    public  static boolean registrar(String nombre, String apellidos, String email, String password, String username)throws SQLException {
         DB db=new DB();
         Connection c =db.connect();
         CallableStatement oCall;
@@ -35,10 +35,11 @@ public class ConsultasLogin {
         }catch (Exception e){
 
         }
+        c.close();
         return false;
     }
 
-    public static boolean checkUsuario(String username,String password){
+    public static boolean checkUsuario(String username,String password)throws SQLException {
         DB db=new DB();
         Connection c =db.connect();
 
@@ -55,10 +56,11 @@ public class ConsultasLogin {
         }catch (Exception e){
 
         }
+        c.close();
         return false;
     }
 
-    public static Usuario obtenerUsuario(String username){
+    public static Usuario obtenerUsuario(String username)throws SQLException {
         DB db=new DB();
         Connection c =db.connect();
 
@@ -78,10 +80,12 @@ public class ConsultasLogin {
                     return usuario;
                 }
             }
+            c.close();
 
         }catch (Exception e){
 
         }
+        c.close();
         return null;
     }
 }
