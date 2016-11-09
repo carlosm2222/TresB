@@ -5,19 +5,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.util.Base64;
 
-import com.example.fdope.tresb.Clases.SaveImage;
 import com.example.fdope.tresb.DB.ConsultasProductos;
-import com.example.fdope.tresb.FormularioActivity;
 import com.google.android.gms.maps.model.LatLng;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.ByteBuffer;
 import java.sql.SQLException;
 
 /**
