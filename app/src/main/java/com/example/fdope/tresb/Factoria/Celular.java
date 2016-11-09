@@ -207,18 +207,20 @@ public class Celular implements Producto, Parcelable {
     public int mostrarPrecio() {
         return  precio;
     }
-
+    @Override
     public String mostrarCreadorPublicacion(){
         return usuario;
     }
+    @Override
     public String mostrarProveedor(){
         return proveedor;
     }
 
+    @Override
     public String mostrarmodelo(){
         return modelo;
     }
-
+    @Override
     public int largoImg(){
         return largo;
     }

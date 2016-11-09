@@ -16,19 +16,13 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.example.fdope.tresb.Clases.TresB;
 import com.example.fdope.tresb.DB.ConsultasProductos;
-import com.example.fdope.tresb.Factoria.Celular;
-import com.example.fdope.tresb.Factoria.Filtro;
 import com.example.fdope.tresb.Factoria.Producto;
 import com.example.fdope.tresb.Clases.Usuario;
 import com.facebook.login.LoginManager;
@@ -42,9 +36,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.net.URI;
 import java.util.ArrayList;
-import java.util.Map;
 
 import static com.example.fdope.tresb.ActivityFiltrarProductos.FILTRO_OK;
 

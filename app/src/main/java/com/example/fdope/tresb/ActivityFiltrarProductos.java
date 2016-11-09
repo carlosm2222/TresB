@@ -11,8 +11,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.fdope.tresb.Factoria.Filtro;
-
 public class ActivityFiltrarProductos extends AppCompatActivity {
     private EditText inputPrecioMin , inputPrecioMax;
     private Spinner spinnerTipo, spinnerMarca;
