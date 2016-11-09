@@ -14,6 +14,8 @@ import com.example.fdope.tresb.DB.ConsultasLogin;
 
 public class FormularioRegistro extends AppCompatActivity {
     private EditText inputNombres, inputApellidos , inputUsuario, inputPassword,inputEmail;
+    ConsultasLogin consultasLogin;
+
     private TextWatcher mTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -69,13 +71,11 @@ public class FormularioRegistro extends AppCompatActivity {
         String pass = this.inputPassword.getText().toString();
         String email = this.inputEmail.getText().toString();
 
-
         //guardar datos en bd
-        ConsultasLogin c = new ConsultasLogin();
-        if (c.registrar(nombres,apellidos,email,pass,usuario))
+        if (consultasLogin.registrar(nombres,apellidos,email,pass,usuario))
             nextActtivity();
         else
-            Toast.makeText(this,"nofunciono",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Nombre de usuario no disponible",Toast.LENGTH_SHORT).show();
     }
 
     private void nextActtivity() {

@@ -72,18 +72,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
         Bundle inBundle = getIntent().getExtras();//agregar desde aqui
         if (inBundle != null) {
-        //    firstName = inBundle.getString("first_name");
-         //   lastName = inBundle.getString("last_name");
-        //    user = inBundle.getString("user");
-            // url_img_perfil=inBundle.getString("imagenPerfil");
             usuario = inBundle.getParcelable("UsuarioIn");
             if (usuario!=null)
                 Toast.makeText(this, "Bienvenido " + usuario.getNombre(), Toast.LENGTH_SHORT).show();
             else
                 Toast.makeText(this, "NOSE PUDO OBTENER USUARIIO ", Toast.LENGTH_SHORT).show();
-
-            //usuario = new Usuario(name,surname);
-        }//hasta aqui
+        }
         this.app = new TresB();
     }
 

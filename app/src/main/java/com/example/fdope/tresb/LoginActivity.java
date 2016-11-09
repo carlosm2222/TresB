@@ -204,7 +204,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if (consulta(u,pass)){
             if (obtenerUsuario(u) != null) {
-                Toast.makeText(this,"Cargando mapa",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,"Cargando mapa ...",Toast.LENGTH_SHORT).show();
                 return obtenerUsuario(u);
             }
             else {
@@ -217,12 +217,9 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean consulta(String u, String pass) {
         //consulta bd
-        if(consultasLogin.checkUsuario(u,pass)) {
-            return true;
-        }
-        else {
-            return false;
-        }
+
+        return consultasLogin.checkUsuario(u,pass);
+
     }
 
     private Usuario obtenerUsuario(String u) {

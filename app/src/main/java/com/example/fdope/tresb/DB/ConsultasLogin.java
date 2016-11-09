@@ -1,5 +1,7 @@
 package com.example.fdope.tresb.DB;
 
+import android.util.Log;
+
 import com.example.fdope.tresb.Clases.Usuario;
 
 import java.sql.CallableStatement;
@@ -15,12 +17,12 @@ import java.sql.Types;
 public class ConsultasLogin {
 
 
-    public  static boolean registrar(String nombre, String apellidos, String email, String password, String username)throws SQLException {
+    public  static boolean registrar(String nombre, String apellidos, String email, String password, String username) {
         DB db=new DB();
         Connection c =db.connect();
-        CallableStatement oCall;
 
         try {
+            CallableStatement oCall;
             oCall = c.prepareCall("{ ? = call agregarcliente(?,?,?,?,?) }");
             oCall.registerOutParameter(1, Types.BOOLEAN);
             oCall.setString(2,username);
@@ -30,16 +32,17 @@ public class ConsultasLogin {
             oCall.setString(6,email);
             oCall.execute();
 
-            return oCall.getBoolean(1);
-
+            if (oCall.getBoolean(1))
+                return true;
+            else
+                return false;
         }catch (Exception e){
 
         }
-        c.close();
         return false;
     }
 
-    public static boolean checkUsuario(String username,String password)throws SQLException {
+    public static boolean checkUsuario(String username,String password) {
         DB db=new DB();
         Connection c =db.connect();
 
@@ -50,17 +53,18 @@ public class ConsultasLogin {
             oCall.setString(2,username);
             oCall.setString(3,password);
             oCall.execute();
-
-            return oCall.getBoolean(1);
-
+            
+            if (oCall.getBoolean(1))
+                return true;
+            else
+                return false;
         }catch (Exception e){
 
         }
-        c.close();
         return false;
     }
 
-    public static Usuario obtenerUsuario(String username)throws SQLException {
+    public static Usuario obtenerUsuario(String username){
         DB db=new DB();
         Connection c =db.connect();
 
@@ -80,12 +84,9 @@ public class ConsultasLogin {
                     return usuario;
                 }
             }
-            c.close();
-
         }catch (Exception e){
 
         }
-        c.close();
         return null;
     }
 }

@@ -36,7 +36,7 @@ import java.util.ArrayList;
 
 public class ConsultasProductos {
 
-    public static ArrayList<Producto> listarProductos()throws SQLException {
+    public static ArrayList<Producto> listarProductos(){
         DB base = new DB();
         Connection c= base.connect();
 
@@ -74,14 +74,14 @@ public class ConsultasProductos {
 
                 return listap;
             }
-            c.close();
+            base.desconectarBd();
 
         }
         catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        c.close();
+        base.desconectarBd();
         return listap;
 
     }
@@ -89,7 +89,7 @@ public class ConsultasProductos {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    public static boolean agregarProducto(String user,String marca, String modelo, int precio , String tipo, double lat , double lng, String proveedor, byte[] img, int largo)throws SQLException {
+    public static boolean agregarProducto(String user,String marca, String modelo, int precio , String tipo, double lat , double lng, String proveedor, byte[] img, int largo) {
         DB db=new DB();
         Connection c =db.connect();
 
@@ -116,7 +116,7 @@ public class ConsultasProductos {
         }catch (Exception e){
 
         }
-        c.close();
+        db.desconectarBd();
         return false;
     }
 
