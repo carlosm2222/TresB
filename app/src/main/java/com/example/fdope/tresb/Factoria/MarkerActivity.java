@@ -47,6 +47,7 @@ public class MarkerActivity extends DialogFragment {
         infoProd.setTypeface(null, Typeface.BOLD);
         prodsnippet.setText(info);
 
+
         fav.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -58,7 +59,7 @@ public class MarkerActivity extends DialogFragment {
 
             @Override
             public void onClick(View v) {
-                
+
             }
         });
         return rootView;

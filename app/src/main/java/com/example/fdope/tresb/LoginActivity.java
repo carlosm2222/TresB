@@ -28,7 +28,6 @@ import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
     public static final int  reques_usuario = 3;
-    private ConsultasUsuarios consultasUsuarios;
     private CallbackManager callbackManager;
     private AccessTokenTracker accessTokenTracker;
     private ProfileTracker profileTracker;
@@ -121,12 +120,12 @@ public class LoginActivity extends AppCompatActivity {
 
     public void registrarUsuarioFacebookYEntrar(Profile profile){
         //GUARDAR PERFIL FACEBOOK EN BD E INGRESO
-        if(consultasUsuarios.checkUsuario(profile.getName(),profile.getId())){ // SI YA ESTA EN LA BD SOLO ENTRA
-            nextActivity(consultasUsuarios.obtenerUsuario(profile.getName()));
+        if(ConsultasUsuarios.checkUsuario(profile.getName(),profile.getId())){ // SI YA ESTA EN LA BD SOLO ENTRA
+            nextActivity(ConsultasUsuarios.obtenerUsuario(profile.getName()));
         }
         else { // SE GUARDA EL USUARIO QUE ENTRA CON FACEBOOK EN LA BD
-            consultasUsuarios.registrar(profile.getFirstName(),profile.getLastName(),"",profile.getId(),profile.getName());
-            nextActivity(consultasUsuarios.obtenerUsuario(profile.getName()));
+            ConsultasUsuarios.registrar(profile.getFirstName(),profile.getLastName(),"",profile.getId(),profile.getName());
+            nextActivity(ConsultasUsuarios.obtenerUsuario(profile.getName()));
         }
     }
 
@@ -204,9 +203,8 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(this,"Cargando mapa ...",Toast.LENGTH_SHORT).show();
                 return obtenerUsuario(u);
             }
-            else {
+            else
                 return  null;
-            }
         }
         else
             return null;
@@ -214,14 +212,12 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean consulta(String u, String pass) {
         //consulta bd
-
-        return consultasUsuarios.checkUsuario(u,pass);
+        return ConsultasUsuarios.checkUsuario(u,pass);
 
     }
 
     private Usuario obtenerUsuario(String u) {
-        consultasUsuarios.obtenerUsuario(u);
-            return consultasUsuarios.obtenerUsuario(u);
+            return ConsultasUsuarios.obtenerUsuario(u);
     }
 
 

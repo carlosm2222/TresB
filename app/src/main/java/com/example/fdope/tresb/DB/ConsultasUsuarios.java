@@ -32,10 +32,8 @@ public class ConsultasUsuarios {
             oCall.setString(6,email);
             oCall.execute();
 
-            if (oCall.getBoolean(1))
-                return true;
-            else
-                return false;
+            boolean resp = oCall.getBoolean(1);
+            return resp;
         }catch (Exception e){
 
         }
@@ -54,10 +52,9 @@ public class ConsultasUsuarios {
             oCall.setString(3,password);
             oCall.execute();
 
-            if (oCall.getBoolean(1))
-                return true;
-            else
-                return false;
+            boolean resp = oCall.getBoolean(1);
+            return resp;
+
         }catch (Exception e){
 
         }
@@ -72,7 +69,7 @@ public class ConsultasUsuarios {
             //CallableStatement oCall = c.prepareCall("{ call obtener_usuario(?) }");
             //oCall.setString(1,username);
             //ResultSet resultSet = oCall.executeQuery();
-            ResultSet resultSet = db.execute("SELECT * FROM cliente WHERE usuario='"+username+"';");
+            ResultSet resultSet = db.execute("SELECT * FROM obtener_usuario('"+username+"');");
             if (resultSet!=null){
                 while(resultSet.next()){
                     String user = resultSet.getString("usuario");

@@ -16,7 +16,7 @@ import java.sql.SQLException;
  */
 
 public class FactoriaElectronica implements ProductosFactory {
-    ConsultasProductos consultasProductos;
+
 
 
     @Override
@@ -26,7 +26,7 @@ public class FactoriaElectronica implements ProductosFactory {
         Celular celular = new Celular(username,nombre_categoria,  marca,  modelo,  precio,  proveedor, latLng,img,largo);
 
         //se guarda el producto
-        consultasProductos.agregarProducto(username,marca,modelo,precio,nombre_categoria,celular.getLatitud(),celular.getLongitud(),proveedor,img,largo);
+        ConsultasProductos.agregarProducto(username,marca,modelo,precio,nombre_categoria,celular.getLatitud(),celular.getLongitud(),proveedor,img,largo);
         return celular;
 
     }
@@ -42,7 +42,7 @@ public class FactoriaElectronica implements ProductosFactory {
         //se crea el producto
         Celular celular =  new Celular(username,nombre_categoria,  marca,  modelo,  precio,  proveedor, latLng,b,largo);
         //se guarda
-        consultasProductos.agregarProducto(username,marca,modelo,precio,nombre_categoria,celular.getLatitud(),celular.getLongitud(),proveedor,b,largo);
+        ConsultasProductos.agregarProducto(username,marca,modelo,precio,nombre_categoria,celular.getLatitud(),celular.getLongitud(),proveedor,b,largo);
         return celular;
 
     }

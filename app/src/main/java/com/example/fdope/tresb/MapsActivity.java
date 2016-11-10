@@ -345,7 +345,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             e.getMessage();
         }
 
-        if (this.app.getListaProductos().size() > 1) {
+        if (this.app.getListaProductos()!=null) {
             for (int i = 0; i < this.app.getListaProductos().size(); i++)
                 agregarMarcadorProductos(app.getListaProductos().get(i));
         }

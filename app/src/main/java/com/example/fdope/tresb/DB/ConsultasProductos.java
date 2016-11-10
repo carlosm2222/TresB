@@ -42,7 +42,7 @@ public class ConsultasProductos {
 
         ArrayList<Producto> listap = new ArrayList<Producto>();
         try{
-            //CallableStatement oCall = c.prepareCall("{ getINFO() }");
+            //CallableStatement oCall = c.prepareCall("{call getINFO()}");
             //ResultSet resultado = oCall.executeQuery();
 
             ResultSet resultado = base.select("SELECT * FROM getINFO();");
