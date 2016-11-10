@@ -10,11 +10,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.fdope.tresb.DB.ConsultasLogin;
+import com.example.fdope.tresb.DB.ConsultasUsuarios;
 
 public class FormularioRegistro extends AppCompatActivity {
     private EditText inputNombres, inputApellidos , inputUsuario, inputPassword,inputEmail;
-    ConsultasLogin consultasLogin;
+    ConsultasUsuarios consultasUsuarios;
 
     private TextWatcher mTextWatcher = new TextWatcher() {
         @Override
@@ -72,7 +72,7 @@ public class FormularioRegistro extends AppCompatActivity {
         String email = this.inputEmail.getText().toString();
 
         //guardar datos en bd
-        if (consultasLogin.registrar(nombres,apellidos,email,pass,usuario))
+        if (consultasUsuarios.registrar(nombres,apellidos,email,pass,usuario))
             nextActtivity();
         else
             Toast.makeText(this,"Nombre de usuario no disponible",Toast.LENGTH_SHORT).show();

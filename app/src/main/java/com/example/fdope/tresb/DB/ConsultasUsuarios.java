@@ -14,7 +14,7 @@ import java.sql.Types;
  * Created by SS on 01-11-2016.
  */
 
-public class ConsultasLogin {
+public class ConsultasUsuarios {
 
 
     public  static boolean registrar(String nombre, String apellidos, String email, String password, String username) {
@@ -53,7 +53,7 @@ public class ConsultasLogin {
             oCall.setString(2,username);
             oCall.setString(3,password);
             oCall.execute();
-            
+
             if (oCall.getBoolean(1))
                 return true;
             else
@@ -88,5 +88,13 @@ public class ConsultasLogin {
 
         }
         return null;
+    }
+
+    public static boolean agregarFav(){
+        return false;
+    }
+
+    public static boolean eliminarFav(){
+        return false;
     }
 }

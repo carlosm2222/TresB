@@ -1,5 +1,6 @@
 package com.example.fdope.tresb;
 
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -16,6 +17,7 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +25,7 @@ import android.widget.Toast;
 
 import com.example.fdope.tresb.Clases.TresB;
 import com.example.fdope.tresb.DB.ConsultasProductos;
+import com.example.fdope.tresb.Factoria.MarkerActivity;
 import com.example.fdope.tresb.Factoria.Producto;
 import com.example.fdope.tresb.Clases.Usuario;
 import com.facebook.login.LoginManager;
@@ -85,6 +88,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        /*
         if (mMap != null) {
 
             mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
@@ -102,6 +106,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     TextView prodsnippet = (TextView) view.findViewById(R.id.prod_snippet);
                     mImageView = (ImageView) view.findViewById(R.id.imagenProd);
 
+                    CheckBox fav = (CheckBox) view.findViewById(R.id.checkBoxFavorito);
+
                     infoProd.setTextColor(Color.BLACK);
                     infoProd.setGravity(Gravity.CENTER);
                     infoProd.setTypeface(null, Typeface.BOLD);
@@ -113,7 +119,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         for (int i = 0; i < app.getListaProductos().size(); i++) {
 
                             String titulo  = app.getListaProductos().get(i).mostrarMarca()+" "+app.getListaProductos().get(i).mostrarmodelo();
-                            String spin = "$ "+app.getListaProductos().get(i).mostrarPrecio()+" en Tienda: "+app.getListaProductos().get(i).mostrarProveedor()+". Publicado por: "+app.getListaProductos().get(i).mostrarCreadorPublicacion();
+                            String spin = "$ "+app.getListaProductos().get(i).mostrarPrecio()+" CLP en Tienda: "+app.getListaProductos().get(i).mostrarProveedor()+". Publicado por: "+app.getListaProductos().get(i).mostrarCreadorPublicacion();
 
                             if (titulo.equals(marker.getTitle()) && spin.equals(marker.getSnippet())) {
                                 byte[] b = app.getListaProductos().get(i).mostrarImagen();
@@ -121,15 +127,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 mImageView.setImageBitmap(bmp);
                             }
                         }
+
                     return view;
                 }
             });
         }
+*/
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                Bitmap bmp=null;
+                byte[] b=null;
+
+                for (int i = 0; i < app.getListaProductos().size(); i++) {
+
+                    String titulo  = app.getListaProductos().get(i).mostrarMarca()+" "+app.getListaProductos().get(i).mostrarmodelo();
+                    String spin = "$ "+app.getListaProductos().get(i).mostrarPrecio()+" CLP en Tienda: "+app.getListaProductos().get(i).mostrarProveedor()+". Publicado por: "+app.getListaProductos().get(i).mostrarCreadorPublicacion();
+
+                    if (titulo.equals(marker.getTitle()) && spin.equals(marker.getSnippet())) {
+                        b = app.getListaProductos().get(i).mostrarImagen();
+                        mostrarMensaje(marker.getTitle(),marker.getSnippet(),b);
+                    }
+                }
+                return true;
+            }
+        });
+
 
         miUbicacion();
         cargarDatos();
     }
-
 
 
     public void autoRefresh() {
@@ -249,8 +277,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 position(p.coordenadasProducto()).
                 title(p.mostrarMarca()+" "+p.mostrarmodelo()).
                 icon(BitmapDescriptorFactory.fromResource(R.mipmap.pinoferta)).
-                snippet("$ "+p.mostrarPrecio()+" en Tienda: "+p.mostrarProveedor()+". Publicado por: "+p.mostrarCreadorPublicacion()));
+                snippet("$ "+p.mostrarPrecio()+" CLP en Tienda: "+p.mostrarProveedor()+". Publicado por: "+p.mostrarCreadorPublicacion()));
+    }
 
+    private void mostrarMensaje(String titulo,String info,byte[] img) {
+        FragmentManager fm = getFragmentManager();
+        MarkerActivity dialogFragment = new MarkerActivity ();
+        Bundle bundle = new Bundle();
+        bundle.putString("titulo",titulo);
+        bundle.putString("info",info);
+        bundle.putByteArray("img",img);
+        dialogFragment.setArguments(bundle);
+        dialogFragment.show(fm, "Sample Fragment");
     }
 
     public void filtrarProducto(View view){

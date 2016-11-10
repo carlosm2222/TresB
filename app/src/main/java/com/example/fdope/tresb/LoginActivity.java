@@ -1,7 +1,6 @@
 package com.example.fdope.tresb;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -12,7 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.fdope.tresb.Clases.Usuario;
-import com.example.fdope.tresb.DB.ConsultasLogin;
+import com.example.fdope.tresb.DB.ConsultasUsuarios;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
@@ -27,11 +26,9 @@ import com.facebook.login.widget.LoginButton;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.URI;
-
 public class LoginActivity extends AppCompatActivity {
     public static final int  reques_usuario = 3;
-    private ConsultasLogin consultasLogin;
+    private ConsultasUsuarios consultasUsuarios;
     private CallbackManager callbackManager;
     private AccessTokenTracker accessTokenTracker;
     private ProfileTracker profileTracker;
@@ -124,12 +121,12 @@ public class LoginActivity extends AppCompatActivity {
 
     public void registrarUsuarioFacebookYEntrar(Profile profile){
         //GUARDAR PERFIL FACEBOOK EN BD E INGRESO
-        if(consultasLogin.checkUsuario(profile.getName(),profile.getId())){ // SI YA ESTA EN LA BD SOLO ENTRA
-            nextActivity(consultasLogin.obtenerUsuario(profile.getName()));
+        if(consultasUsuarios.checkUsuario(profile.getName(),profile.getId())){ // SI YA ESTA EN LA BD SOLO ENTRA
+            nextActivity(consultasUsuarios.obtenerUsuario(profile.getName()));
         }
         else { // SE GUARDA EL USUARIO QUE ENTRA CON FACEBOOK EN LA BD
-            consultasLogin.registrar(profile.getFirstName(),profile.getLastName(),"",profile.getId(),profile.getName());
-            nextActivity(consultasLogin.obtenerUsuario(profile.getName()));
+            consultasUsuarios.registrar(profile.getFirstName(),profile.getLastName(),"",profile.getId(),profile.getName());
+            nextActivity(consultasUsuarios.obtenerUsuario(profile.getName()));
         }
     }
 
@@ -218,13 +215,13 @@ public class LoginActivity extends AppCompatActivity {
     private boolean consulta(String u, String pass) {
         //consulta bd
 
-        return consultasLogin.checkUsuario(u,pass);
+        return consultasUsuarios.checkUsuario(u,pass);
 
     }
 
     private Usuario obtenerUsuario(String u) {
-        consultasLogin.obtenerUsuario(u);
-            return consultasLogin.obtenerUsuario(u);
+        consultasUsuarios.obtenerUsuario(u);
+            return consultasUsuarios.obtenerUsuario(u);
     }
 
 
