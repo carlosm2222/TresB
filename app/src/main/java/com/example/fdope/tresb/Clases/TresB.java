@@ -17,7 +17,7 @@ public class TresB {
 
     public TresB() {
         this.nombre = "TRES B";
-        this.listaSmartphone = new ArrayList<Producto>();
+        this.listaSmartphone = null;
     }
 
     public ArrayList<Producto> getListaProductos() {

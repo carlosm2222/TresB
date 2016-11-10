@@ -345,11 +345,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             e.getMessage();
         }
 
-        if (this.app.getListaProductos()!=null)
+        if (this.app.getListaProductos().size() > 1) {
             for (int i = 0; i < this.app.getListaProductos().size(); i++)
                 agregarMarcadorProductos(app.getListaProductos().get(i));
-        else
-            Toast.makeText(this,"NO SE PUDE OBTENER LISTA",Toast.LENGTH_SHORT).show();
+        }
+
     }
 
 

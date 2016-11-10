@@ -42,46 +42,38 @@ public class ConsultasProductos {
 
         ArrayList<Producto> listap = new ArrayList<Producto>();
         try{
-            CallableStatement oCall = c.prepareCall("{ obtenerProductos() }");
-            ResultSet resultado = oCall.executeQuery();
+            //CallableStatement oCall = c.prepareCall("{ getINFO() }");
+            //ResultSet resultado = oCall.executeQuery();
 
-           // ResultSet resultado = base.select("SELECT * FROM producto;");
+            ResultSet resultado = base.select("SELECT * FROM getINFO();");
             if(resultado !=null){
 
                 while(resultado.next()){
 
-                    String tipo = resultado.getString("nombre_categoria");
-                    String marc = resultado.getString("marca");
-                    String mode = resultado.getString("modelo");
-                    int precio = resultado.getInt("precio");
-                    double lat = resultado.getDouble("lat");
-                    double lng = resultado.getDouble("lng");
-                    String prov = resultado.getString("proveedor");
+                    String user = resultado.getString("usuario");
+                    double lat = resultado.getDouble("latitud");
+                    double lng = resultado.getDouble("longitud");
                     LatLng latLng = new LatLng(lat,lng);
                     int largo = resultado.getInt("largo");
-                    byte img[]=new byte[largo];
-                    img = resultado.getBytes("img");
+                  //  byte img[]=new byte[largo];
+                   byte[] img = resultado.getBytes("archivo");
+                    String tipo = resultado.getString("nombre_categoria");
+                    String marc = resultado.getString("marca");
+                    int precio = resultado.getInt("precio");
+                    String mode = resultado.getString("modelo");
+                    String prov = resultado.getString("proveedor");
 
-                    if(img != null){
-                        Celular producto = new Celular("asd",tipo,marc,mode,precio,prov,latLng,img,largo);
-                        listap.add(producto);
-                    }
-                    else
-                        return null;
-
-
+                        Celular producto = new Celular(user,tipo,marc,mode,precio,prov,latLng,img,largo);
+                        if (producto!=null)
+                            listap.add(producto);
                 }
-
                 return listap;
             }
-            base.desconectarBd();
-
         }
         catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        base.desconectarBd();
         return listap;
 
     }

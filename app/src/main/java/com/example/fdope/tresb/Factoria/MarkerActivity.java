@@ -10,6 +10,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -31,7 +32,7 @@ public class MarkerActivity extends DialogFragment {
         TextView prodsnippet = (TextView) rootView.findViewById(R.id.prod_snippet);
         ImageView mImageView = (ImageView) rootView.findViewById(R.id.imagenProd);
         CheckBox fav = (CheckBox) rootView.findViewById(R.id.checkBoxFavorito);
-        ImageButton salir = (ImageButton) rootView.findViewById(R.id.botonSalir) ;
+        Button salir = (Button) rootView.findViewById(R.id.botonSalir) ;
 
         String titulo = getArguments().getString("titulo");
         String info = getArguments().getString("info");
@@ -46,7 +47,6 @@ public class MarkerActivity extends DialogFragment {
         infoProd.setTypeface(null, Typeface.BOLD);
         prodsnippet.setText(info);
 
-
         fav.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -54,7 +54,13 @@ public class MarkerActivity extends DialogFragment {
 
             }
         });
+        salir.setOnClickListener(new View.OnClickListener(){
 
+            @Override
+            public void onClick(View v) {
+                
+            }
+        });
         return rootView;
     }
 
