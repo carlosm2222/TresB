@@ -83,8 +83,8 @@
 
         <activity
             android:name=".FormularioRegistro"
-            android:label="Registro"></activity>
-        <activity android:name=".MarkerActivity"></activity>
+            android:label="Registro" />
+        <activity android:name=".MarkerActivity" />
     </application>
 
 </manifest>
