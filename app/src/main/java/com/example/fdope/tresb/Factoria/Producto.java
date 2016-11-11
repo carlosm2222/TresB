@@ -24,5 +24,6 @@ public interface Producto {
     public int largoImg();
     public String mostrarCreadorPublicacion();
     public String mostrarProveedor();
+    public String mostrarCategoria();
 
 }

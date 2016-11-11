@@ -225,6 +225,10 @@ public class Celular implements Producto, Parcelable {
         return largo;
     }
 
+    @Override
+    public String mostrarCategoria() {
+        return nombre_categoria;
+    }
 
     public Bitmap getBitmap(byte[] bitmap) {
 

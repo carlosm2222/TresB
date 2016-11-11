@@ -1,4 +1,4 @@
-package com.example.fdope.tresb.Factoria;
+package com.example.fdope.tresb;
 
 import android.app.DialogFragment;
 import android.graphics.Bitmap;
@@ -7,21 +7,23 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.fdope.tresb.DB.ConsultasUsuarios;
-import com.example.fdope.tresb.R;
-
 public class MarkerActivity extends DialogFragment {
-    ConsultasUsuarios consultasUsuarios;
+    public String titulo,info;
+    public boolean flag;
 
+    public interface EnviarFlagFavorito {
+        void onFinishDialog(boolean flag);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -31,12 +33,13 @@ public class MarkerActivity extends DialogFragment {
         TextView infoProd = (TextView) rootView.findViewById(R.id.infoProd);
         TextView prodsnippet = (TextView) rootView.findViewById(R.id.prod_snippet);
         ImageView mImageView = (ImageView) rootView.findViewById(R.id.imagenProd);
-        CheckBox fav = (CheckBox) rootView.findViewById(R.id.checkBoxFavorito);
+        final CheckBox fav = (CheckBox) rootView.findViewById(R.id.checkBoxFavorito);
         Button salir = (Button) rootView.findViewById(R.id.botonSalir) ;
 
-        String titulo = getArguments().getString("titulo");
-        String info = getArguments().getString("info");
+        titulo = getArguments().getString("titulo");
+        info = getArguments().getString("info");
         byte[] b = getArguments().getByteArray("img");
+        flag = getArguments().getBoolean("flag");
         Bitmap bmp=null;
         bmp = BitmapFactory.decodeByteArray(b, 0, b.length);
         mImageView.setImageBitmap(bmp);
@@ -47,11 +50,20 @@ public class MarkerActivity extends DialogFragment {
         infoProd.setTypeface(null, Typeface.BOLD);
         prodsnippet.setText(info);
 
+        if (flag)
+            fav.setChecked(true);
+        else
+            fav.setChecked(false);
 
         fav.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
+
+                flag= fav.isChecked();
+                EnviarFlagFavorito activity = (EnviarFlagFavorito) getActivity();
+                activity.onFinishDialog(flag);
+                dismiss();
 
             }
         });
@@ -59,19 +71,10 @@ public class MarkerActivity extends DialogFragment {
 
             @Override
             public void onClick(View v) {
-
+                dismiss();
             }
         });
+
         return rootView;
     }
-
-    ///FALTA IMPLEMENTAR
-    public void agregarFavorito(){
-        consultasUsuarios.agregarFav();
-
-    }
-    public void eliminarFav(){
-        consultasUsuarios.eliminarFav();
-    }
-
 }

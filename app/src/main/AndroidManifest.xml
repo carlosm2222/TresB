@@ -84,7 +84,7 @@
         <activity
             android:name=".FormularioRegistro"
             android:label="Registro"></activity>
-        <activity android:name=".Factoria.MarkerActivity"></activity>
+        <activity android:name=".MarkerActivity"></activity>
     </application>
 
 </manifest>

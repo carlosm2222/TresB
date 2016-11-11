@@ -87,11 +87,11 @@ public class ConsultasUsuarios {
         return null;
     }
 
-    public static boolean agregarFav(){
+    public static boolean agregarFav(String categoria,String marca,String modelo,int precio,double lat,double lng,String proveedor,String user){
         return false;
     }
 
-    public static boolean eliminarFav(){
+    public static boolean eliminarFav(String categoria,String marca,String modelo,int precio,double lat,double lng,String proveedor,String user){
         return false;
     }
 }

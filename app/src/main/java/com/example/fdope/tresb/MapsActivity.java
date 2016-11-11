@@ -5,9 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -15,17 +12,14 @@ import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.example.fdope.tresb.Clases.TresB;
 import com.example.fdope.tresb.DB.ConsultasProductos;
-import com.example.fdope.tresb.Factoria.MarkerActivity;
+import com.example.fdope.tresb.DB.ConsultasUsuarios;
 import com.example.fdope.tresb.Factoria.Producto;
 import com.example.fdope.tresb.Clases.Usuario;
 import com.facebook.login.LoginManager;
@@ -44,24 +38,16 @@ import java.util.ArrayList;
 import static com.example.fdope.tresb.ActivityFiltrarProductos.FILTRO_OK;
 
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
-    private Marker marcador;
-    private ArrayList<Marker> listaMarcadorProductos;
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,MarkerActivity.EnviarFlagFavorito {
     private GoogleMap mMap;
     private double lat;
     private double lng;
     private TresB app;
     static final int request_code = 1;
     static final int request_code_filtro = 2;
-    static final int reques_usuario = 3;
-    static final int RESULT_USUARIO=3;
     private Producto p;
     private Usuario usuario;
-    private ImageView mImageView, imgPerfil;
-    private String firstName, lastName;
-    private String user;
-    private Bitmap bp;
-    private ConsultasProductos consultasProductos;
+    private boolean flagfav=false; /// flag= true es favorito , false no es favorito
 
 
     @Override
@@ -88,57 +74,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        /*
-        if (mMap != null) {
-
-            mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
-                @Override
-                public View getInfoWindow(Marker marker) {
-                    return null;
-                }
-
-                @Override
-                public View getInfoContents(Marker marker) {
-                    ImageView mImageView;
-
-                    View view = getLayoutInflater().inflate(R.layout.ventanainfoprouctos,null);
-                    TextView infoProd = (TextView) view.findViewById(R.id.infoProd);
-                    TextView prodsnippet = (TextView) view.findViewById(R.id.prod_snippet);
-                    mImageView = (ImageView) view.findViewById(R.id.imagenProd);
-
-                    CheckBox fav = (CheckBox) view.findViewById(R.id.checkBoxFavorito);
-
-                    infoProd.setTextColor(Color.BLACK);
-                    infoProd.setGravity(Gravity.CENTER);
-                    infoProd.setTypeface(null, Typeface.BOLD);
-                    infoProd.setText(marker.getTitle());
-                    prodsnippet.setText(marker.getSnippet());
-
-                    Bitmap bmp=null;
-
-                        for (int i = 0; i < app.getListaProductos().size(); i++) {
-
-                            String titulo  = app.getListaProductos().get(i).mostrarMarca()+" "+app.getListaProductos().get(i).mostrarmodelo();
-                            String spin = "$ "+app.getListaProductos().get(i).mostrarPrecio()+" CLP en Tienda: "+app.getListaProductos().get(i).mostrarProveedor()+". Publicado por: "+app.getListaProductos().get(i).mostrarCreadorPublicacion();
-
-                            if (titulo.equals(marker.getTitle()) && spin.equals(marker.getSnippet())) {
-                                byte[] b = app.getListaProductos().get(i).mostrarImagen();
-                                bmp = BitmapFactory.decodeByteArray(b, 0, b.length);
-                                mImageView.setImageBitmap(bmp);
-                            }
-                        }
-
-                    return view;
-                }
-            });
-        }
-*/
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
                 Bitmap bmp=null;
                 byte[] b=null;
+                boolean fav=false; /// flag= true es favorito , false no es favorito
+                Producto prodFav=null;
 
                 for (int i = 0; i < app.getListaProductos().size(); i++) {
 
@@ -146,8 +89,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     String spin = "$ "+app.getListaProductos().get(i).mostrarPrecio()+" CLP en Tienda: "+app.getListaProductos().get(i).mostrarProveedor()+". Publicado por: "+app.getListaProductos().get(i).mostrarCreadorPublicacion();
 
                     if (titulo.equals(marker.getTitle()) && spin.equals(marker.getSnippet())) {
-                        b = app.getListaProductos().get(i).mostrarImagen();
-                        mostrarMensaje(marker.getTitle(),marker.getSnippet(),b);
+
+                        b = app.getListaProductos().get(i).mostrarImagen();// se obtiene la imagen del producto
+
+                        prodFav = buscarFav(app.getListaProductos().get(i)); // SE OBTIENE PRODUCTO FAVORITO SI ESQUE EXISTE
+                        if (prodFav!=null)// SE SETEA EL FLAG A TRUE SI EXISTE FAV
+                            fav=true;
+
+                        mostrarMensaje(marker.getTitle(),marker.getSnippet(),b,fav); // se envia el titulo y el snippet del marcador ala ventana del pin con la foto y el FLAG de favorito
+
+                        if(fav!=flagfav){
+                            if (flagfav)
+                                agregarFavorito(app.getListaProductos().get(i));
+                            else
+                                eliminarFav(app.getListaProductos().get(i));
+                        }
+                        flagfav = false;
                     }
                 }
                 return true;
@@ -159,11 +116,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         cargarDatos();
     }
 
+    @Override // RECIBE EL ESTADO DEL CHECKBOX FAVORITOS
+    public void onFinishDialog(boolean flag) {
+        if (flagfav == false && flag==true){ /// SI NO ERA FAVORITO
+            Toast.makeText(this,"Agregado a favorito",Toast.LENGTH_SHORT).show();
+            flagfav=flag;
+        }
+        if (flagfav==true && flag==false){ /// SI LO SACO DE FAVORITO
+            Toast.makeText(this,"Eliminado de favorito",Toast.LENGTH_SHORT).show();
+            flagfav=flag;
+        }
+    }
+
 
     public void autoRefresh() {
         this.app.getListaProductos().clear();
         this.app.setListaSmartphone(null);
-        this.listaMarcadorProductos = null;
         mMap.clear();
         miUbicacion();
         cargarDatos();
@@ -174,7 +142,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Toast.makeText(this, " Actualizando mapa ", Toast.LENGTH_LONG).show();
         this.app.getListaProductos().clear();
         this.app.setListaSmartphone(null);
-        this.listaMarcadorProductos = null;
         mMap.clear();
         miUbicacion();
         cargarDatos();
@@ -203,7 +170,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         agregarMarcadorProductos(p);
                         Toast.makeText(this, "Agregado al mapa correctamente.", Toast.LENGTH_SHORT).show();
                     } else
-                        Toast.makeText(this, "No se a podido agregar el producto", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Eroor al agregar el producto", Toast.LENGTH_SHORT).show();
                 }
             }
         } else if (requestCode == request_code_filtro) {
@@ -280,15 +247,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 snippet("$ "+p.mostrarPrecio()+" CLP en Tienda: "+p.mostrarProveedor()+". Publicado por: "+p.mostrarCreadorPublicacion()));
     }
 
-    private void mostrarMensaje(String titulo,String info,byte[] img) {
+    private void mostrarMensaje(String titulo,String info,byte[] img,boolean flag) {
         FragmentManager fm = getFragmentManager();
         MarkerActivity dialogFragment = new MarkerActivity ();
         Bundle bundle = new Bundle();
         bundle.putString("titulo",titulo);
         bundle.putString("info",info);
         bundle.putByteArray("img",img);
+        bundle.putBoolean("flag",flag);
         dialogFragment.setArguments(bundle);
         dialogFragment.show(fm, "Sample Fragment");
+        dialogFragment.getArguments();
     }
 
     public void filtrarProducto(View view){
@@ -340,7 +309,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         try {
             // obtendo la lista de productos de la bd
-            this.app.setListaSmartphone(consultasProductos.listarProductos());
+            this.app.setListaSmartphone(ConsultasProductos.listarProductos());
         } catch (Exception e) {
             e.getMessage();
         }
@@ -350,6 +319,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 agregarMarcadorProductos(app.getListaProductos().get(i));
         }
 
+    }
+
+    public Producto buscarFav(Producto p){
+        for (int i=0; i<usuario.getListaFavoritos().size() ; i++){
+            if (usuario.getListaFavoritos().get(i) == p)
+                return usuario.getListaFavoritos().get(i);
+        }
+        return null;
+    }
+
+    public void agregarFavorito(Producto p){
+        if (buscarFav(p) == null){ // si no esta repetido se agrega
+            usuario.getListaFavoritos().add(p);
+            Toast.makeText(this,"Favoritos guardados: "+usuario.getListaFavoritos().size(),Toast.LENGTH_SHORT).show();
+            ConsultasUsuarios.agregarFav(p.mostrarCategoria(),p.mostrarMarca(),p.mostrarmodelo(),p.mostrarPrecio(),p.coordenadasProducto().latitude,p.coordenadasProducto().longitude,p.mostrarProveedor(),p.mostrarCreadorPublicacion());
+        }
+    }
+    public void eliminarFav(Producto p){
+        if (buscarFav(p)!=null){
+            usuario.getListaFavoritos().remove(p);
+            Toast.makeText(this,"Favoritos guardados: "+usuario.getListaFavoritos().size(),Toast.LENGTH_SHORT).show();
+            ConsultasUsuarios.eliminarFav(p.mostrarCategoria(),p.mostrarMarca(),p.mostrarmodelo(),p.mostrarPrecio(),p.coordenadasProducto().latitude,p.coordenadasProducto().longitude,p.mostrarProveedor(),p.mostrarCreadorPublicacion());
+        }
     }
 
 
