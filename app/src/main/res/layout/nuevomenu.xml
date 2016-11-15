@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="200dp"
+        android:src="@mipmap/agregar"
+        android:id="@+id/agregarProducto"
+        app:pressedTranslationZ="12dp"
+        android:visibility="invisible"
+        android:onClick="formulario"
+        android:elevation="6dp"
+        fab:fab_title="Agregar Oferta"
+        android:layout_marginRight="16dp" />
+
+    <android.support.design.widget.FloatingActionButton
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_gravity="bottom|end"
+         android:layout_marginBottom="80dp"
+         android:src="@mipmap/logoutt"
+         android:id="@+id/logout"
+         app:pressedTranslationZ="12dp"
+         android:visibility="invisible"
+         android:onClick="logout"
+         android:elevation="6dp"
+         fab:fab_title="Salir"
+        android:layout_marginRight="16dp" />
+
+        <android.support.design.widget.FloatingActionButton
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_gravity="bottom|end"
+         android:layout_margin="@dimen/fab_margin_right"
+         android:layout_marginBottom="16dp"
+         android:src="@mipmap/action_plus"
+         android:elevation="6dp"
+         android:id="@id/menu"
+         app:pressedTranslationZ="12dp"
+         app:backgroundTint="?attr/actionModeSplitBackground" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="140dp"
+        android:src="@mipmap/filtrar"
+        android:id="@+id/filtro"
+        app:pressedTranslationZ="12dp"
+        android:visibility="invisible"
+        android:onClick="filtrarProducto"
+        android:elevation="6dp"
+        fab:fab_title="Filtrar"
+        android:layout_marginRight="16dp" />
+
+
+</android.support.design.widget.CoordinatorLayout>

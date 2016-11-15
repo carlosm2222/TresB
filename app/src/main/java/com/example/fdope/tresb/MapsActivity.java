@@ -9,10 +9,13 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -48,13 +51,46 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Producto p;
     private Usuario usuario;
     private boolean flagfav=false; /// flag= true es favorito , false no es favorito
-
-
+    FloatingActionButton menu, filtrar, logout, agregarProducto;
+    Animation fabOpen, fabClose, fabRClockwise,fabRanticlockwise;
+    boolean isOpen = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        menu = (FloatingActionButton)findViewById(R.id.menu);
+        logout=(FloatingActionButton)findViewById(R.id.logout);
+        filtrar=(FloatingActionButton)findViewById(R.id.filtro);
+        agregarProducto=(FloatingActionButton)findViewById(R.id.agregarProducto);
+        fabOpen= AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_open);
+        fabClose= AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);
+        fabRClockwise= AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_clockwise);
+        fabRanticlockwise= AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_anticlockwise);
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isOpen){
+                    logout.startAnimation(fabClose);
+                    filtrar.startAnimation(fabClose);
+                    agregarProducto.startAnimation(fabClose);
+                    menu.startAnimation(fabRanticlockwise);
+                    logout.setClickable(false);
+                    filtrar.setClickable(false);
+                    agregarProducto.setClickable(false);
+                    isOpen=false;
+                }else{
+                    logout.startAnimation(fabOpen);
+                    filtrar.startAnimation(fabOpen);
+                    agregarProducto.startAnimation(fabOpen);
+                    menu.startAnimation(fabRClockwise);
+                    logout.setClickable(true);
+                    filtrar.setClickable(true);
+                    agregarProducto.setClickable(true);
+                    isOpen=true;
+                }
 
+            }
+        });
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -259,7 +295,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void agregarMarcadorProductos(Producto p){
 
-                mMap.addMarker(new MarkerOptions().draggable(true).
+                mMap.addMarker(new MarkerOptions().
                 position(p.coordenadasProducto()).
                 title(p.mostrarMarca()+" "+p.mostrarmodelo()).
                 icon(BitmapDescriptorFactory.fromResource(R.mipmap.pinoferta)).
