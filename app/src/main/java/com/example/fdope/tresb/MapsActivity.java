@@ -176,8 +176,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         } else if (requestCode == request_code_filtro) {
             switch (requestCode) {
                 case (FILTRO_OK): {
-                    Filtro filtro = data.getExtras().getParcelable("filtro");
-                    filtrarProductos(filtro);
+                    if (data!=null) {
+                        Filtro filtro = data.getExtras().getParcelable("filtro");
+                        filtrarProductos(filtro);
+                    }
                 }
             }
         }
