@@ -86,20 +86,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     String spin = "$ "+app.getListaProductos().get(i).mostrarPrecio()+" CLP en Tienda: "+app.getListaProductos().get(i).mostrarProveedor()+". Publicado por: "+app.getListaProductos().get(i).mostrarCreadorPublicacion();
 
                     if (titulo.equals(marker.getTitle()) && spin.equals(marker.getSnippet())) {
-
                         b = app.getListaProductos().get(i).mostrarImagen();// se obtiene la imagen del producto
                         prodFav = buscarFav(app.getListaProductos().get(i)); // SE OBTIENE PRODUCTO FAVORITO SI ESQUE EXISTE
                         if (prodFav!=null) {// SE SETEA EL FLAG A TRUE SI EXISTE FAV
                             fav = true;
-                            //flagfav=true;
                         }
-
                             if (fav==false && flagfav==1) {
                                 agregarFavorito(app.getListaProductos().get(i));
                                 mostrarMensaje(marker.getTitle(),marker.getSnippet(),b,true); // se envia el titulo y el snippet del marcador ala ventana del pin con la foto y el FLAG de favorito
                                 flagfav = 0;
                                 break;
-
                             }
                             if (flagfav==2 && fav==true){
                                 eliminarFavorito(prodFav);
@@ -107,7 +103,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 flagfav = 0;
                                 break;
                             }
-
                         mostrarMensaje(marker.getTitle(),marker.getSnippet(),b,fav); // se envia el titulo y el snippet del marcador ala ventana del pin con la foto y el FLAG de favorito
                         flagfav = 0;
                         break;
@@ -116,7 +111,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 return true;
             }
         });
-
 
         miUbicacion();
         cargarDatos();
@@ -262,9 +256,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         mMap.setMyLocationEnabled(true);
         mMap.animateCamera(miUbicacion);
-
     }
-
 
     public void agregarMarcadorProductos(Producto p){
 
