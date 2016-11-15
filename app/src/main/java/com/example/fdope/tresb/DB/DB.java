@@ -11,8 +11,8 @@ import java.sql.ResultSet;
 public class DB implements Runnable {
 
     private Connection c;
-    private String host = "192.168.1.31";
-    private String db = "TresB";
+    private String host = "192.168.0.5";
+    private String db = "tresb";
     private int port = 5432;
     private String user = "postgres";
     private String pass = "tallerbd";
