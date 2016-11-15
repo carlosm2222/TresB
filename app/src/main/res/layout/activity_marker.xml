@@ -35,14 +35,6 @@
             android:layout_width="match_parent"
             android:layout_height="26dp">
 
-            <Button
-                android:layout_width="26dp"
-                android:layout_height="24dp"
-                android:id="@+id/botonSalir"
-                android:background="@drawable/mr_ic_close_light"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true" />
-
             <RelativeLayout
                 android:orientation="vertical"
                 android:layout_width="134dp"
@@ -56,8 +48,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="22dp"
                     android:id="@+id/checkBoxFavorito"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"/>
             </RelativeLayout>
+
+            <Button
+                android:layout_width="26dp"
+                android:layout_height="24dp"
+                android:id="@+id/botonSalir"
+                android:background="@drawable/mr_ic_close_light"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="18dp" />
 
         </RelativeLayout>
 

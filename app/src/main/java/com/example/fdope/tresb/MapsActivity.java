@@ -99,10 +99,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         mostrarMensaje(marker.getTitle(),marker.getSnippet(),b,fav); // se envia el titulo y el snippet del marcador ala ventana del pin con la foto y el FLAG de favorito
 
                         if(fav!=flagfav){
-                            if (flagfav)
+                            if (fav==false && flagfav==true) {
                                 agregarFavorito(app.getListaProductos().get(i));
-                            else
-                                eliminarFav(app.getListaProductos().get(i));
+
+
+                            }
+                            //else
+                                //eliminarFav(app.getListaProductos().get(i));
                         }
                         flagfav = false;
                     }
@@ -116,6 +119,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         cargarDatos();
     }
 
+
     @Override // RECIBE EL ESTADO DEL CHECKBOX FAVORITOS
     public void onFinishDialog(boolean flag) {
         if (flagfav == false && flag==true){ /// SI NO ERA FAVORITO
@@ -128,6 +132,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    private void mostrarMensaje(String titulo,String info,byte[] img,boolean flag) {
+        FragmentManager fm = getFragmentManager();
+        MarkerActivity dialogFragment = new MarkerActivity ();
+        Bundle bundle = new Bundle();
+        bundle.putString("titulo",titulo);
+        bundle.putString("info",info);
+        bundle.putByteArray("img",img);
+        bundle.putBoolean("flag",flag);
+        dialogFragment.setArguments(bundle);
+        dialogFragment.show(fm, "Sample Fragment");
+
+        dialogFragment.getArguments().getBoolean("res");
+    }
 
     public void autoRefresh() {
         this.app.getListaProductos().clear();
@@ -249,19 +266,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 snippet("$ "+p.mostrarPrecio()+" CLP en Tienda: "+p.mostrarProveedor()+". Publicado por: "+p.mostrarCreadorPublicacion()));
     }
 
-    private void mostrarMensaje(String titulo,String info,byte[] img,boolean flag) {
-        FragmentManager fm = getFragmentManager();
-        MarkerActivity dialogFragment = new MarkerActivity ();
-        Bundle bundle = new Bundle();
-        bundle.putString("titulo",titulo);
-        bundle.putString("info",info);
-        bundle.putByteArray("img",img);
-        bundle.putBoolean("flag",flag);
-        dialogFragment.setArguments(bundle);
-        dialogFragment.show(fm, "Sample Fragment");
-        dialogFragment.getArguments();
-    }
-
     public void filtrarProducto(View view){
         int respuestaFiltro=0;
         Intent intent = new Intent(this, ActivityFiltrarProductos.class);
@@ -325,8 +329,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public Producto buscarFav(Producto p){
         for (int i=0; i<usuario.getListaFavoritos().size() ; i++){
-            if (usuario.getListaFavoritos().get(i) == p)
-                return usuario.getListaFavoritos().get(i);
+           if (usuario.getListaFavoritos().get(i).mostrarCategoria().equals(p.mostrarCategoria()))
+                if (usuario.getListaFavoritos().get(i).coordenadasProducto().latitude == p.coordenadasProducto().latitude && usuario.getListaFavoritos().get(i).coordenadasProducto().longitude == p.coordenadasProducto().longitude)
+                     if (usuario.getListaFavoritos().get(i).mostrarmodelo().equals(p.mostrarmodelo()))
+                         if (usuario.getListaFavoritos().get(i).mostrarMarca().equals(p.mostrarMarca()))
+                             if (usuario.getListaFavoritos().get(i).mostrarPrecio() == p.mostrarPrecio())
+                                    return usuario.getListaFavoritos().get(i);
         }
         return null;
     }
