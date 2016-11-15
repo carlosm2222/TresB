@@ -1,5 +1,6 @@
 package com.example.fdope.tresb;
 
+import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -7,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -23,12 +25,18 @@ public class MarkerActivity extends DialogFragment {
     public boolean flag;
     public CheckBox fav;
 
-    public interface EnviarFlagFavorito {
-        void onFinishDialog(boolean flag);
-    }
+    private EnviarFlagFavorito mCallback;
 
-    static MarkerActivity newInstance() {
-        return new MarkerActivity();
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        try {
+            mCallback = (EnviarFlagFavorito) activity;
+        }
+        catch (ClassCastException e) {
+            Log.d("MyDialog", "Activity doesn't implement the ISelectedData interface");
+        }
     }
 
     @Override
@@ -67,8 +75,7 @@ public class MarkerActivity extends DialogFragment {
             public void onClick(View v) {
 
                 flag= fav.isChecked();
-                EnviarFlagFavorito activity = (EnviarFlagFavorito) getActivity();
-                activity.onFinishDialog(flag);
+                mCallback.onFinishDialog(flag);
                 //dismiss();
 /*
                 Bundle bundle = new Bundle();
