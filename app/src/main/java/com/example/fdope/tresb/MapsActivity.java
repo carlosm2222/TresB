@@ -38,6 +38,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 import static com.example.fdope.tresb.ActivityFiltrarProductos.FILTRO_OK;
 
 
@@ -50,8 +54,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     static final int request_code_filtro = 2;
     private Producto p;
     private Usuario usuario;
-//    private boolean flagfav=false; /// flag= true es favorito , false no es favorito
-    FloatingActionButton menu, filtrar, logout, agregarProducto;
+
+    FloatingActionButton menu, filtrar, logout, agregarProducto,favorito;
     Animation fabOpen, fabClose, fabRClockwise,fabRanticlockwise;
     boolean isOpen = false;
 
@@ -63,6 +67,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        favorito=(FloatingActionButton)findViewById(R.id.pruebaFav);
         menu = (FloatingActionButton)findViewById(R.id.menu);
         logout=(FloatingActionButton)findViewById(R.id.logout);
         filtrar=(FloatingActionButton)findViewById(R.id.filtro);
@@ -116,6 +121,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        miUbicacion();
+        cargarDatos();
+
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
@@ -123,41 +131,40 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 byte[] b=null;
                 boolean fav=false; /// flag= true es favorito , false no es favorito
                 Producto prodFav=null;
+                if (app.getListaProductos()!=null)
+                    for (int i = 0; i < app.getListaProductos().size(); i++) {
 
-                for (int i = 0; i < app.getListaProductos().size(); i++) {
+                        String titulo  = app.getListaProductos().get(i).mostrarMarca()+" "+app.getListaProductos().get(i).mostrarmodelo();
+                        String spin = "$ "+app.getListaProductos().get(i).mostrarPrecio()+" CLP en Tienda: "+app.getListaProductos().get(i).mostrarProveedor()+". Publicado por: "+app.getListaProductos().get(i).mostrarCreadorPublicacion();
 
-                    String titulo  = app.getListaProductos().get(i).mostrarMarca()+" "+app.getListaProductos().get(i).mostrarmodelo();
-                    String spin = "$ "+app.getListaProductos().get(i).mostrarPrecio()+" CLP en Tienda: "+app.getListaProductos().get(i).mostrarProveedor()+". Publicado por: "+app.getListaProductos().get(i).mostrarCreadorPublicacion();
-
-                    if (titulo.equals(marker.getTitle()) && spin.equals(marker.getSnippet())) {
-                        b = app.getListaProductos().get(i).mostrarImagen();// se obtiene la imagen del producto
-                        prodFav = buscarFav(app.getListaProductos().get(i)); // SE OBTIENE PRODUCTO FAVORITO SI ESQUE EXISTE
-                        if (prodFav!=null) {// SE SETEA EL FLAG A TRUE SI EXISTE FAV
-                            fav = true;
+                        if (titulo.equals(marker.getTitle()) && spin.equals(marker.getSnippet())) {
+                            b = app.getListaProductos().get(i).mostrarImagen();// se obtiene la imagen del producto
+                            prodFav = buscarFav(app.getListaProductos().get(i)); // SE OBTIENE PRODUCTO FAVORITO SI ESQUE EXISTE
+                            if (prodFav!=null) {// SE SETEA EL FLAG A TRUE SI EXISTE FAV
+                                fav = true;
+                            }
+                                if (fav==false && flagfav==1) {
+                                    agregarFavorito(app.getListaProductos().get(i));
+                                    mostrarMensaje(marker.getTitle(),marker.getSnippet(),b,true); // se envia el titulo y el snippet del marcador ala ventana del pin con la foto y el FLAG de favorito
+                                    flagfav = 0;
+                                    break;
+                                }
+                                if (flagfav==2 && fav==true){
+                                    eliminarFavorito(prodFav);
+                                    mostrarMensaje(marker.getTitle(),marker.getSnippet(),b,false);
+                                    flagfav = 0;
+                                    break;
+                                }
+                            mostrarMensaje(marker.getTitle(),marker.getSnippet(),b,fav); // se envia el titulo y el snippet del marcador ala ventana del pin con la foto y el FLAG de favorito
+                            flagfav = 0;
+                            break;
                         }
-                            if (fav==false && flagfav==1) {
-                                agregarFavorito(app.getListaProductos().get(i));
-                                mostrarMensaje(marker.getTitle(),marker.getSnippet(),b,true); // se envia el titulo y el snippet del marcador ala ventana del pin con la foto y el FLAG de favorito
-                                flagfav = 0;
-                                break;
-                            }
-                            if (flagfav==2 && fav==true){
-                                eliminarFavorito(prodFav);
-                                mostrarMensaje(marker.getTitle(),marker.getSnippet(),b,false);
-                                flagfav = 0;
-                                break;
-                            }
-                        mostrarMensaje(marker.getTitle(),marker.getSnippet(),b,fav); // se envia el titulo y el snippet del marcador ala ventana del pin con la foto y el FLAG de favorito
-                        flagfav = 0;
-                        break;
                     }
+                    return true;
                 }
-                return true;
-            }
-        });
+            });
 
-        miUbicacion();
-        cargarDatos();
+        autoRefresh();
     }
 
 
@@ -193,20 +200,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         dialogFragment.show(fm, "Sample Fragment");
     }
 
+    final Runnable tarea = new Runnable() {
+        @Override
+        public void run() {
+            mMap.clear();
+            app.getListaProductos().clear();
+            app.setListaSmartphone(null);
+            cargarDatos();
+            miUbicacion();
+        }
+    };
+
     public void autoRefresh() {
-        this.app.getListaProductos().clear();
-        this.app.setListaSmartphone(null);
-        mMap.clear();
-        miUbicacion();
-        cargarDatos();
+
+        ScheduledExecutorService timer = Executors.newSingleThreadScheduledExecutor();
+        timer.scheduleAtFixedRate(tarea, 1, 1, TimeUnit.MINUTES);
     }
 
     public void manualRefresh(View view) {
-
+        mMap.clear();
         Toast.makeText(this, " Actualizando mapa ", Toast.LENGTH_LONG).show();
         this.app.getListaProductos().clear();
         this.app.setListaSmartphone(null);
-        mMap.clear();
         miUbicacion();
         cargarDatos();
     }
@@ -408,6 +423,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Intent login = new Intent(this, LoginActivity.class);
         startActivity(login);
         finish();
+    }
+
+    public void ventanaFav(View view){
+        Intent intent = new Intent(this,ListviewFavoritos.class);
+        intent.putExtra("lista",usuario.getListaFavoritos());
+        startActivity(intent);
     }
 }
 

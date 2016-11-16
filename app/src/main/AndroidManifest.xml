@@ -85,6 +85,7 @@
             android:name=".FormularioRegistro"
             android:label="Registro" />
         <activity android:name=".MarkerActivity" />
+        <activity android:name=".ListviewFavoritos"></activity>
     </application>
 
 </manifest>

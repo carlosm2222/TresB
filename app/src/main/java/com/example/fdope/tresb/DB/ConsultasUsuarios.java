@@ -17,7 +17,7 @@ import java.sql.Types;
 public class ConsultasUsuarios {
 
 
-    public  static boolean registrar(String nombre, String apellidos, String email, String password, String username) {
+    public  static Boolean registrar(String nombre, String apellidos, String email, String password, String username) {
         DB db=new DB();
         Connection c =db.connect();
 
@@ -40,7 +40,7 @@ public class ConsultasUsuarios {
         return false;
     }
 
-    public static boolean checkUsuario(String username,String password) {
+    public static Boolean checkUsuario(String username,String password) {
         DB db=new DB();
         Connection c =db.connect();
 

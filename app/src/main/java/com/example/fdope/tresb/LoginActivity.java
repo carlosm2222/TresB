@@ -212,7 +212,10 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean consulta(String u, String pass) {
         //consulta bd
-        return ConsultasUsuarios.checkUsuario(u,pass);
+        if (ConsultasUsuarios.checkUsuario(u,pass) != null)
+            return true;
+        else
+            return  false;
 
     }
 

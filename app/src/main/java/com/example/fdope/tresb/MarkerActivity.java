@@ -2,7 +2,6 @@ package com.example.fdope.tresb;
 
 import android.app.Activity;
 import android.app.DialogFragment;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -10,11 +9,9 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -46,7 +43,7 @@ public class MarkerActivity extends DialogFragment {
 
         TextView infoProd = (TextView) rootView.findViewById(R.id.infoProd);
         TextView prodsnippet = (TextView) rootView.findViewById(R.id.prod_snippet);
-        ImageView mImageView = (ImageView) rootView.findViewById(R.id.imagenProd);
+        ImageView mImageView = (ImageView) rootView.findViewById(R.id.img);
         fav = (CheckBox) rootView.findViewById(R.id.checkBoxFavorito);
         Button salir = (Button) rootView.findViewById(R.id.botonSalir) ;
 
@@ -76,19 +73,7 @@ public class MarkerActivity extends DialogFragment {
 
                 flag= fav.isChecked();
                 mCallback.onFinishDialog(flag);
-                //dismiss();
-/*
-                Bundle bundle = new Bundle();
-                bundle.putBoolean("res",flag);
-                setArguments(bundle);
 
-
-
-                Intent intent = new Intent(getActivity(),MapsActivity.class);
-                intent.putExtra("res",flag);
-                startActivity(intent);
-
-*/
             }
         });
 

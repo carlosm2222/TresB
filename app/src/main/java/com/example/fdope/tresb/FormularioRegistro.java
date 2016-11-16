@@ -71,10 +71,10 @@ public class FormularioRegistro extends AppCompatActivity {
         String email = this.inputEmail.getText().toString();
 
         //guardar datos en bd
-        if (ConsultasUsuarios.checkUsuario(usuario,pass))
+        if (ConsultasUsuarios.checkUsuario(usuario,pass) != null)
             Toast.makeText(this,"Nombre de usuario no disponible",Toast.LENGTH_SHORT).show();
         else {
-            if (ConsultasUsuarios.registrar(nombres, apellidos, email, pass, usuario))
+            if (ConsultasUsuarios.registrar(nombres, apellidos, email, pass, usuario)!= null)
                 nextActtivity();
             else
                 Toast.makeText(this, "NOSE PUEDE PASAR ALA ACTIVIDAD", Toast.LENGTH_SHORT).show();
