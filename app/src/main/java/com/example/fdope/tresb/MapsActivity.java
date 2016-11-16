@@ -9,25 +9,18 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
-
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
-
 import android.widget.Toast;
-
-
 import com.example.fdope.tresb.Clases.TresB;
 import com.example.fdope.tresb.DB.ConsultasProductos;
 import com.example.fdope.tresb.DB.ConsultasUsuarios;
 import com.example.fdope.tresb.Factoria.Producto;
 import com.example.fdope.tresb.Clases.Usuario;
 import com.facebook.login.LoginManager;
+import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -37,6 +30,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -54,11 +49,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     static final int request_code_filtro = 2;
     private Producto p;
     private Usuario usuario;
-
-    FloatingActionButton menu, filtrar, logout, agregarProducto,favorito;
-    Animation fabOpen, fabClose, fabRClockwise,fabRanticlockwise;
     boolean isOpen = false;
-
+    FloatingActionMenu materialDesignFAM;
+    FloatingActionButton floatingActionButton1, floatingActionButton2, floatingActionButton3,floatingActionButton4;
     private int flagfav=0; /// flag= true es favorito , false no es favorito
 
 
@@ -67,37 +60,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        favorito=(FloatingActionButton)findViewById(R.id.pruebaFav);
-        menu = (FloatingActionButton)findViewById(R.id.menu);
-        logout=(FloatingActionButton)findViewById(R.id.logout);
-        filtrar=(FloatingActionButton)findViewById(R.id.filtro);
-        agregarProducto=(FloatingActionButton)findViewById(R.id.agregarProducto);
-        fabOpen= AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_open);
-        fabClose= AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);
-        fabRClockwise= AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_clockwise);
-        fabRanticlockwise= AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_anticlockwise);
-        menu.setOnClickListener(new View.OnClickListener() {
+        materialDesignFAM = (FloatingActionMenu) findViewById(R.id.material_design_android_floating_action_menu);
+        floatingActionButton1 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item1);
+        floatingActionButton2 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item2);
+        floatingActionButton3 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item3);
+        floatingActionButton4 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item4);
+
+        floatingActionButton1.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                formulario(v);
+
+            }
+        });
+        floatingActionButton2.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                filtrarProducto(v);
+
+            }
+        });
+        floatingActionButton3.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                logout(v);
+
+            }
+        });
+
+        floatingActionButton4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isOpen){
-                    logout.startAnimation(fabClose);
-                    filtrar.startAnimation(fabClose);
-                    agregarProducto.startAnimation(fabClose);
-                    menu.startAnimation(fabRanticlockwise);
-                    logout.setClickable(false);
-                    filtrar.setClickable(false);
-                    agregarProducto.setClickable(false);
-                    isOpen=false;
-                }else{
-                    logout.startAnimation(fabOpen);
-                    filtrar.startAnimation(fabOpen);
-                    agregarProducto.startAnimation(fabOpen);
-                    menu.startAnimation(fabRClockwise);
-                    logout.setClickable(true);
-                    filtrar.setClickable(true);
-                    agregarProducto.setClickable(true);
-                    isOpen=true;
-                }
 
             }
         });

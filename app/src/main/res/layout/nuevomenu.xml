@@ -1,74 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:fab="http://schemas.android.com/tools"
-    android:orientation="vertical"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-    <android.support.design.widget.FloatingActionButton
+    <com.github.clans.fab.FloatingActionMenu
+        android:id="@+id/material_design_android_floating_action_menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clickable="true"
-        app:fabSize="mini"
-        app:srcCompat="@drawable/ic_collapse"
-        android:id="@+id/pruebaFav"
-        android:onClick="ventanaFav"/>
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="11dp"
+        android:layout_marginLeft="11dp"
+        android:layout_marginRight="11dp"
+        menu_animationDelayPerItem="55"
+        menu_backgroundColor="@android:color/transparent"
+        menu_buttonSpacing="0dp"
+        fab:menu_colorNormal="?attr/actionModeSplitBackground"
+        fab:menu_colorPressed="#dc4b3f"
+        fab:menu_colorRipple="#000000"
+        fab:menu_fab_size="normal"
+        fab:menu_icon="@drawable/fab_add"
+        fab:menu_labels_colorNormal="#dbffffff"
+        fab:menu_labels_colorPressed="#00444444"
+        fab:menu_labels_cornerRadius="3dp"
+        fab:menu_labels_ellipsize="none"
+        fab:menu_labels_hideAnimation="@anim/fab_slide_out_to_right"
+        fab:menu_labels_margin="0dp"
+        fab:menu_labels_maxLines="-1"
+        fab:menu_labels_padding="8dp"
+        fab:menu_labels_position="left"
+        fab:menu_labels_showAnimation="@anim/fab_slide_in_from_right"
+        fab:menu_labels_textColor="#000000"
+        fab:menu_labels_textSize="15sp"
+        fab:menu_openDirection="up"
+        fab:menu_shadowRadius="4dp"
+        fab:menu_shadowXOffset="1dp"
+        fab:menu_shadowYOffset="4dp"
+        fab:menu_showShadow="true">
 
-    <android.support.design.widget.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginBottom="200dp"
-        android:src="@mipmap/agregar"
-        android:id="@+id/agregarProducto"
-        app:pressedTranslationZ="12dp"
-        android:visibility="invisible"
-        android:onClick="formulario"
-        android:elevation="6dp"
-        fab:fab_title="Agregar Oferta"
-        android:layout_marginRight="16dp" />
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/material_design_floating_action_menu_item4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_star_border_black_24dp"
+            fab:fab_label="Favoritos"
+            fab:fab_size="mini" />
 
-    <android.support.design.widget.FloatingActionButton
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_gravity="bottom|end"
-         android:layout_marginBottom="80dp"
-         android:src="@mipmap/logoutt"
-         android:id="@+id/logout"
-         app:pressedTranslationZ="12dp"
-         android:visibility="invisible"
-         android:onClick="logout"
-         android:elevation="6dp"
-         fab:fab_title="Salir"
-        android:layout_marginRight="16dp" />
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/material_design_floating_action_menu_item1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_add_location_black_24dp"
+            fab:fab_label="Agregar oferta"
+            fab:fab_size="mini"
 
-        <android.support.design.widget.FloatingActionButton
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_gravity="bottom|end"
-         android:layout_margin="@dimen/fab_margin_right"
-         android:layout_marginBottom="16dp"
-         android:src="@mipmap/action_plus"
-         android:elevation="6dp"
-         android:id="@id/menu"
-         app:pressedTranslationZ="12dp"
-         app:backgroundTint="?attr/actionModeSplitBackground" />
+            />
 
-    <android.support.design.widget.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginBottom="140dp"
-        android:src="@mipmap/filtrar"
-        android:id="@+id/filtro"
-        app:pressedTranslationZ="12dp"
-        android:visibility="invisible"
-        android:onClick="filtrarProducto"
-        android:elevation="6dp"
-        fab:fab_title="Filtrar"
-        android:layout_marginRight="16dp" />
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/material_design_floating_action_menu_item2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_search_black_24dp"
+            fab:fab_label="Filtrar"
+            fab:fab_size="mini" />
 
-
-</android.support.design.widget.CoordinatorLayout>
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/material_design_floating_action_menu_item3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_exit_to_app_black_24dp"
+            fab:fab_label="Salir"
+            fab:fab_size="mini" />
+    </com.github.clans.fab.FloatingActionMenu>
+</RelativeLayout>
