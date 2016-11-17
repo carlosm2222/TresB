@@ -33,6 +33,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
+import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -417,7 +418,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void ventanaFav(View view){
         Intent intent = new Intent(this,ListviewFavoritos.class);
-        intent.putExtra("lista",usuario.getListaFavoritos());
+        intent.putExtra("lista",usuario);
         startActivity(intent);
     }
 }

@@ -1,11 +1,13 @@
 package com.example.fdope.tresb;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,30 +21,15 @@ import java.util.List;
  * Created by SS on 15-11-2016.
  */
 
-public class ListAdapter extends BaseAdapter {
+public class ListAdapter extends ArrayAdapter<Producto> {
 
-    private Context context;
+    public Activity context;
     private ArrayList<Producto> listaProd;
 
-    public ListAdapter(Context context, ArrayList<Producto> listaProd) {
-        this.context = context;
+    public ListAdapter(Activity context, int resource, ArrayList<Producto> listaProd) {
+        super(context, resource);
+        this.context=context;
         this.listaProd = listaProd;
-    }
-
-
-    @Override
-    public int getCount() {
-        return listaProd.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return this.listaProd.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
     }
 
     @Override
@@ -54,10 +41,12 @@ public class ListAdapter extends BaseAdapter {
             // Create a new view into the list.
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            rowView = inflater.inflate(R.layout.list_fila, parent, false);
+            rowView = inflater.inflate(R.layout.list_fila, null);
         }
 
-        Bitmap bpm = BitmapFactory.decodeByteArray(listaProd.get(position).mostrarImagen(), 0, listaProd.get(position).mostrarImagen().length);
+        Producto p = listaProd.get(position);
+
+        Bitmap bpm = BitmapFactory.decodeByteArray(p.mostrarImagen(), 0, p.mostrarImagen().length);
         ImageView imagen = (ImageView) rowView.findViewById(R.id.img);
         TextView titulo = (TextView)rowView.findViewById(R.id.titulo);
         TextView precio = (TextView)rowView.findViewById(R.id.precio);
@@ -65,10 +54,11 @@ public class ListAdapter extends BaseAdapter {
         TextView usuario = (TextView) rowView.findViewById(R.id.usuario);
 
         imagen.setImageBitmap(bpm);
-        titulo.setText(listaProd.get(position).mostrarMarca() + " "+listaProd.get(position).mostrarmodelo());
-        precio.setText(listaProd.get(position).mostrarPrecio());
-        tienda.setText(listaProd.get(position).mostrarProveedor());
-        usuario.setText(listaProd.get(position).mostrarCreadorPublicacion());
+        String tit = p.mostrarMarca() + " "+p.mostrarmodelo();
+        titulo.setText(tit);
+        precio.setText(p.mostrarPrecio());
+        tienda.setText(p.mostrarProveedor());
+        usuario.setText(p.mostrarCreadorPublicacion());
 
         return rowView;
     }
