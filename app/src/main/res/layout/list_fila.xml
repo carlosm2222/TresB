@@ -8,44 +8,45 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin">
-
-    <ImageView
-        android:id="@+id/img"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/titulo"
-        android:layout_toEndOf="@+id/img"
-        android:layout_marginStart="17dp"
-        android:id="@+id/precio" />
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/wallet_bright_foreground_holo_dark">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/usuario"
         android:layout_alignBottom="@+id/img"
-        android:layout_alignStart="@+id/tienda" />
+        android:layout_alignStart="@+id/tienda"
+        android:layout_marginBottom="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/titulo"
+        android:textAppearance="@android:style/TextAppearance.Material.Body1"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/precio" />
+
+    <ImageView
+        android:id="@+id/img"
+        android:layout_width="100dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_height="140dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/precio"
+        android:layout_below="@+id/titulo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="17dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tienda"
-        android:layout_below="@+id/precio"
+        android:layout_above="@+id/usuario"
         android:layout_alignStart="@+id/precio"
-        android:layout_marginTop="15dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="33dp"
-        android:id="@+id/titulo"
-        android:textAppearance="@android:style/TextAppearance.Material.Body1"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/precio" />
+        android:layout_marginBottom="15dp" />
 </RelativeLayout>

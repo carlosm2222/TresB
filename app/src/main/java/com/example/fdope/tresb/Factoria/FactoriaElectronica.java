@@ -34,7 +34,7 @@ public class FactoriaElectronica implements ProductosFactory {
     @Override
     public Producto crearProducto(String username,String nombre_categoria, String marca, String modelo, int precio, String proveedor, LatLng latLng, Bitmap img)throws SQLException {
 
-        Bitmap imgRecortada = resizeImage(img,100,100);
+        Bitmap imgRecortada = resizeImage(img,100,140);
         String imagen = BitMapToString(imgRecortada);
         byte[] b = stringToByte(imagen);
         int largo = b.length;
