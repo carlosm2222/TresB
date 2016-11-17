@@ -62,8 +62,8 @@ public class ConsultasProductos {
                     int precio = resultado.getInt("precio");
                     String mode = resultado.getString("modelo");
                     String prov = resultado.getString("proveedor");
-
-                        Celular producto = new Celular(user,tipo,marc,mode,precio,prov,latLng,img,largo);
+                    int idevento= resultado.getInt("id_evento");
+                        Celular producto = new Celular(user,tipo,marc,mode,precio,prov,latLng,img,largo,idevento);
                         if (producto!=null)
                             listap.add(producto);
                 }

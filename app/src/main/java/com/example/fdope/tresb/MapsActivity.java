@@ -31,7 +31,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.github.clans.fab.FloatingActionButton;
-import com.github.clans.fab.FloatingActionMenu;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -126,7 +125,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                         String titulo  = app.getListaProductos().get(i).mostrarMarca()+" "+app.getListaProductos().get(i).mostrarmodelo();
                         String spin = "$ "+app.getListaProductos().get(i).mostrarPrecio()+" CLP en Tienda: "+app.getListaProductos().get(i).mostrarProveedor()+". Publicado por: "+app.getListaProductos().get(i).mostrarCreadorPublicacion();
-
+                        int idEvento = app.getListaProductos().get(i).mostrarIdEvento();
                         if (titulo.equals(marker.getTitle()) && spin.equals(marker.getSnippet())) {
                             b = app.getListaProductos().get(i).mostrarImagen();// se obtiene la imagen del producto
                             prodFav = buscarFav(app.getListaProductos().get(i)); // SE OBTIENE PRODUCTO FAVORITO SI ESQUE EXISTE
@@ -135,17 +134,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             }
                                 if (fav==false && flagfav==1) {
                                     agregarFavorito(app.getListaProductos().get(i));
-                                    mostrarMensaje(marker.getTitle(),marker.getSnippet(),b,true); // se envia el titulo y el snippet del marcador ala ventana del pin con la foto y el FLAG de favorito
+                                    mostrarMensaje(marker.getTitle(),marker.getSnippet(),b,true, idEvento); // se envia el titulo y el snippet del marcador ala ventana del pin con la foto y el FLAG de favorito
                                     flagfav = 0;
                                     break;
                                 }
                                 if (flagfav==2 && fav==true){
                                     eliminarFavorito(prodFav);
-                                    mostrarMensaje(marker.getTitle(),marker.getSnippet(),b,false);
+                                    mostrarMensaje(marker.getTitle(),marker.getSnippet(),b,false, idEvento);
                                     flagfav = 0;
                                     break;
                                 }
-                            mostrarMensaje(marker.getTitle(),marker.getSnippet(),b,fav); // se envia el titulo y el snippet del marcador ala ventana del pin con la foto y el FLAG de favorito
+                            mostrarMensaje(marker.getTitle(),marker.getSnippet(),b,fav,idEvento); // se envia el titulo y el snippet del marcador ala ventana del pin con la foto y el FLAG de favorito
                             flagfav = 0;
                             break;
                         }
@@ -178,12 +177,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    private void mostrarMensaje(String titulo,String info,byte[] img,boolean flag) {
+    private void mostrarMensaje(String titulo, String info, byte[] img, boolean flag, int idEvento) {
         FragmentManager fm = getFragmentManager();
         MarkerActivity dialogFragment = new MarkerActivity ();
         Bundle bundle = new Bundle();
         bundle.putString("titulo",titulo);
         bundle.putString("info",info);
+        bundle.putInt("idEvento",idEvento);
         bundle.putByteArray("img",img);
         bundle.putBoolean("flag",flag);
         dialogFragment.setArguments(bundle);

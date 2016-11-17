@@ -41,7 +41,28 @@ public class Celular implements Producto, Parcelable {
     private byte[] img;
     private int largo;
     private String usuario;
+    private int idEvento;
 
+
+    public Celular(String usuario, String nombre_categoria, String marca, String modelo, int precio, String proveedor, LatLng latLng, byte[] img, int largo, int idEvento) {
+        this.nombre_categoria = nombre_categoria;
+        this.precio = precio;
+        this.modelo = modelo;
+        this.marca = marca;
+        this.proveedor = proveedor;
+        this.latitud = latLng.latitude;
+        this.longitud = latLng.longitude;
+        this.img = img;
+        this.largo = largo;
+        this.usuario = usuario;
+        this.idEvento=idEvento;
+
+    }
+
+    public Celular(LatLng latLng) {
+        this.latitud = latLng.latitude;
+        this.longitud = latLng.longitude;
+    }
 
     public Celular(String usuario, String nombre_categoria, String marca, String modelo, int precio, String proveedor, LatLng latLng, byte[] img, int largo) {
         this.nombre_categoria = nombre_categoria;
@@ -54,12 +75,6 @@ public class Celular implements Producto, Parcelable {
         this.img = img;
         this.largo = largo;
         this.usuario = usuario;
-
-    }
-
-    public Celular(LatLng latLng) {
-        this.latitud = latLng.latitude;
-        this.longitud = latLng.longitude;
     }
 
     public String getNombre_categoria() {
@@ -141,6 +156,9 @@ public class Celular implements Producto, Parcelable {
     public void setUsuario(String usuario) {
         this.usuario = usuario;
     }
+
+
+
 
 
     @Override
@@ -228,6 +246,11 @@ public class Celular implements Producto, Parcelable {
     @Override
     public String mostrarCategoria() {
         return nombre_categoria;
+    }
+
+    @Override
+    public int mostrarIdEvento() {
+        return idEvento;
     }
 
     public Bitmap getBitmap(byte[] bitmap) {

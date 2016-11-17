@@ -2,6 +2,7 @@ package com.example.fdope.tresb;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -26,7 +27,7 @@ public class MarkerActivity extends DialogFragment {
     public CheckBox fav;
     FloatingActionButton botonFav,botonComentarios, botonDenuncia;
     private EnviarFlagFavorito mCallback;
-
+    public int idEvento;
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -47,13 +48,14 @@ public class MarkerActivity extends DialogFragment {
         TextView infoProd = (TextView) rootView.findViewById(R.id.infoProd);
         TextView prodsnippet = (TextView) rootView.findViewById(R.id.prod_snippet);
         ImageView mImageView = (ImageView) rootView.findViewById(R.id.img);
-        fav = (CheckBox) rootView.findViewById(R.id.checkBoxFavorito);
+
         Button salir = (Button) rootView.findViewById(R.id.botonSalir) ;
 
         titulo = getArguments().getString("titulo");
         info = getArguments().getString("info");
         byte[] b = getArguments().getByteArray("img");
         flag = getArguments().getBoolean("flag");
+        idEvento=getArguments().getInt("idEvento");
         Bitmap bmp=null;
         bmp = BitmapFactory.decodeByteArray(b, 0, b.length);
         mImageView.setImageBitmap(bmp);
@@ -76,7 +78,9 @@ public class MarkerActivity extends DialogFragment {
         botonComentarios.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+                Intent intent = new Intent(getActivity(),ActivityComentarios.class);
+                intent.putExtra("idEvento",idEvento);
+                startActivity(intent);
             }
         });
         infoProd.setText(titulo);
@@ -85,21 +89,7 @@ public class MarkerActivity extends DialogFragment {
         infoProd.setTypeface(null, Typeface.BOLD);
         prodsnippet.setText(info);
 
-        if (flag)
-            fav.setChecked(true);
-        else
-            fav.setChecked(false);
 
-        fav.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View v) {
-
-                flag= fav.isChecked();
-                mCallback.onFinishDialog(flag);
-
-            }
-        });
 
         salir.setOnClickListener(new View.OnClickListener(){
 
