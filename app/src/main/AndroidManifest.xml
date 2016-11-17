@@ -86,7 +86,6 @@
             android:label="Registro" />
         <activity android:name=".MarkerActivity" />
         <activity android:name=".ListviewFavoritos" />
-        <activity android:name=".ActivityComentarios"></activity>
     </application>
 
 </manifest>
