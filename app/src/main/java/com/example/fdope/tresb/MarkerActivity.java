@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -17,11 +18,13 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.github.clans.fab.FloatingActionButton;
+
 public class MarkerActivity extends DialogFragment {
     public String titulo,info;
     public boolean flag;
     public CheckBox fav;
-
+    FloatingActionButton botonFav,botonComentarios, botonDenuncia;
     private EnviarFlagFavorito mCallback;
 
     @Override
@@ -54,7 +57,28 @@ public class MarkerActivity extends DialogFragment {
         Bitmap bmp=null;
         bmp = BitmapFactory.decodeByteArray(b, 0, b.length);
         mImageView.setImageBitmap(bmp);
+        botonFav = (FloatingActionButton) rootView.findViewById(R.id.favorito);
+        botonFav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (flag==false) {
+                    botonFav.setImageResource(R.drawable.ic_star_black_24dp);
+                    flag=true;
+                }
+                else{
+                    botonFav.setImageResource(R.drawable.ic_star_border_black_24dp);
+                    flag=false;
+                }
+            }
+        });
 
+        botonComentarios= (FloatingActionButton)rootView.findViewById(R.id.comentarios);
+        botonComentarios.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                
+            }
+        });
         infoProd.setText(titulo);
         infoProd.setTextColor(Color.BLACK);
         infoProd.setGravity(Gravity.CENTER);
