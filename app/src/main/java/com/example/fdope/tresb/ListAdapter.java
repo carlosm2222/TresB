@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,27 @@ public class ListAdapter extends ArrayAdapter<Producto> {
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return super.getItemViewType(position);
+    }
+
+    @Override
+    public int getCount() {
+        return this.listaProd.size();
+    }
+
+    @Nullable
+    @Override
+    public Producto getItem(int position) {
+        return this.listaProd.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
         View rowView = convertView;
@@ -41,7 +63,7 @@ public class ListAdapter extends ArrayAdapter<Producto> {
             // Create a new view into the list.
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            rowView = inflater.inflate(R.layout.list_fila, null);
+            rowView = inflater.inflate(R.layout.list_fila, parent,false);
         }
 
         Producto p = listaProd.get(position);
@@ -56,9 +78,12 @@ public class ListAdapter extends ArrayAdapter<Producto> {
         imagen.setImageBitmap(bpm);
         String tit = p.mostrarMarca() + " "+p.mostrarmodelo();
         titulo.setText(tit);
-        precio.setText(p.mostrarPrecio());
-        tienda.setText(p.mostrarProveedor());
-        usuario.setText(p.mostrarCreadorPublicacion());
+        String preci = "$"+p.mostrarPrecio()+" CLP";
+        precio.setText(preci);
+        String prov = "Tienda: "+p.mostrarProveedor();
+        tienda.setText(prov);
+        String usr = "Publicado por: "+p.mostrarCreadorPublicacion();
+        usuario.setText(usr);
 
         return rowView;
     }
