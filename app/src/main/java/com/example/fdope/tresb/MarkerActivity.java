@@ -23,7 +23,6 @@ import com.github.clans.fab.FloatingActionButton;
 public class MarkerActivity extends DialogFragment {
     public String titulo,info;
     public boolean flag;
-    public CheckBox fav;
     FloatingActionButton botonFav,botonComentarios, botonDenuncia;
     private EnviarFlagFavorito mCallback;
 
@@ -47,7 +46,6 @@ public class MarkerActivity extends DialogFragment {
         TextView infoProd = (TextView) rootView.findViewById(R.id.infoProd);
         TextView prodsnippet = (TextView) rootView.findViewById(R.id.prod_snippet);
         ImageView mImageView = (ImageView) rootView.findViewById(R.id.img);
-        fav = (CheckBox) rootView.findViewById(R.id.checkBoxFavorito);
         Button salir = (Button) rootView.findViewById(R.id.botonSalir) ;
 
         titulo = getArguments().getString("titulo");
@@ -58,16 +56,24 @@ public class MarkerActivity extends DialogFragment {
         bmp = BitmapFactory.decodeByteArray(b, 0, b.length);
         mImageView.setImageBitmap(bmp);
         botonFav = (FloatingActionButton) rootView.findViewById(R.id.favorito);
+
+        if (flag)
+            botonFav.setImageResource(R.drawable.ic_star_black_24dp);
+        else
+            botonFav.setImageResource(R.drawable.ic_star_border_black_24dp);
+
         botonFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (flag==false) {
                     botonFav.setImageResource(R.drawable.ic_star_black_24dp);
                     flag=true;
+                    mCallback.onFinishDialog(flag);
                 }
                 else{
                     botonFav.setImageResource(R.drawable.ic_star_border_black_24dp);
                     flag=false;
+                    mCallback.onFinishDialog(flag);
                 }
             }
         });
@@ -84,22 +90,6 @@ public class MarkerActivity extends DialogFragment {
         infoProd.setGravity(Gravity.CENTER);
         infoProd.setTypeface(null, Typeface.BOLD);
         prodsnippet.setText(info);
-
-        if (flag)
-            fav.setChecked(true);
-        else
-            fav.setChecked(false);
-
-        fav.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View v) {
-
-                flag= fav.isChecked();
-                mCallback.onFinishDialog(flag);
-
-            }
-        });
 
         salir.setOnClickListener(new View.OnClickListener(){
 

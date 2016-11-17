@@ -89,6 +89,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         floatingActionButton4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ventanaFav(v);
 
             }
         });
