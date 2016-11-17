@@ -35,11 +35,10 @@ public class ListviewFavoritos extends AppCompatActivity {
             else
                 numeroFav.setText("0");
 
-           // ArrayAdapter<Producto> adapter = new ListAdapter(ListviewFavoritos.this,R.layout.list_fila,usuario.getListaFavoritos());
-            //lista.setAdapter(adapter);
             ListAdapter listadapter = new ListAdapter(ListviewFavoritos.this,R.layout.list_fila,usuario.getListaFavoritos());
             lista.setAdapter(listadapter);
-            //lista.setAdapter(new ListAdapter(ListviewFavoritos.this,R.layout.list_fila,usuario.getListaFavoritos()));
         }
+        else
+            Toast.makeText(this,"No se pudo obtener su perfil",Toast.LENGTH_SHORT).show();
     }
 }

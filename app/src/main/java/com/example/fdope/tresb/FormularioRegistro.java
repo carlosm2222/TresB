@@ -13,7 +13,7 @@ import android.widget.Toast;
 import com.example.fdope.tresb.DB.ConsultasUsuarios;
 
 public class FormularioRegistro extends AppCompatActivity {
-    private EditText inputNombres, inputApellidos , inputUsuario, inputPassword,inputEmail;
+    private EditText inputNombres, inputApellidos , inputUsuario, inputPassword,inputEmail,inputPass2;
 
     private TextWatcher mTextWatcher = new TextWatcher() {
         @Override
@@ -39,12 +39,14 @@ public class FormularioRegistro extends AppCompatActivity {
         this.inputUsuario = (EditText) findViewById(R.id.usuario);
         this.inputPassword = (EditText) findViewById(R.id.pass);
         this.inputEmail = (EditText) findViewById(R.id.correo);
+        this.inputPass2 = (EditText) findViewById(R.id.pass2);
 
         inputNombres.addTextChangedListener(mTextWatcher);
         inputApellidos.addTextChangedListener(mTextWatcher);
         inputUsuario.addTextChangedListener(mTextWatcher);
         inputPassword.addTextChangedListener(mTextWatcher);
         inputEmail.addTextChangedListener(mTextWatcher);
+        inputPass2.addTextChangedListener(mTextWatcher);
         checkFieldsForEmptyValues();
     }
 
@@ -55,11 +57,15 @@ public class FormularioRegistro extends AppCompatActivity {
         String usuario = this.inputUsuario.getText().toString();
         String pass = this.inputPassword.getText().toString();
         String email = this.inputEmail.getText().toString();
+        String pass2 = this.inputPass2.getText().toString();
 
         if(nombres.equals("") ||apellidos.equals("") ||usuario.equals("")|| pass.equals("") || email.equals("")){
             b.setEnabled(false);
         } else {
-            b.setEnabled(true);
+            if (pass.equals(pass2))
+                b.setEnabled(true);
+            else
+                Toast.makeText(this,"Contraseñas no coinciden",Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -71,11 +77,13 @@ public class FormularioRegistro extends AppCompatActivity {
         String email = this.inputEmail.getText().toString();
 
         //guardar datos en bd
-        if (ConsultasUsuarios.checkUsuario(usuario,pass) != null)
+        if (ConsultasUsuarios.checkUsuario(usuario,pass))
             Toast.makeText(this,"Nombre de usuario no disponible",Toast.LENGTH_SHORT).show();
         else {
-            if (ConsultasUsuarios.registrar(nombres, apellidos, email, pass, usuario)!= null)
+            if (ConsultasUsuarios.registrar(nombres, apellidos, email, pass, usuario)!= null) {
+                Toast.makeText(this,"Grasias por registrarte",Toast.LENGTH_SHORT).show();
                 nextActtivity();
+            }
             else
                 Toast.makeText(this, "NOSE PUEDE PASAR ALA ACTIVIDAD", Toast.LENGTH_SHORT).show();
         }

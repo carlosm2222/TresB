@@ -192,21 +192,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         dialogFragment.show(fm, "Sample Fragment");
     }
 
-    final Runnable tarea = new Runnable() {
-        @Override
-        public void run() {
-            mMap.clear();
-            app.getListaProductos().clear();
-            app.setListaSmartphone(null);
-            cargarDatos();
-            miUbicacion();
-        }
-    };
-
     public void autoRefresh() {
 
-        ScheduledExecutorService timer = Executors.newSingleThreadScheduledExecutor();
-        timer.scheduleAtFixedRate(tarea, 1, 1, TimeUnit.MINUTES);
+        mMap.clear();
+        app.getListaProductos().clear();
+        app.setListaSmartphone(null);
+        cargarDatos();
+        miUbicacion();
     }
 
     public void manualRefresh(View view) {
@@ -307,6 +299,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         mMap.setMyLocationEnabled(true);
         mMap.animateCamera(miUbicacion);
+        autoRefresh();
     }
 
     public void agregarMarcadorProductos(Producto p){
@@ -421,6 +414,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Intent intent = new Intent(this,ListviewFavoritos.class);
         intent.putExtra("lista",usuario);
         startActivity(intent);
+        finish();
     }
 }
 
