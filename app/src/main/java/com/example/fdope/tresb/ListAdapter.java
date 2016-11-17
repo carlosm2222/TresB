@@ -18,10 +18,6 @@ import com.example.fdope.tresb.Factoria.Producto;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by SS on 15-11-2016.
- */
-
 public class ListAdapter extends ArrayAdapter<Producto> {
 
     public Activity context;
@@ -43,7 +39,6 @@ public class ListAdapter extends ArrayAdapter<Producto> {
         return this.listaProd.size();
     }
 
-    @Nullable
     @Override
     public Producto getItem(int position) {
         return this.listaProd.get(position);
@@ -59,8 +54,7 @@ public class ListAdapter extends ArrayAdapter<Producto> {
 
         View rowView = convertView;
         if (convertView == null)
-        {
-            // Create a new view into the list.
+        {            // Create a new view into the list.
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             rowView = inflater.inflate(R.layout.list_fila, parent,false);
@@ -84,7 +78,6 @@ public class ListAdapter extends ArrayAdapter<Producto> {
         tienda.setText(prov);
         String usr = "Publicado por: "+p.mostrarCreadorPublicacion();
         usuario.setText(usr);
-
         return rowView;
     }
 }

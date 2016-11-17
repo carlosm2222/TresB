@@ -162,18 +162,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override // RECIBE EL ESTADO DEL CHECKBOX FAVORITOS
     public void onFinishDialog(boolean flag) {
         // flag 0 neutro , 1 true,2 false
-
-
         if (flagfav == 0 && flag==true){ /// SI NO ERA FAVORITO
             Toast.makeText(this,"Agregado a favorito",Toast.LENGTH_SHORT).show();
             flagfav=1;
         }
         if (flagfav==1 && flag==false){ /// SI LO SACO DE FAVORITO
-            Toast.makeText(this,"Eliminado de favorito",Toast.LENGTH_SHORT).show();
-            flagfav=2;
-        }
-        if (flag==false)
-        { /// SI LO SACO DE FAVORITO
             Toast.makeText(this,"Eliminado de favorito",Toast.LENGTH_SHORT).show();
             flagfav=2;
         }
@@ -299,7 +292,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         mMap.setMyLocationEnabled(true);
         mMap.animateCamera(miUbicacion);
-        autoRefresh();
     }
 
     public void agregarMarcadorProductos(Producto p){
@@ -414,7 +406,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Intent intent = new Intent(this,ListviewFavoritos.class);
         intent.putExtra("lista",usuario);
         startActivity(intent);
-        finish();
     }
 }
 

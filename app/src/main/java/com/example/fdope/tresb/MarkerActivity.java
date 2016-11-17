@@ -24,7 +24,6 @@ import com.github.clans.fab.FloatingActionButton;
 public class MarkerActivity extends DialogFragment {
     public String titulo,info;
     public boolean flag;
-    public CheckBox fav;
     FloatingActionButton botonFav,botonComentarios, botonDenuncia;
     private EnviarFlagFavorito mCallback;
     public int idEvento;
@@ -60,21 +59,31 @@ public class MarkerActivity extends DialogFragment {
         bmp = BitmapFactory.decodeByteArray(b, 0, b.length);
         mImageView.setImageBitmap(bmp);
         botonFav = (FloatingActionButton) rootView.findViewById(R.id.favorito);
+
+
+        if (flag)
+            botonFav.setImageResource(R.drawable.ic_star_black_24dp);
+        else
+            botonFav.setImageResource(R.drawable.ic_star_border_black_24dp);
+
         botonFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (flag==false) {
                     botonFav.setImageResource(R.drawable.ic_star_black_24dp);
                     flag=true;
+                    mCallback.onFinishDialog(flag);
                 }
                 else{
                     botonFav.setImageResource(R.drawable.ic_star_border_black_24dp);
                     flag=false;
+                    mCallback.onFinishDialog(flag);
                 }
             }
         });
 
         botonComentarios= (FloatingActionButton)rootView.findViewById(R.id.comentarios);
+        /*
         botonComentarios.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,13 +92,12 @@ public class MarkerActivity extends DialogFragment {
                 startActivity(intent);
             }
         });
+        */
         infoProd.setText(titulo);
         infoProd.setTextColor(Color.BLACK);
         infoProd.setGravity(Gravity.CENTER);
         infoProd.setTypeface(null, Typeface.BOLD);
         prodsnippet.setText(info);
-
-
 
         salir.setOnClickListener(new View.OnClickListener(){
 

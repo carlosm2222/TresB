@@ -45,7 +45,7 @@ public class ComentarioAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         View rowView = convertView;
-
+/*
         if (convertView == null) {
             // Create a new view into the list.
             LayoutInflater inflater = (LayoutInflater) context
@@ -61,7 +61,7 @@ public class ComentarioAdapter extends BaseAdapter {
         Comentario c = this.items.get(position);
         comentario.setText(c.getComentario());
         publicadopor.setText(c.getUsuario());
-
+*/
         return rowView;
     }
 }

@@ -29,7 +29,6 @@ public class ListviewFavoritos extends AppCompatActivity {
         Usuario usuario = bundle.getParcelable("lista");
 
         if (usuario!=null){
-
             if (usuario.getListaFavoritos().size()>0)
                 numeroFav.setText(String.valueOf(usuario.getListaFavoritos().size()));
             else
@@ -39,6 +38,6 @@ public class ListviewFavoritos extends AppCompatActivity {
             lista.setAdapter(listadapter);
         }
         else
-            Toast.makeText(this,"No se pudo obtener su perfil",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"No se pudo obtener",Toast.LENGTH_SHORT).show();
     }
 }
