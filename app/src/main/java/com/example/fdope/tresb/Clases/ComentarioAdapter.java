@@ -1,29 +1,34 @@
 package com.example.fdope.tresb.Clases;
 
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.fdope.tresb.Factoria.Producto;
 import com.example.fdope.tresb.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by fdope on 17-11-2016.
  */
 
-public class ComentarioAdapter extends BaseAdapter {
+public class ComentarioAdapter extends ArrayAdapter<Comentario> {
     private Context context;
     private List<Comentario> items;
 
-    public ComentarioAdapter(Context context, List<Comentario> items) {
-        this.context = context;
-        this.items = items;
+    public ComentarioAdapter(Activity context, int resource, ArrayList<Comentario> listaProd) {
+        super(context, resource);
+        this.context=context;
+        this.items = listaProd;
     }
 
     @Override
@@ -32,7 +37,7 @@ public class ComentarioAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public Comentario getItem(int position) {
         return this.items.get(position);
     }
 
@@ -45,23 +50,26 @@ public class ComentarioAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         View rowView = convertView;
-/*
-        if (convertView == null) {
-            // Create a new view into the list.
+        if (convertView == null)
+        {            // Create a new view into the list.
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            rowView = inflater.inflate(R.layout.lista_comentarios, parent, false);
+            rowView = inflater.inflate(R.layout.lista_comentarios, parent,false);
         }
 
-        // Set data into the view.
+        Comentario c = items.get(position);
 
-        TextView comentario = (TextView) rowView.findViewById(R.id.comentario);
-        TextView publicadopor = (TextView) rowView.findViewById(R.id.publicadopor);
-
-        Comentario c = this.items.get(position);
+        TextView usuario = (TextView)rowView.findViewById(R.id.usuario);
+        TextView comentario = (TextView)rowView.findViewById(R.id.comentario);
+        ImageView like = (ImageView)rowView.findViewById(R.id.like);
+        usuario.setText("Publicado por: "+c.getUsuario());
         comentario.setText(c.getComentario());
-        publicadopor.setText(c.getUsuario());
-*/
+        if(c.isLike()){
+            like.setImageResource(R.mipmap.ic_like);
+
+        }else{
+            like.setImageResource(R.mipmap.ic_dislike);
+        }
         return rowView;
     }
 }

@@ -10,10 +10,11 @@ import android.os.Parcelable;
 public class Comentario {
     private String usuario;
     private String comentario;
-
-    public Comentario(String usuario,String comentario){
+    private boolean like;
+    public Comentario(String usuario,String comentario, boolean like){
         this.usuario=usuario;
         this.comentario=comentario;
+        this.like=like;
     }
 
 
@@ -34,6 +35,11 @@ public class Comentario {
         this.comentario = comentario;
     }
 
+    public boolean isLike() {
+        return like;
+    }
 
-
+    public void setLike(boolean like) {
+        this.like = like;
+    }
 }
