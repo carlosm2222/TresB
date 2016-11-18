@@ -184,6 +184,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Bundle bundle = new Bundle();
         bundle.putString("titulo",titulo);
         bundle.putString("info",info);
+        bundle.putString("username",usuario.getUsername());
         bundle.putInt("idEvento",idEvento);
         bundle.putByteArray("img",img);
         bundle.putBoolean("flag",flag);

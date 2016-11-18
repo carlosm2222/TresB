@@ -43,4 +43,17 @@ public class ConsultaComentarios {
         return listap;
 
     }
+    public static boolean publicarComentario(int idEvento,String comentario,String username, boolean flag) {
+        DB base = new DB();
+        Connection c = base.connect();
+        //CallableStatement oCall = c.prepareCall("{call getINFO()}");
+        //ResultSet resultado = oCall.executeQuery();
+
+        ResultSet resultado = base.select("INSERT INTO comentario(id_evento,comentario,usuario,megusta) VALUES ('"+idEvento+"','"+comentario+"','"+username+"','"+flag+"');");
+        if (resultado != null) {
+            return false;
+        }else
+            return true;
+    }
 }
+

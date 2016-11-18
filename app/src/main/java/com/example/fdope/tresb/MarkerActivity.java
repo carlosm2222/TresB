@@ -27,6 +27,7 @@ public class MarkerActivity extends DialogFragment {
     FloatingActionButton botonFav,botonComentarios, botonDenuncia;
     private EnviarFlagFavorito mCallback;
     public int idEvento;
+    private String username;
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -49,7 +50,7 @@ public class MarkerActivity extends DialogFragment {
         ImageView mImageView = (ImageView) rootView.findViewById(R.id.img);
 
         Button salir = (Button) rootView.findViewById(R.id.botonSalir) ;
-
+        username= getArguments().getString("username");
         titulo = getArguments().getString("titulo");
         info = getArguments().getString("info");
         byte[] b = getArguments().getByteArray("img");
@@ -89,6 +90,7 @@ public class MarkerActivity extends DialogFragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(),ListViewComentarios.class);
                 intent.putExtra("idEvento",idEvento);
+                intent.putExtra("username",username);
                 startActivity(intent);
             }
         });

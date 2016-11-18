@@ -1,18 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.fdope.tresb.ListViewComentarios">
+    tools:context="com.example.fdope.tresb.ListViewComentarios"
+    android:weightSum="1">
 
     <ListView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="304dp"
         android:id="@+id/listaProd"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="34dp" />
+        android:layout_marginTop="34dp"
+        android:layout_weight="0.01"
+        android:background="@drawable/borde"/>
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/comentario"
+        android:layout_weight="0.34"
+        android:hint="Escriba comentario aquí..."
+        android:background="@drawable/borde"
+        android:selectAllOnFocus="true" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.39">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@mipmap/ic_dislike"
+            android:id="@+id/botondislike"
+            android:background="@android:drawable/screen_background_light_transparent"
+            style="@android:style/Widget.ImageButton"
+            android:layout_marginStart="22dp"
+            android:layout_centerInParent="false"
+            android:layout_alignTop="@+id/botonlike"
+            android:layout_toEndOf="@+id/botonlike"
+            android:onClick="accionBotonDislike" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@mipmap/ic_like"
+            android:layout_marginStart="29dp"
+            android:id="@+id/botonlike"
+            android:background="@android:drawable/screen_background_light_transparent"
+            style="@android:style/Widget.ImageButton"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:onClick="accionBotonLike" />
+
+        <Button
+            android:text="Enviar Comentario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="22dp"
+            android:id="@+id/enviarcomentario"
+            android:layout_alignTop="@+id/botondislike"
+            android:layout_alignParentEnd="true"
+            android:onClick="enviarComentario" />
+
+    </RelativeLayout>
 
 
 </LinearLayout>
