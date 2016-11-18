@@ -1,10 +1,13 @@
 package com.example.fdope.tresb;
 
 import android.app.FragmentManager;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -12,6 +15,7 @@ import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.view.View;
 import android.widget.Toast;
 import com.example.fdope.tresb.Clases.TresB;
@@ -47,6 +51,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private TresB app;
     static final int request_code = 1;
     static final int request_code_filtro = 2;
+    static final int NOTIFICACION_ID=5;
     private Producto p,prodMomentaneo;
     private Usuario usuario;
     boolean isOpen = false;
@@ -157,6 +162,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             });
 
         autoRefresh();
+
     }
 
 
@@ -378,6 +384,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return null;
     }
 
+    public Producto buscarProducto(Producto p){
+        for (int i = 0; i< app.getListaProductos().size(); i++){
+            if (p.mostrarMarca().equals(app.getListaProductos().get(i).mostrarMarca()))
+                if (p.mostrarmodelo().equals(app.getListaProductos().get(i).mostrarmodelo()))
+                    return app.getListaProductos().get(i);
+        }
+        return null;
+    }
+
     public boolean agregarFavorito(Producto p){
         if (buscarFav(p) == null){ // si no esta repetido se agrega
             usuario.getListaFavoritos().add(p);
@@ -406,9 +421,42 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void ventanaFav(View view){
         Intent intent = new Intent(this,ListviewFavoritos.class);
-        intent.putExtra("lista",usuario);
+        intent.putExtra("user",usuario);
         startActivity(intent);
     }
+
+    public ArrayList<Producto> buscarProdParaNotificar(){
+
+        ArrayList<Producto> listProdNoti = new ArrayList<Producto>();
+        for (int i= 0; i< usuario.getListaFavoritos().size() ; i++){
+            if (buscarProducto(usuario.getListaFavoritos().get(i)) !=null){
+                listProdNoti.add(buscarProducto(usuario.getListaFavoritos().get(i)));
+            }
+        }
+        return listProdNoti;
+    }
+
+    public void notificar(){
+        ArrayList<Producto> lista = buscarProdParaNotificar();
+        Intent intent = new Intent(this,ListViewNotificacion.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,0);
+
+        //notificacion
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+        builder.setContentIntent(pendingIntent);
+        builder.setAutoCancel(true);
+        builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.logo));
+
+        builder.setContentTitle("Nuevos productos!");
+        builder.setContentText("Se han agregado productos de su interes");
+        builder.setSubText("Toca para ver los productos");
+
+        //Enviar notificacion
+        NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.notify(NOTIFICACION_ID,builder.build());
+
+    }
+
 }
 
 
