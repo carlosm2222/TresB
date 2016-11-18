@@ -83,16 +83,16 @@ public class MarkerActivity extends DialogFragment {
         });
 
         botonComentarios= (FloatingActionButton)rootView.findViewById(R.id.comentarios);
-        /*
+
         botonComentarios.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(),ActivityComentarios.class);
+                Intent intent = new Intent(getActivity(),ListViewComentarios.class);
                 intent.putExtra("idEvento",idEvento);
                 startActivity(intent);
             }
         });
-        */
+
         infoProd.setText(titulo);
         infoProd.setTextColor(Color.BLACK);
         infoProd.setGravity(Gravity.CENTER);

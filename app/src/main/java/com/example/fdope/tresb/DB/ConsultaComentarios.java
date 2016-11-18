@@ -25,11 +25,11 @@ public class ConsultaComentarios {
             //CallableStatement oCall = c.prepareCall("{call getINFO()}");
             //ResultSet resultado = oCall.executeQuery();
 
-            ResultSet resultado = base.select("SELECT comentario, usuario WHERE id_evento="+idEvento+";");
+            ResultSet resultado = base.select("SELECT comentario, usuario,megusta FROM comentario WHERE id_evento='"+idEvento+"';");
             if(resultado !=null){
 
                 while(resultado.next()){
-                    Comentario coment = new Comentario(resultado.getString("usuario"),resultado.getString("comentario"));
+                    Comentario coment = new Comentario(resultado.getString("usuario"),resultado.getString("comentario"),resultado.getBoolean("megusta"));
                     listap.add(coment);
 
                 }
