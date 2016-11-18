@@ -57,7 +57,7 @@ public class ListViewComentarios extends AppCompatActivity {
         inputComentario.addTextChangedListener(mTextWatcher);
         like = (ImageButton)findViewById(R.id.botonlike);
         dislike= (ImageButton)findViewById(R.id.botondislike);
-
+        checkFieldsForEmptyValues();
         Bundle bundle = getIntent().getExtras();
         idEvento = bundle.getInt("idEvento");
         username = bundle.getString("username");
@@ -67,7 +67,7 @@ public class ListViewComentarios extends AppCompatActivity {
              lista.setAdapter(listadapter);
         } else
             Toast.makeText(this, "No hay comentarios para esta publicación.", Toast.LENGTH_SHORT).show();
-        checkFieldsForEmptyValues();
+
     }
 
     public void checkFieldsForEmptyValues() {

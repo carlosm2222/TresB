@@ -89,6 +89,7 @@
         <activity android:name=".ListviewFavoritos"
             android:label="Lista Favoritos"/>
         <activity android:name=".ListViewComentarios"
+            android:windowSoftInputMode="adjustPan"
             android:label="Comentarios">
         </activity>
 
