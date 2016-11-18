@@ -139,9 +139,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             prodMomentaneo=app.getListaProductos().get(i);
                             b = app.getListaProductos().get(i).mostrarImagen();// se obtiene la imagen del producto
                             prodFav = buscarFav(app.getListaProductos().get(i)); // SE OBTIENE PRODUCTO FAVORITO SI ESQUE EXISTE
-                            if (prodFav!=null) {// SE SETEA EL FLAG A TRUE SI EXISTE FAV
+                            if (prodFav!=null) // SE SETEA EL FLAG A TRUE SI EXISTE FAV
                                 fav = true;
-                            }
+
                             if (fav==false && flagfav==1) {
                                 mostrarMensaje(marker.getTitle(),marker.getSnippet(),b,true, idEvento); // se envia el titulo y el snippet del marcador ala ventana del pin con la foto y el FLAG de favorito
                                 flagfav = 0;
@@ -162,7 +162,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             });
 
         autoRefresh();
-
     }
 
 
@@ -173,7 +172,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Toast.makeText(this,"Agregado a favorito",Toast.LENGTH_SHORT).show();
             agregarFavorito(prodMomentaneo);
             prodMomentaneo=null;
-            flagfav=1;
         }
         if(flag==false)
         {
