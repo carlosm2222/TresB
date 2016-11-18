@@ -37,9 +37,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.github.clans.fab.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static com.example.fdope.tresb.ActivityFiltrarProductos.FILTRO_OK;
 
@@ -101,6 +100,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        //Creamos el Timer
+        Timer timer = new Timer();
+        //Que actue cada 2 minutos
+        //Empezando des de el segundo 30seg iniciado el mapa
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                //La función a ejecutar
+                autoRefresh();
+                //autoNotificaciones();
+
+            }
+        }, 30000, 120000);
+
+
         Bundle inBundle = getIntent().getExtras();//agregar desde aqui
         if (inBundle != null) {
             usuario = inBundle.getParcelable("UsuarioIn");
@@ -116,7 +131,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
         miUbicacion();
         cargarDatos();
 
@@ -161,7 +175,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             });
 
-        autoRefresh();
     }
 
 
@@ -193,15 +206,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         bundle.putBoolean("flag",flag);
         dialogFragment.setArguments(bundle);
         dialogFragment.show(fm, "Sample Fragment");
-    }
-
-    public void autoRefresh() {
-
-        mMap.clear();
-        app.getListaProductos().clear();
-        app.setListaSmartphone(null);
-        cargarDatos();
-        miUbicacion();
     }
 
     public void manualRefresh(View view) {
@@ -382,7 +386,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return null;
     }
 
-    public Producto buscarProducto(Producto p){
+    public Producto buscarProductoPorMarcaModelo(Producto p){
         for (int i = 0; i< app.getListaProductos().size(); i++){
             if (p.mostrarMarca().equals(app.getListaProductos().get(i).mostrarMarca()))
                 if (p.mostrarmodelo().equals(app.getListaProductos().get(i).mostrarmodelo()))
@@ -427,8 +431,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         ArrayList<Producto> listProdNoti = new ArrayList<Producto>();
         for (int i= 0; i< usuario.getListaFavoritos().size() ; i++){
-            if (buscarProducto(usuario.getListaFavoritos().get(i)) !=null){
-                listProdNoti.add(buscarProducto(usuario.getListaFavoritos().get(i)));
+            if (buscarProductoPorMarcaModelo(usuario.getListaFavoritos().get(i)) !=null){
+                listProdNoti.add(buscarProductoPorMarcaModelo(usuario.getListaFavoritos().get(i)));
             }
         }
         return listProdNoti;
@@ -436,25 +440,69 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void notificar(){
         ArrayList<Producto> lista = buscarProdParaNotificar();
-        Intent intent = new Intent(this,ListViewNotificacion.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,0);
 
-        //notificacion
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-        builder.setContentIntent(pendingIntent);
-        builder.setAutoCancel(true);
-        builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.logo));
+        if (lista.size()>0){
+            Intent intent = new Intent(this,ListViewNotificacion.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,0);
 
-        builder.setContentTitle("Nuevos productos!");
-        builder.setContentText("Se han agregado productos de su interes");
-        builder.setSubText("Toca para ver los productos");
+            //notificacion
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+            builder.setContentIntent(pendingIntent);
+            builder.setAutoCancel(true);
+            builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.logo));
 
-        //Enviar notificacion
-        NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.notify(NOTIFICACION_ID,builder.build());
+            builder.setContentTitle("Nuevos productos!");
+            builder.setContentText("Se han agregado productos de su interes");
+            builder.setSubText("Toca para ver los productos");
 
+            //Enviar notificacion
+            NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+            notificationManager.notify(NOTIFICACION_ID,builder.build());
+        }
     }
 
+    public void autoNotificaciones(){
+        this.runOnUiThread(notificacionesRunnable);
+    }
+
+
+    public void autoRefresh() {
+        this.runOnUiThread(refreshRunnable);
+    }
+
+    private Runnable refreshRunnable = new Runnable() {
+        public void run() {
+            mMap.clear();
+            app.getListaProductos().clear();
+            app.setListaSmartphone(null);
+            cargarDatos();
+        }
+    };
+
+    private Runnable notificacionesRunnable = new Runnable() {
+        public void run() {
+            ArrayList<Producto> lista = buscarProdParaNotificar();
+
+            if (lista.size()>0){
+                Intent intent = new Intent(getApplication(),ListViewNotificacion.class);
+                PendingIntent pendingIntent = PendingIntent.getActivity(getApplication(),0,intent,0);
+
+                //notificacion
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplication());
+                builder.setContentIntent(pendingIntent);
+                builder.setAutoCancel(true);
+                builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.logo));
+
+                builder.setContentTitle("Nuevos productos!");
+                builder.setContentText("Se han agregado productos de su interes");
+                builder.setSubText("Toca para ver los productos");
+
+                //Enviar notificacion
+                NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+                notificationManager.notify(NOTIFICACION_ID,builder.build());
+            }
+        }
+    };
 }
 
 
