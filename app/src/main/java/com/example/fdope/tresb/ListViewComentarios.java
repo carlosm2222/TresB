@@ -30,7 +30,7 @@ public class ListViewComentarios extends AppCompatActivity {
     private EditText inputComentario;
     private boolean flag;
     private ImageButton like, dislike;
-    private Button enviar;
+   // private Button enviar;
     private String username;
     private int idEvento;
     private TextWatcher mTextWatcher = new TextWatcher() {
@@ -67,23 +67,18 @@ public class ListViewComentarios extends AppCompatActivity {
              lista.setAdapter(listadapter);
         } else
             Toast.makeText(this, "No hay comentarios para esta publicación.", Toast.LENGTH_SHORT).show();
-
+        checkFieldsForEmptyValues();
     }
 
     public void checkFieldsForEmptyValues() {
+        Button enviar = (Button)findViewById(R.id.enviarcomentario);
         String input = this.inputComentario.getText().toString();
-        enviar = (Button)findViewById(R.id.enviarcomentario);
+
         if (input.equals("")) {
-            //like.setClickable(false);
-           // like.setEnabled(false);
-           // dislike.setEnabled(false);
-            enviar.setClickable(false);
             enviar.setEnabled(false);
         } else {
-          //  like.setEnabled(true);
-           // dislike.setEnabled(true);
             enviar.setEnabled(true);
-            enviar.setClickable(true);
+
         }
     }
 

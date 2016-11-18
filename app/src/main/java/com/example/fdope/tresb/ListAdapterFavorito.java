@@ -18,12 +18,12 @@ import com.example.fdope.tresb.Factoria.Producto;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListAdapter extends ArrayAdapter<Producto> {
+public class ListAdapterFavorito extends ArrayAdapter<Producto> {
 
     public Activity context;
     private ArrayList<Producto> listaProd;
 
-    public ListAdapter(Activity context, int resource, ArrayList<Producto> listaProd) {
+    public ListAdapterFavorito(Activity context, int resource, ArrayList<Producto> listaProd) {
         super(context, resource);
         this.context=context;
         this.listaProd = listaProd;

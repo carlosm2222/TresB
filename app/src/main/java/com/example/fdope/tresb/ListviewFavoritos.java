@@ -2,16 +2,11 @@ package com.example.fdope.tresb;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.fdope.tresb.Clases.Usuario;
-import com.example.fdope.tresb.Factoria.Producto;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ListviewFavoritos extends AppCompatActivity {
 
@@ -26,7 +21,7 @@ public class ListviewFavoritos extends AppCompatActivity {
         numeroFav = (TextView) findViewById(R.id.numFav);
 
         Bundle bundle = getIntent().getExtras();
-        Usuario usuario = bundle.getParcelable("lista");
+        Usuario usuario = bundle.getParcelable("user");
 
         if (usuario!=null){
             if (usuario.getListaFavoritos().size()>0)
@@ -34,7 +29,7 @@ public class ListviewFavoritos extends AppCompatActivity {
             else
                 numeroFav.setText("0");
 
-            ListAdapter listadapter = new ListAdapter(ListviewFavoritos.this,R.layout.list_fila,usuario.getListaFavoritos());
+            ListAdapterFavorito listadapter = new ListAdapterFavorito(ListviewFavoritos.this,R.layout.list_fila,usuario.getListaFavoritos());
             lista.setAdapter(listadapter);
         }
         else

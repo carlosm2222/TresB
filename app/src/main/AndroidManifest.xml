@@ -84,12 +84,16 @@
         <activity
             android:name=".FormularioRegistro"
             android:label="Registro" />
+
         <activity android:name=".MarkerActivity" />
         <activity android:name=".ListviewFavoritos"
             android:label="Lista Favoritos"/>
         <activity android:name=".ListViewComentarios"
-            android:label="Comentarios"
-            android:windowSoftInputMode="adjustPan"/>
+            android:label="Comentarios">
+        </activity>
+
+        <activity android:name=".ListViewNotificacion"></activity>
+
     </application>
 
 </manifest>
