@@ -47,7 +47,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private TresB app;
     static final int request_code = 1;
     static final int request_code_filtro = 2;
-    private Producto p;
+    private Producto p,prodMomentaneo;
     private Usuario usuario;
     boolean isOpen = false;
     FloatingActionMenu materialDesignFAM;
@@ -128,24 +128,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         String titulo  = app.getListaProductos().get(i).mostrarMarca()+" "+app.getListaProductos().get(i).mostrarmodelo();
                         String spin = "$ "+app.getListaProductos().get(i).mostrarPrecio()+" CLP en Tienda: "+app.getListaProductos().get(i).mostrarProveedor()+". Publicado por: "+app.getListaProductos().get(i).mostrarCreadorPublicacion();
                         int idEvento = app.getListaProductos().get(i).mostrarIdEvento();
+
                         if (titulo.equals(marker.getTitle()) && spin.equals(marker.getSnippet())) {
+
+                            prodMomentaneo=app.getListaProductos().get(i);
                             b = app.getListaProductos().get(i).mostrarImagen();// se obtiene la imagen del producto
                             prodFav = buscarFav(app.getListaProductos().get(i)); // SE OBTIENE PRODUCTO FAVORITO SI ESQUE EXISTE
                             if (prodFav!=null) {// SE SETEA EL FLAG A TRUE SI EXISTE FAV
                                 fav = true;
                             }
-                                if (fav==false && flagfav==1) {
-                                    agregarFavorito(app.getListaProductos().get(i));
-                                    mostrarMensaje(marker.getTitle(),marker.getSnippet(),b,true, idEvento); // se envia el titulo y el snippet del marcador ala ventana del pin con la foto y el FLAG de favorito
-                                    flagfav = 0;
-                                    break;
-                                }
-                                if (flagfav==2 && fav==true){
-                                    eliminarFavorito(prodFav);
-                                    mostrarMensaje(marker.getTitle(),marker.getSnippet(),b,false, idEvento);
-                                    flagfav = 0;
-                                    break;
-                                }
+                            if (fav==false && flagfav==1) {
+                                mostrarMensaje(marker.getTitle(),marker.getSnippet(),b,true, idEvento); // se envia el titulo y el snippet del marcador ala ventana del pin con la foto y el FLAG de favorito
+                                flagfav = 0;
+                                break;
+                            }
+                            if (flagfav==2 && fav==true){
+                                mostrarMensaje(marker.getTitle(),marker.getSnippet(),b,false, idEvento);
+                                flagfav = 0;
+                                break;
+                            }
                             mostrarMensaje(marker.getTitle(),marker.getSnippet(),b,fav,idEvento); // se envia el titulo y el snippet del marcador ala ventana del pin con la foto y el FLAG de favorito
                             flagfav = 0;
                             break;
@@ -164,10 +165,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // flag 0 neutro , 1 true,2 false
         if (flagfav == 0 && flag==true){ /// SI NO ERA FAVORITO
             Toast.makeText(this,"Agregado a favorito",Toast.LENGTH_SHORT).show();
+            agregarFavorito(prodMomentaneo);
+            prodMomentaneo=null;
             flagfav=1;
         }
-        if (flagfav==1 && flag==false){ /// SI LO SACO DE FAVORITO
+        if(flag==false)
+        {
             Toast.makeText(this,"Eliminado de favorito",Toast.LENGTH_SHORT).show();
+            eliminarFavorito(prodMomentaneo);
+            prodMomentaneo=null;
             flagfav=2;
         }
     }
@@ -210,7 +216,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         intent.putExtra("usuario",usuario.getUsername());
 
         startActivityForResult(intent, request_code);
-
     }
 
     @Override
@@ -317,7 +322,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-
     LocationListener locListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
@@ -377,7 +381,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public boolean agregarFavorito(Producto p){
         if (buscarFav(p) == null){ // si no esta repetido se agrega
             usuario.getListaFavoritos().add(p);
-            Toast.makeText(this,"Favoritos guardados: "+usuario.getListaFavoritos().size(),Toast.LENGTH_SHORT).show();
             ConsultasUsuarios.agregarFav(p.mostrarCategoria(),p.mostrarMarca(),p.mostrarmodelo(),p.mostrarPrecio(),p.coordenadasProducto().latitude,p.coordenadasProducto().longitude,p.mostrarProveedor(),p.mostrarCreadorPublicacion());
             return true;
         }
@@ -386,7 +389,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public boolean eliminarFavorito(Producto p){
         if (buscarFav(p)!=null){
             usuario.getListaFavoritos().remove(p);
-            Toast.makeText(this,"Favoritos guardados: "+usuario.getListaFavoritos().size(),Toast.LENGTH_SHORT).show();
             ConsultasUsuarios.eliminarFav(p.mostrarCategoria(),p.mostrarMarca(),p.mostrarmodelo(),p.mostrarPrecio(),p.coordenadasProducto().latitude,p.coordenadasProducto().longitude,p.mostrarProveedor(),p.mostrarCreadorPublicacion());
             return true;
         }
