@@ -171,6 +171,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             break;
                         }
                     }
+                CameraUpdate ubicacionpin= CameraUpdateFactory.newLatLngZoom(marker.getPosition(),20);
+                mMap.animateCamera(ubicacionpin);
                     return true;
                 }
             });
