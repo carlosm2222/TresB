@@ -131,8 +131,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        miUbicacion();
         cargarDatos();
+        miUbicacion();
+        obtenerFavs();
+
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
@@ -398,10 +400,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return null;
     }
 
+
     public boolean agregarFavorito(Producto p){
         if (buscarFav(p) == null){ // si no esta repetido se agrega
             usuario.getListaFavoritos().add(p);
-            ConsultasUsuarios.agregarFav(p.mostrarCategoria(),p.mostrarMarca(),p.mostrarmodelo(),p.mostrarPrecio(),p.coordenadasProducto().latitude,p.coordenadasProducto().longitude,p.mostrarProveedor(),p.mostrarCreadorPublicacion());
+            ConsultasUsuarios.agregarFav(usuario.getUsername(),p.mostrarIdEvento());
             return true;
         }
         return false;
@@ -409,10 +412,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public boolean eliminarFavorito(Producto p){
         if (buscarFav(p)!=null){
             usuario.getListaFavoritos().remove(p);
-            ConsultasUsuarios.eliminarFav(p.mostrarCategoria(),p.mostrarMarca(),p.mostrarmodelo(),p.mostrarPrecio(),p.coordenadasProducto().latitude,p.coordenadasProducto().longitude,p.mostrarProveedor(),p.mostrarCreadorPublicacion());
+            ConsultasUsuarios.eliminarFav(usuario.getUsername(),p.mostrarIdEvento());
             return true;
         }
         return false;
+    }
+
+    public void obtenerFavs(){
+        ArrayList<Integer> idsEventos = ConsultasUsuarios.obtenerFavoritos(usuario.getUsername());
+        ArrayList<Producto> favs = new ArrayList<Producto>();
+
+        for (int i = 0 ; i< app.getListaProductos().size() ; i++)
+            for (int j = 0 ; j<idsEventos.size(); j++)
+                if (app.getListaProductos().get(i).mostrarIdEvento() == idsEventos.get(j))
+                    favs.add(app.getListaProductos().get(i));
+
+        usuario.setListaFavoritos(favs);
     }
 
 

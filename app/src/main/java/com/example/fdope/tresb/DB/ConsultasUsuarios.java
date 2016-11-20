@@ -3,12 +3,15 @@ package com.example.fdope.tresb.DB;
 import android.util.Log;
 
 import com.example.fdope.tresb.Clases.Usuario;
+import com.example.fdope.tresb.Factoria.Celular;
+import com.example.fdope.tresb.Factoria.Producto;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
 
 /**
  * Created by SS on 01-11-2016.
@@ -87,11 +90,66 @@ public class ConsultasUsuarios {
         return null;
     }
 
-    public static boolean agregarFav(String categoria,String marca,String modelo,int precio,double lat,double lng,String proveedor,String user){
+    public static boolean agregarFav(String user,int idEvento){
+        DB db=new DB();
+        Connection c =db.connect();
+
+        try {
+
+            CallableStatement oCall = c.prepareCall("{ ? = call agregarfavorito(?,?) }");
+            oCall.registerOutParameter(1, Types.BOOLEAN);
+            oCall.setString(2,user);
+            oCall.setInt(3,idEvento);
+            oCall.execute();
+
+            boolean resp = oCall.getBoolean(1);
+            return resp;
+
+        }catch (Exception e){
+
+        }
         return false;
     }
 
-    public static boolean eliminarFav(String categoria,String marca,String modelo,int precio,double lat,double lng,String proveedor,String user){
+    public static boolean eliminarFav(String user,int idEvento){
+        DB db=new DB();
+        Connection c =db.connect();
+
+        try {
+
+            CallableStatement oCall = c.prepareCall("{ ? = call quitarfavorito(?,?) }");
+            oCall.registerOutParameter(1, Types.BOOLEAN);
+            oCall.setString(2,user);
+            oCall.setInt(3,idEvento);
+            oCall.execute();
+
+            boolean resp = oCall.getBoolean(1);
+            return resp;
+
+        }catch (Exception e){
+
+        }
         return false;
+    }
+
+    public static ArrayList<Integer> obtenerFavoritos(String username){
+        DB db=new DB();
+        Connection c =db.connect();
+        ArrayList<Integer> favoritos = new ArrayList<Integer>();
+        try {
+
+            ResultSet resultSet = db.execute("SELECT * FROM getinfofavorito('"+username+"');");
+            if (resultSet!=null){
+                while(resultSet.next()){
+                    int idEvento = resultSet.getInt("id_evento");
+                    favoritos.add(idEvento);
+                }
+            }
+            return favoritos;
+
+        }catch (Exception e){
+
+        }
+        return favoritos;
     }
 }
