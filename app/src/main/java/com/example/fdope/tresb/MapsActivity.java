@@ -188,14 +188,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (flagfav == 0 && flag==true){ /// SI NO ERA FAVORITO
             Toast.makeText(this,"Agregado a favorito",Toast.LENGTH_SHORT).show();
             agregarFavorito(prodMomentaneo);
-            prodMomentaneo=null;
         }
         if(flag==false)
         {
             Toast.makeText(this,"Eliminado de favorito",Toast.LENGTH_SHORT).show();
             eliminarFavorito(prodMomentaneo);
-            prodMomentaneo=null;
-            flagfav=2;
+            flagfav=0;
         }
     }
 

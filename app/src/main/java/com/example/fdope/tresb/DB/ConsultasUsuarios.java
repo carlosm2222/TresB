@@ -98,8 +98,8 @@ public class ConsultasUsuarios {
 
             CallableStatement oCall = c.prepareCall("{ ? = call agregarfavorito(?,?) }");
             oCall.registerOutParameter(1, Types.BOOLEAN);
-            oCall.setString(2,user);
-            oCall.setInt(3,idEvento);
+            oCall.setString(3,user);
+            oCall.setInt(2,idEvento);
             oCall.execute();
 
             boolean resp = oCall.getBoolean(1);
@@ -119,8 +119,8 @@ public class ConsultasUsuarios {
 
             CallableStatement oCall = c.prepareCall("{ ? = call quitarfavorito(?,?) }");
             oCall.registerOutParameter(1, Types.BOOLEAN);
-            oCall.setString(2,user);
-            oCall.setInt(3,idEvento);
+            oCall.setString(3,user);
+            oCall.setInt(2,idEvento);
             oCall.execute();
 
             boolean resp = oCall.getBoolean(1);

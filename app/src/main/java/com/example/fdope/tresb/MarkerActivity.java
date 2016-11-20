@@ -74,11 +74,13 @@ public class MarkerActivity extends DialogFragment {
                     botonFav.setImageResource(R.drawable.ic_star_black_24dp);
                     flag=true;
                     mCallback.onFinishDialog(flag);
+                    //dismiss();
                 }
                 else{
                     botonFav.setImageResource(R.drawable.ic_star_border_black_24dp);
                     flag=false;
                     mCallback.onFinishDialog(flag);
+                    //dismiss();
                 }
             }
         });
