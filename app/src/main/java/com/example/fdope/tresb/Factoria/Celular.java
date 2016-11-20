@@ -85,6 +85,14 @@ public class Celular implements Producto, Parcelable {
         this.nombre_categoria = nombre_categoria;
     }
 
+    public int getIdEvento() {
+        return idEvento;
+    }
+
+    public void setIdEvento(int idEvento) {
+        this.idEvento = idEvento;
+    }
+
     public String getMarca() {
         return marca;
     }

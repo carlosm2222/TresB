@@ -63,9 +63,12 @@ public class ConsultasProductos {
                     String mode = resultado.getString("modelo");
                     String prov = resultado.getString("proveedor");
                     int idevento= resultado.getInt("id_evento");
+                    if (tipo.equals("Smartphone")) {
                         Celular producto = new Celular(user,tipo,marc,mode,precio,prov,latLng,img,largo,idevento);
                         if (producto!=null)
                             listap.add(producto);
+                    }
+
                 }
                 return listap;
             }
@@ -81,13 +84,13 @@ public class ConsultasProductos {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    public static boolean agregarProducto(String user,String marca, String modelo, int precio , String tipo, double lat , double lng, String proveedor, byte[] img, int largo) {
+    public static int agregarProducto(String user,String marca, String modelo, int precio , String tipo, double lat , double lng, String proveedor, byte[] img, int largo) {
         DB db=new DB();
         Connection c =db.connect();
 
         try {
             CallableStatement oCall=c.prepareCall("{ ? = call agregarevento(?,?,?,?,?,?,?,?,?,?)}");
-            oCall.registerOutParameter(1,Types.BOOLEAN);
+            oCall.registerOutParameter(1,Types.INTEGER);
             oCall.setString(2,user);
             oCall.setDouble(3,lat);
             oCall.setDouble(4,lng);
@@ -100,16 +103,13 @@ public class ConsultasProductos {
             oCall.setInt(11,largo);
             oCall.execute();
 
-            if (oCall.getBoolean(1))
-                return true;
-            else
-                return false;
+            return oCall.getInt(1);
 
         }catch (Exception e){
 
         }
         db.desconectarBd();
-        return false;
+        return 0;
     }
 
 
