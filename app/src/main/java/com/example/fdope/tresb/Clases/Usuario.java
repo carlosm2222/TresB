@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class Usuario implements Parcelable {
     private String nombre, apellidos, email,password,username;
     private ArrayList<Producto> listaFavoritos;
+    private ArrayList<Producto> notificaciones;
     private double rating;
 
     public Usuario(String nombre, String apellidos, String email, String password, String username) {
@@ -23,9 +24,18 @@ public class Usuario implements Parcelable {
         this.password = password;
         this.username = username;
         this.listaFavoritos = new ArrayList<Producto>();
+        this.notificaciones = new ArrayList<Producto>();
     }
 
     public  Usuario (){
+    }
+
+    public ArrayList<Producto> getNotificaciones() {
+        return notificaciones;
+    }
+
+    public void setNotificaciones(ArrayList<Producto> notificaciones) {
+        this.notificaciones = notificaciones;
     }
 
     public ArrayList<Producto> getListaFavoritos() {

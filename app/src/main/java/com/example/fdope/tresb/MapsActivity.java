@@ -12,6 +12,8 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -64,6 +66,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        this.app = new TresB();
+
         materialDesignFAM = (FloatingActionMenu) findViewById(R.id.material_design_android_floating_action_menu);
         floatingActionButton1 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item1);
         floatingActionButton2 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item2);
@@ -110,7 +114,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void run() {
                 //La función a ejecutar
                 autoRefresh();
-                //autoNotificaciones();
+               //autoNotificaciones();
 
             }
         }, 30000, 120000);
@@ -124,7 +128,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             else
                 Toast.makeText(this, "NOSE PUDO OBTENER USUARIIO ", Toast.LENGTH_SHORT).show();
         }
-        this.app = new TresB();
     }
 
 
@@ -134,6 +137,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         cargarDatos();
         miUbicacion();
         obtenerFavs();
+        usuario.setNotificaciones(buscarProdParaNotificar());
 
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
@@ -388,14 +392,55 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         return null;
     }
+    public boolean buscarEnNotificaciones(Producto p){
+        for (int i=0; i<usuario.getNotificaciones().size() ; i++)
+          if (usuario.getNotificaciones().get(i).mostrarIdEvento() == (p.mostrarIdEvento()))
+              return true;
 
-    public Producto buscarProductoPorMarcaModelo(Producto p){
+        return false;
+    }
+
+    public ArrayList<Producto> buscarProductoPorMarcaModelo(Producto p){
+        ArrayList<Integer> posiciones = new ArrayList<Integer>();
+        ArrayList<Producto> lista = new ArrayList<Producto>();
+
+        //busco coincidencias
         for (int i = 0; i< app.getListaProductos().size(); i++){
             if (p.mostrarMarca().equals(app.getListaProductos().get(i).mostrarMarca()))
                 if (p.mostrarmodelo().equals(app.getListaProductos().get(i).mostrarmodelo()))
-                    return app.getListaProductos().get(i);
+                    lista.add(app.getListaProductos().get(i));
         }
-        return null;
+
+        //elimino las concidencias que estan como favoritas
+        for (int j=0; j< usuario.getListaFavoritos().size();j++)
+            for (int q =0 ; q<lista.size(); q++)
+                if (usuario.getListaFavoritos().get(j).mostrarIdEvento() == lista.get(q).mostrarIdEvento())
+                    lista.remove(q);
+
+
+        return lista;
+    }
+    public ArrayList<Producto> buscarProdParaNotificar(){
+        ArrayList<Integer> posiciones = new ArrayList<Integer>();
+
+        ArrayList<Producto> listProdNoti = new ArrayList<Producto>();
+        for (int i= 0; i< usuario.getListaFavoritos().size() ; i++){
+            if (buscarProductoPorMarcaModelo(usuario.getListaFavoritos().get(i)) !=null){
+                ArrayList<Producto> temp =  buscarProductoPorMarcaModelo(usuario.getListaFavoritos().get(i));
+                for (int j=0; j<temp.size(); j++)
+                    listProdNoti.add(temp.get(j));
+            }
+        }
+
+
+        for (int j = 0; j<usuario.getNotificaciones().size() ; j++){
+            for (int q = 0 ; q<listProdNoti.size(); q++){
+                if (usuario.getNotificaciones().get(j).mostrarIdEvento() == listProdNoti.get(q).mostrarIdEvento())
+                    listProdNoti.remove(q);
+            }
+        }
+
+        return listProdNoti;
     }
 
 
@@ -443,40 +488,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         startActivity(intent);
     }
 
-    public ArrayList<Producto> buscarProdParaNotificar(){
-
-        ArrayList<Producto> listProdNoti = new ArrayList<Producto>();
-        for (int i= 0; i< usuario.getListaFavoritos().size() ; i++){
-            if (buscarProductoPorMarcaModelo(usuario.getListaFavoritos().get(i)) !=null){
-                listProdNoti.add(buscarProductoPorMarcaModelo(usuario.getListaFavoritos().get(i)));
-            }
-        }
-        return listProdNoti;
-    }
-
-    public void notificar(){
-        ArrayList<Producto> lista = buscarProdParaNotificar();
-
-        if (lista.size()>0){
-            Intent intent = new Intent(this,ListViewNotificacion.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,0);
-
-            //notificacion
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-            builder.setContentIntent(pendingIntent);
-            builder.setAutoCancel(true);
-            builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.logo));
-
-            builder.setContentTitle("Nuevos productos!");
-            builder.setContentText("Se han agregado productos de su interes");
-            builder.setSubText("Toca para ver los productos");
-
-            //Enviar notificacion
-            NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-            notificationManager.notify(NOTIFICACION_ID,builder.build());
-        }
-    }
-
     public void autoNotificaciones(){
         this.runOnUiThread(notificacionesRunnable);
     }
@@ -497,26 +508,36 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private Runnable notificacionesRunnable = new Runnable() {
         public void run() {
-            ArrayList<Producto> lista = buscarProdParaNotificar();
+            ArrayList<Producto> coicidencias = buscarProdParaNotificar();
 
-            if (lista.size()>0){
-                Intent intent = new Intent(getApplication(),ListViewNotificacion.class);
-                PendingIntent pendingIntent = PendingIntent.getActivity(getApplication(),0,intent,0);
+            if (coicidencias.size()>0){
+
+                for (int i=0;i<coicidencias.size();i++)
+                    usuario.getNotificaciones().add(coicidencias.get(i));
+
+                Intent intent = new Intent(MapsActivity.this,ListViewNotificacion.class);
+                intent.putExtra("noti",usuario);
+                PendingIntent pendingIntent = PendingIntent.getActivity(MapsActivity.this,0,intent,PendingIntent.FLAG_CANCEL_CURRENT);
 
                 //notificacion
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplication());
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(MapsActivity.this);
                 builder.setContentIntent(pendingIntent);
                 builder.setAutoCancel(true);
+                builder.setSmallIcon(android.R.drawable.ic_dialog_info);
                 builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.logo));
 
+                Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                builder.setSound(sound);
+
                 builder.setContentTitle("Nuevos productos!");
-                builder.setContentText("Se han agregado productos de su interes");
-                builder.setSubText("Toca para ver los productos");
+                builder.setContentText("Productos de su interes: "+coicidencias.size());
+                builder.setSubText("toque para ver los productos, apresurate !");
 
                 //Enviar notificacion
-                NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+                NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
                 notificationManager.notify(NOTIFICACION_ID,builder.build());
             }
+            coicidencias=null;
         }
     };
 }
