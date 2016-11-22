@@ -61,7 +61,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private int flagfav=0; /// flag= true es favorito , false no es favorito
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -49,4 +49,5 @@
         android:layout_above="@+id/usuario"
         android:layout_alignStart="@+id/precio"
         android:layout_marginBottom="15dp" />
+
 </RelativeLayout>

@@ -15,28 +15,10 @@
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="2.31">
-
-        <TextView
-            android:text="Agregados Recientemente"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView14"
-            android:textAppearance="@style/TextAppearance.AppCompat.Button" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="48dp"
-        android:layout_above="@+id/gomap"
+        android:layout_weight="2.31"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentStart="true">
 
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="361dp"
-            android:id="@+id/listViewInicio" />
     </LinearLayout>
 
     <Button
@@ -58,5 +40,31 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:onClick="irMapa"/>
+
+    <TextView
+        android:text="Agregados Recientemente"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:id="@+id/textView14"
+        android:textAppearance="@style/TextAppearance.AppCompat.Button"
+        android:layout_alignBottom="@+id/linearLayout2"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="18dp" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="25dp"
+        android:weightSum="1"
+        android:layout_below="@+id/linearLayout2"
+        android:layout_alignParentStart="true">
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="371dp"
+            android:id="@+id/listViewInicio"
+            android:layout_weight="0.47" />
+    </LinearLayout>
 
 </RelativeLayout>

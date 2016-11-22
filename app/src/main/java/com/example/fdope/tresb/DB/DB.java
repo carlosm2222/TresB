@@ -12,7 +12,7 @@ public class DB implements Runnable {
 
     private Connection c;
     private String host = "190.44.96.70";
-    private String db = "tresb2.0";
+    private String db = "tresb3.0";
     private int port = 5432;
     private String user = "leandro";
     private String pass = "tresb123";
