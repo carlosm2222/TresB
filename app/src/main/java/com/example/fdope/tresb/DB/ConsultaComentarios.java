@@ -25,11 +25,11 @@ public class ConsultaComentarios {
             //CallableStatement oCall = c.prepareCall("{call getINFO()}");
             //ResultSet resultado = oCall.executeQuery();
 
-            ResultSet resultado = base.select("SELECT comentario, usuario,megusta FROM comentario WHERE id_evento='"+idEvento+"';");
+            ResultSet resultado = base.select("SELECT *from getinfocomentario('"+idEvento+"');");
             if(resultado !=null){
 
                 while(resultado.next()){
-                    Comentario coment = new Comentario(resultado.getString("usuario"),resultado.getString("comentario"),resultado.getBoolean("megusta"));
+                    Comentario coment = new Comentario(resultado.getString("usuariocomentarista"),resultado.getString("comentario"),resultado.getBoolean("megusta"));
                     listap.add(coment);
 
                 }
@@ -49,11 +49,11 @@ public class ConsultaComentarios {
         //CallableStatement oCall = c.prepareCall("{call getINFO()}");
         //ResultSet resultado = oCall.executeQuery();
 
-        ResultSet resultado = base.select("INSERT INTO comentario(id_evento,comentario,usuario,megusta) VALUES ('"+idEvento+"','"+comentario+"','"+username+"','"+flag+"');");
+        ResultSet resultado = base.select("SELECT * FROM agregarcomentario('"+idEvento+"','"+comentario+"','"+username+"','"+flag+"');");
         if (resultado != null) {
-            return false;
-        }else
             return true;
+        }else
+            return false;
     }
 }
 
