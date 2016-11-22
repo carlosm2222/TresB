@@ -137,7 +137,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         cargarDatos();
         miUbicacion();
         obtenerFavs();
-        usuario.setNotificaciones(buscarProdParaNotificar());
+       // usuario.setNotificaciones(buscarProdParaNotificar());
 
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {

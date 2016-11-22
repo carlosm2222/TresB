@@ -130,7 +130,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void nextActivity(Usuario u) {
-        Intent main = new Intent(this, MapsActivity.class);
+        Intent main = new Intent(this, InicioActivity.class);
         main.putExtra("UsuarioIn",u);
         startActivity(main);
         finish();

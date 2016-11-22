@@ -112,6 +112,10 @@ public class ConsultasProductos {
         return 0;
     }
 
+    public static ArrayList<Producto> listarRecientes(){
+        return null;
+    }
+
 
 }
 
