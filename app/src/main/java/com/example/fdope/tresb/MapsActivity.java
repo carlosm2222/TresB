@@ -121,7 +121,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void run() {
                 //La función a ejecutar
                 autoRefresh();
-               //autoNotificaciones();
+                autoNotificaciones();
 
             }
         }, 30000, 120000);
@@ -144,8 +144,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         cargarDatos();
         miUbicacion();
         obtenerFavs();
-       // usuario.setNotificaciones(buscarProdParaNotificar());
-
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
@@ -286,7 +284,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-
     private boolean comparar(Producto producto, Filtro filtro) {
 
         if ((p.mostrarMarca().equals(filtro.getMarca())))
@@ -416,45 +413,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public ArrayList<Producto> buscarProductoPorMarcaModelo(Producto p){
-        ArrayList<Integer> posiciones = new ArrayList<Integer>();
         ArrayList<Producto> lista = new ArrayList<Producto>();
 
         //busco coincidencias
         for (int i = 0; i< app.getListaProductos().size(); i++){
             if (p.mostrarMarca().equals(app.getListaProductos().get(i).mostrarMarca()))
-                if (p.mostrarmodelo().equals(app.getListaProductos().get(i).mostrarmodelo()))
+                if ( (p.mostrarmodelo().equals(app.getListaProductos().get(i).mostrarmodelo())) && ( p.mostrarIdEvento() != app.getListaProductos().get(i).mostrarIdEvento() ) )
                     lista.add(app.getListaProductos().get(i));
         }
-
-        //elimino las concidencias que estan como favoritas
-        for (int j=0; j< usuario.getListaFavoritos().size();j++)
-            for (int q =0 ; q<lista.size(); q++)
-                if (usuario.getListaFavoritos().get(j).mostrarIdEvento() == lista.get(q).mostrarIdEvento())
-                    lista.remove(q);
-
 
         return lista;
     }
     public ArrayList<Producto> buscarProdParaNotificar(){
-        ArrayList<Integer> posiciones = new ArrayList<Integer>();
-
         ArrayList<Producto> listProdNoti = new ArrayList<Producto>();
+
         for (int i= 0; i< usuario.getListaFavoritos().size() ; i++){
-            if (buscarProductoPorMarcaModelo(usuario.getListaFavoritos().get(i)) !=null){
-                ArrayList<Producto> temp =  buscarProductoPorMarcaModelo(usuario.getListaFavoritos().get(i));
+            ArrayList<Producto> temp =  buscarProductoPorMarcaModelo(usuario.getListaFavoritos().get(i));
+            if (temp !=null){
                 for (int j=0; j<temp.size(); j++)
                     listProdNoti.add(temp.get(j));
             }
         }
-
-
-        for (int j = 0; j<usuario.getNotificaciones().size() ; j++){
-            for (int q = 0 ; q<listProdNoti.size(); q++){
-                if (usuario.getNotificaciones().get(j).mostrarIdEvento() == listProdNoti.get(q).mostrarIdEvento())
-                    listProdNoti.remove(q);
-            }
-        }
-
         return listProdNoti;
     }
 
@@ -507,7 +486,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         this.runOnUiThread(notificacionesRunnable);
     }
 
-
     public void autoRefresh() {
         this.runOnUiThread(refreshRunnable);
     }
@@ -523,6 +501,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private Runnable notificacionesRunnable = new Runnable() {
         public void run() {
+
             ArrayList<Producto> coicidencias = buscarProdParaNotificar();
 
             if (coicidencias.size()>0){
@@ -532,6 +511,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 Intent intent = new Intent(MapsActivity.this,ListViewNotificacion.class);
                 intent.putExtra("noti",usuario);
+                intent.putExtra("array",coicidencias);
                 PendingIntent pendingIntent = PendingIntent.getActivity(MapsActivity.this,0,intent,PendingIntent.FLAG_CANCEL_CURRENT);
 
                 //notificacion
