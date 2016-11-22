@@ -108,6 +108,7 @@ public class Usuario implements Parcelable {
         dest.writeString(this.password);
         dest.writeString(this.username);
         dest.writeList(this.listaFavoritos);
+        dest.writeList(this.notificaciones);
         dest.writeDouble(this.rating);
     }
 
@@ -119,6 +120,8 @@ public class Usuario implements Parcelable {
         this.username = in.readString();
         this.listaFavoritos = new ArrayList<Producto>();
         in.readList(this.listaFavoritos, Producto.class.getClassLoader());
+        this.notificaciones = new ArrayList<Producto>();
+        in.readList(this.notificaciones, Producto.class.getClassLoader());
         this.rating = in.readDouble();
     }
 

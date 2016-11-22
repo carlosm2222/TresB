@@ -58,10 +58,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Producto p,prodMomentaneo;
     private Usuario usuario;
     boolean isOpen = false;
+    private boolean flagFiltro = false;
     FloatingActionMenu materialDesignFAM;
     FloatingActionButton floatingActionButton1, floatingActionButton2, floatingActionButton3,floatingActionButton4,floatingActionButton5;
     private int flagfav=0; /// flag= true es favorito , false no es favorito
-    private boolean filtroAplicado=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,13 +83,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
         floatingActionButton2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (filtroAplicado==false)
+                if (flagFiltro==false)
                 filtrarProducto(v);
-                else if (filtroAplicado==true) {
+                else if (flagFiltro==true) {
                     cargarDatos();
                     floatingActionButton2.setImageResource(R.drawable.ic_search_black_24dp);
                     floatingActionButton2.setLabelText("Filtrar");
-                    filtroAplicado=false;
+                    flagFiltro=false;
                 }
             }
         });
@@ -120,7 +120,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void run() {
                 //La función a ejecutar
-                autoRefresh();
+                if ( !flagFiltro)
+                    autoRefresh();
                 autoNotificaciones();
 
             }
@@ -144,6 +145,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         cargarDatos();
         miUbicacion();
         obtenerFavs();
+        usuario.setNotificaciones(new ArrayList<Producto>());
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
@@ -275,7 +277,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     agregarMarcadorProductos(lista.get(i));
                 }
                 Toast.makeText(this,"Filtro aplicado.",Toast.LENGTH_SHORT).show();
-                filtroAplicado=true;
+                flagFiltro = true;
                 floatingActionButton2.setImageResource(R.drawable.ic_equis);
                 floatingActionButton2.setLabelText("Deshacer Filtro");
             }else if (lista.isEmpty())
@@ -339,6 +341,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         int respuestaFiltro=0;
         Intent intent = new Intent(this, ActivityFiltrarProductos.class);
         startActivityForResult(intent,request_code_filtro);
+        flagFiltro=false;
     }
 
     private void actualizarUbicacion(Location location) {
@@ -404,12 +407,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         return null;
     }
-    public boolean buscarEnNotificaciones(Producto p){
+    public Producto buscarEnNotificaciones(Producto p){
         for (int i=0; i<usuario.getNotificaciones().size() ; i++)
           if (usuario.getNotificaciones().get(i).mostrarIdEvento() == (p.mostrarIdEvento()))
-              return true;
+              return usuario.getNotificaciones().get(i);
 
-        return false;
+        return null;
     }
 
     public ArrayList<Producto> buscarProductoPorMarcaModelo(Producto p){
@@ -468,7 +471,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-    //AGREGA ESTE MÉTODO A TU CODIGO. COPIA EL LAYOUR DE ESTA ACTIVIDAD
     public void logout(View view){
         LoginManager.getInstance().logOut();
         Intent login = new Intent(this, LoginActivity.class);
@@ -503,11 +505,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         public void run() {
 
             ArrayList<Producto> coicidencias = buscarProdParaNotificar();
+            for (int i = 0; i < coicidencias.size(); i++) {
+                if (buscarEnNotificaciones(coicidencias.get(i)) == null)
+                    usuario.getNotificaciones().add(coicidencias.get(i));
+                else
+                    coicidencias.remove(i);
+            }
 
             if (coicidencias.size()>0){
-
-                for (int i=0;i<coicidencias.size();i++)
-                    usuario.getNotificaciones().add(coicidencias.get(i));
 
                 Intent intent = new Intent(MapsActivity.this,ListViewNotificacion.class);
                 intent.putExtra("noti",usuario);
