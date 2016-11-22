@@ -20,6 +20,8 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.view.View;
 import android.widget.Toast;
+
+import com.example.fdope.tresb.Clases.Filtro;
 import com.example.fdope.tresb.Clases.TresB;
 import com.example.fdope.tresb.DB.ConsultasProductos;
 import com.example.fdope.tresb.DB.ConsultasUsuarios;
@@ -57,9 +59,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Usuario usuario;
     boolean isOpen = false;
     FloatingActionMenu materialDesignFAM;
-    FloatingActionButton floatingActionButton1, floatingActionButton2, floatingActionButton3,floatingActionButton4;
+    FloatingActionButton floatingActionButton1, floatingActionButton2, floatingActionButton3,floatingActionButton4,floatingActionButton5;
     private int flagfav=0; /// flag= true es favorito , false no es favorito
-
+    private boolean filtroAplicado=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,8 +83,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
         floatingActionButton2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                if (filtroAplicado==false)
                 filtrarProducto(v);
-
+                else if (filtroAplicado==true) {
+                    cargarDatos();
+                    floatingActionButton2.setImageResource(R.drawable.ic_search_black_24dp);
+                    floatingActionButton2.setLabelText("Filtrar");
+                    filtroAplicado=false;
+                }
             }
         });
         floatingActionButton3.setOnClickListener(new View.OnClickListener() {
@@ -261,13 +269,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void filtrarProductos(Filtro filtro) {
-        if (this.app.getListaProductos() != null) {
-            mMap.clear();
-            for (int i = 0; i < this.app.getListaProductos().size(); i++) {
-                if (comparar(app.getListaProductos().get(i), filtro))
-                    agregarMarcadorProductos(app.getListaProductos().get(i));
-            }
-        }
+
+            ArrayList<Producto> lista = ConsultasProductos.listarFiltrados(filtro);
+            if (!lista.isEmpty()){
+                mMap.clear();
+                for (int i = 0; i < lista.size(); i++) {
+                    agregarMarcadorProductos(lista.get(i));
+                }
+                Toast.makeText(this,"Filtro aplicado.",Toast.LENGTH_SHORT).show();
+                filtroAplicado=true;
+                floatingActionButton2.setImageResource(R.drawable.ic_equis);
+                floatingActionButton2.setLabelText("Deshacer Filtro");
+            }else if (lista.isEmpty())
+                Toast.makeText(this, "No hay ofertas con esas características", Toast.LENGTH_SHORT).show();
+
+
     }
 
 

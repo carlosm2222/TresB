@@ -1,4 +1,4 @@
-package com.example.fdope.tresb;
+package com.example.fdope.tresb.Clases;
 
 import android.os.Parcel;
 import android.os.Parcelable;

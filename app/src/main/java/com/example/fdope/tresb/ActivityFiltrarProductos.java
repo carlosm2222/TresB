@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.fdope.tresb.Clases.Filtro;
+
 public class ActivityFiltrarProductos extends AppCompatActivity {
     private EditText inputPrecioMin , inputPrecioMax;
     private Spinner spinnerTipo, spinnerMarca;
@@ -69,7 +71,6 @@ public class ActivityFiltrarProductos extends AppCompatActivity {
         Filtro filtro = new Filtro(marca,tipo,precioMax,precioMin);
         Intent intent = getIntent();
         intent.putExtra("filtro",filtro);
-        Toast.makeText(this,"Aplicando Filtros",Toast.LENGTH_SHORT).show();
         setResult(FILTRO_OK,intent);
         finish();
     }

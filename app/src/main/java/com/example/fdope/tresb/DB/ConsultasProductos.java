@@ -2,37 +2,17 @@ package com.example.fdope.tresb.DB;
 
 import com.example.fdope.tresb.Factoria.Celular;
 import com.example.fdope.tresb.Factoria.Producto;
+import com.example.fdope.tresb.Clases.Filtro;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.ImageReader;
 
-import com.example.fdope.tresb.Factoria.Celular;
-import com.example.fdope.tresb.Factoria.Producto;
-import com.google.android.gms.ads.formats.NativeAd;
-import com.google.android.gms.maps.model.LatLng;
-
-
-import java.io.BufferedInputStream;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class ConsultasProductos {
 
@@ -117,6 +97,41 @@ public class ConsultasProductos {
     }
 
 
+    public static ArrayList<Producto> listarFiltrados(Filtro filtro) {
+        DB db=new DB();
+        Connection c =db.connect();
+
+        try {
+            ResultSet resultado = db.execute("SELECT * FROM getfiltroproducto('"+filtro.getMarca()+"','"+Integer.parseInt(filtro.getPrecioMin())+"','"+Integer.parseInt(filtro.getPrecioMax())+"');");
+            if(resultado !=null){
+                ArrayList<Producto> lista = new ArrayList<Producto>();
+                while(resultado.next()) {
+                    String user = resultado.getString("usuario");
+                    double lat = resultado.getDouble("latitud");
+                    double lng = resultado.getDouble("longitud");
+                    LatLng latLng = new LatLng(lat,lng);
+                    int largo = resultado.getInt("largo");
+                    //  byte img[]=new byte[largo];
+                    byte[] img = resultado.getBytes("archivo");
+                    String tipo = resultado.getString("nombre_categoria");
+                    String marc = resultado.getString("marca");
+                    int precio = resultado.getInt("precio");
+                    String mode = resultado.getString("modelo");
+                    String prov = resultado.getString("proveedor");
+                    int idevento= resultado.getInt("id_evento");
+                    Celular producto = new Celular(user,tipo,marc,mode,precio,prov,latLng,img,largo,idevento);
+                    lista.add(producto);
+                }
+                return lista;
+            }
+
+        }catch (Exception e){
+
+        }
+        db.desconectarBd();
+
+       return new ArrayList<Producto>();
+    }
 }
 
 

@@ -75,4 +75,5 @@
             fab:fab_label="Salir"
             fab:fab_size="mini" />
     </com.github.clans.fab.FloatingActionMenu>
+
 </RelativeLayout>
