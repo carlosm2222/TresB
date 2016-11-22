@@ -21,13 +21,13 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
-        android:id="@+id/comentario"
-        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/usuario"
         android:layout_alignParentStart="true"
-        android:layout_height="100dp"
-        android:background="@drawable/borde"
-        android:layout_width="230dp" />
+        android:layout_marginTop="12dp"
+        android:id="@+id/fecha"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -40,5 +40,14 @@
         android:id="@+id/like"
         />
 
+    <TextView
+        android:id="@+id/comentario"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:layout_height="100dp"
+        android:background="@drawable/borde"
+        android:layout_width="230dp"
+        android:layout_below="@+id/fecha"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="13dp" />
 
 </RelativeLayout>

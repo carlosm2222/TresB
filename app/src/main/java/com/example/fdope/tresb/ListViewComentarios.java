@@ -28,7 +28,7 @@ public class ListViewComentarios extends AppCompatActivity {
     public ListView lista;
     private ArrayList<Comentario> list;
     private EditText inputComentario;
-    private boolean flag;
+    private boolean flag,pressed=false;
     private ImageButton like, dislike;
    // private Button enviar;
     private String username;
@@ -74,28 +74,32 @@ public class ListViewComentarios extends AppCompatActivity {
         Button enviar = (Button)findViewById(R.id.enviarcomentario);
         String input = this.inputComentario.getText().toString();
 
-        if (input.equals("")) {
+        if (input.equals("")&&(pressed==false)) {
             enviar.setEnabled(false);
-        } else {
+        } else if (input.equals("")&&(pressed==true)){
+            enviar.setEnabled(false);
+        }else
             enviar.setEnabled(true);
-
-        }
     }
 
     public void accionBotonLike (View v){
         flag=true;
+        pressed=true;
         //Toast.makeText(this,"Boton like",Toast.LENGTH_SHORT).show();
         like.setImageResource(R.mipmap.ic_like_pressed);
         dislike.setImageResource(R.mipmap.ic_dislike);
         inputComentario.setHint("Dinos por qué te gusta esta oferta...");
+        checkFieldsForEmptyValues();
     }
 
     public void accionBotonDislike (View v){
         flag=false;
+        pressed=true;
         //Toast.makeText(this,"Boton dislike",Toast.LENGTH_SHORT).show();
         like.setImageResource(R.mipmap.ic_like);
         dislike.setImageResource(R.mipmap.ic_dislike_pressed);
         inputComentario.setHint("Dinos por qué NO te gusta esta oferta...");
+        checkFieldsForEmptyValues();
     }
 
     public void enviarComentario (View v){

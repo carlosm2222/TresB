@@ -60,9 +60,11 @@ public class ComentarioAdapter extends ArrayAdapter<Comentario> {
         Comentario c = items.get(position);
 
         TextView usuario = (TextView)rowView.findViewById(R.id.usuario);
+        TextView fecha = (TextView)rowView.findViewById(R.id.fecha);
         TextView comentario = (TextView)rowView.findViewById(R.id.comentario);
         ImageView like = (ImageView)rowView.findViewById(R.id.like);
         usuario.setText("Publicado por: "+c.getUsuario());
+        fecha.setText("Fecha de publicación: "+c.getFechaPublicacion());
         comentario.setText(c.getComentario());
         if(c.isLike()){
             like.setImageResource(R.mipmap.ic_like);

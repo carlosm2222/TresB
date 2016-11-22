@@ -11,10 +11,12 @@ public class Comentario {
     private String usuario;
     private String comentario;
     private boolean like;
-    public Comentario(String usuario,String comentario, boolean like){
+    private String fechaPublicacion;
+    public Comentario(String usuario, String comentario, boolean like, String fechaPublicacion){
         this.usuario=usuario;
         this.comentario=comentario;
         this.like=like;
+        this.fechaPublicacion=fechaPublicacion;
     }
 
 
@@ -33,6 +35,14 @@ public class Comentario {
 
     public void setComentario(String comentario) {
         this.comentario = comentario;
+    }
+
+    public String getFechaPublicacion() {
+        return fechaPublicacion;
+    }
+
+    public void setFechaPublicacion(String fechaPublicacion) {
+        this.fechaPublicacion = fechaPublicacion;
     }
 
     public boolean isLike() {

@@ -9,6 +9,8 @@ import com.google.android.gms.maps.model.LatLng;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 /**
@@ -29,7 +31,9 @@ public class ConsultaComentarios {
             if(resultado !=null){
 
                 while(resultado.next()){
-                    Comentario coment = new Comentario(resultado.getString("usuariocomentarista"),resultado.getString("comentario"),resultado.getBoolean("megusta"));
+                    Timestamp fechaPublicacion= resultado.getTimestamp("fecha_publicacion");
+                    String fecha = new SimpleDateFormat("MM/dd/yyyy HH:mm").format(fechaPublicacion);
+                    Comentario coment = new Comentario(resultado.getString("usuariocomentarista"),resultado.getString("comentario"),resultado.getBoolean("megusta"),fecha);
                     listap.add(coment);
 
                 }
