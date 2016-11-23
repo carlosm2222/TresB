@@ -22,7 +22,6 @@ public class ListViewNotificacion extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         if (bundle!=null) {
             Usuario usuario = bundle.getParcelable("noti");
-            ArrayList<Producto> listaNotificaciones = bundle.getParcelable("array");
             if (usuario != null) {
                if (usuario.getNotificaciones() != null){
 

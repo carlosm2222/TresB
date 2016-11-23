@@ -122,6 +122,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 //La función a ejecutar
                 if ( !flagFiltro)
                     autoRefresh();
+
                 autoNotificaciones();
 
             }
@@ -131,8 +132,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Bundle inBundle = getIntent().getExtras();//agregar desde aqui
         if (inBundle != null) {
             usuario = inBundle.getParcelable("UsuarioIn");
-            if (usuario!=null)
+            if (usuario!=null) {
                 Toast.makeText(this, "Bienvenido " + usuario.getNombre(), Toast.LENGTH_SHORT).show();
+            }
             else
                 Toast.makeText(this, "NOSE PUDO OBTENER USUARIIO ", Toast.LENGTH_SHORT).show();
         }
@@ -199,12 +201,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (flagfav == 0 && flag==true){ /// SI NO ERA FAVORITO
             Toast.makeText(this,"Agregado a favorito",Toast.LENGTH_SHORT).show();
             agregarFavorito(prodMomentaneo);
+            refresh();
         }
         if(flag==false)
         {
             Toast.makeText(this,"Eliminado de favorito",Toast.LENGTH_SHORT).show();
             eliminarFavorito(prodMomentaneo);
             flagfav=0;
+            refresh();
         }
     }
 
@@ -222,12 +226,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         dialogFragment.show(fm, "Sample Fragment");
     }
 
-    public void manualRefresh(View view) {
+    public void refresh() {
         mMap.clear();
-        Toast.makeText(this, " Actualizando mapa ", Toast.LENGTH_LONG).show();
         this.app.getListaProductos().clear();
         this.app.setListaSmartphone(null);
-        miUbicacion();
         cargarDatos();
     }
 
@@ -415,13 +417,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return null;
     }
 
+
     public ArrayList<Producto> buscarProductoPorMarcaModelo(Producto p){
         ArrayList<Producto> lista = new ArrayList<Producto>();
 
         //busco coincidencias
         for (int i = 0; i< app.getListaProductos().size(); i++){
             if (p.mostrarMarca().equals(app.getListaProductos().get(i).mostrarMarca()))
-                if ( (p.mostrarmodelo().equals(app.getListaProductos().get(i).mostrarmodelo())) && ( p.mostrarIdEvento() != app.getListaProductos().get(i).mostrarIdEvento() ) )
+                if ( (p.mostrarmodelo().equals(app.getListaProductos().get(i).mostrarmodelo())) && ( p.mostrarIdEvento() != app.getListaProductos().get(i).mostrarIdEvento() )  )
                     lista.add(app.getListaProductos().get(i));
         }
 
@@ -440,20 +443,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return listProdNoti;
     }
 
-
     public boolean agregarFavorito(Producto p){
         if (buscarFav(p) == null){ // si no esta repetido se agrega
-            usuario.getListaFavoritos().add(p);
-            ConsultasUsuarios.agregarFav(usuario.getUsername(),p.mostrarIdEvento());
-            return true;
+            if ( ConsultasUsuarios.agregarFav(usuario.getUsername(),p.mostrarIdEvento()) )
+            {
+                usuario.getListaFavoritos().add(p);
+                return true;
+            }
         }
         return false;
     }
     public boolean eliminarFavorito(Producto p){
         if (buscarFav(p)!=null){
-            usuario.getListaFavoritos().remove(p);
-            ConsultasUsuarios.eliminarFav(usuario.getUsername(),p.mostrarIdEvento());
-            return true;
+            if ( ConsultasUsuarios.eliminarFav(usuario.getUsername(),p.mostrarIdEvento()) ) {
+                usuario.getListaFavoritos().remove(p);
+                return true;
+            }
+
         }
         return false;
     }
@@ -469,8 +475,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         usuario.setListaFavoritos(favs);
     }
-
-
+    
     public void logout(View view){
         LoginManager.getInstance().logOut();
         Intent login = new Intent(this, LoginActivity.class);
@@ -505,18 +510,42 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         public void run() {
 
             ArrayList<Producto> coicidencias = buscarProdParaNotificar();
-            for (int i = 0; i < coicidencias.size(); i++) {
-                if (buscarEnNotificaciones(coicidencias.get(i)) == null)
-                    usuario.getNotificaciones().add(coicidencias.get(i));
-                else
-                    coicidencias.remove(i);
-            }
 
-            if (coicidencias.size()>0){
+            for (int i = 0; i < coicidencias.size(); i++) {
+
+                if ( !ConsultasUsuarios.consultarNotificacion(coicidencias.get(i).mostrarIdEvento(),usuario.getUsername()) ) {
+                    if (ConsultasUsuarios.agregarNotificacion(coicidencias.get(i).mostrarIdEvento(), usuario.getUsername())){
+
+                        usuario.getNotificaciones().add(coicidencias.get(i));
+                        Intent intent = new Intent(MapsActivity.this, ListViewNotificacion.class);
+                        intent.putExtra("noti", usuario);
+                        PendingIntent pendingIntent = PendingIntent.getActivity(MapsActivity.this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+                        //notificacion
+                        NotificationCompat.Builder builder = new NotificationCompat.Builder(MapsActivity.this);
+                        builder.setContentIntent(pendingIntent);
+                        builder.setAutoCancel(true);
+                        builder.setSmallIcon(android.R.drawable.ic_dialog_info);
+                        builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.logo));
+
+                        Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                        builder.setSound(sound);
+
+                        builder.setContentTitle("Nuevos productos!");
+                        builder.setContentText("Productos de su interes: " + usuario.getNotificaciones().get(i).mostrarMarca() + " " + usuario.getNotificaciones().get(i).mostrarmodelo());
+                        builder.setSubText("toque para ver los productos, apresurate !");
+
+                        //Enviar notificacion
+                        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                        notificationManager.notify(NOTIFICACION_ID, builder.build());
+                    }
+                }
+            }
+/*
+            if (usuario.getNotificaciones().size()>0){
 
                 Intent intent = new Intent(MapsActivity.this,ListViewNotificacion.class);
                 intent.putExtra("noti",usuario);
-                intent.putExtra("array",coicidencias);
                 PendingIntent pendingIntent = PendingIntent.getActivity(MapsActivity.this,0,intent,PendingIntent.FLAG_CANCEL_CURRENT);
 
                 //notificacion
@@ -530,13 +559,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 builder.setSound(sound);
 
                 builder.setContentTitle("Nuevos productos!");
-                builder.setContentText("Productos de su interes: "+coicidencias.size());
+                builder.setContentText("Productos de su interes: "+usuario.getNotificaciones().size());
                 builder.setSubText("toque para ver los productos, apresurate !");
 
                 //Enviar notificacion
                 NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
                 notificationManager.notify(NOTIFICACION_ID,builder.build());
             }
+            */
             coicidencias=null;
         }
     };

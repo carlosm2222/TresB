@@ -152,4 +152,62 @@ public class ConsultasUsuarios {
         }
         return favoritos;
     }
+
+    public static boolean agregarNotificacion(int idEvento, String user){
+        DB db=new DB();
+        Connection c =db.connect();
+        try {
+            CallableStatement oCall = c.prepareCall("{ ? = call agregarnotificacion(?,?) }");
+            oCall.registerOutParameter(1, Types.BOOLEAN);
+            oCall.setString(3,user);
+            oCall.setInt(2,idEvento);
+            oCall.execute();
+
+            return   oCall.getBoolean(1);
+
+        }catch (Exception e){
+
+        }
+        return false;
+    }
+
+    public static boolean eliminarNotificacion(int idEvento, String user){
+        DB db=new DB();
+        Connection c =db.connect();
+        try {
+            CallableStatement oCall = c.prepareCall("{ ? = call quitarnotificacion(?,?) }");
+            oCall.registerOutParameter(1, Types.BOOLEAN);
+            oCall.setString(3,user);
+            oCall.setInt(2,idEvento);
+            oCall.execute();
+
+            boolean resp = oCall.getBoolean(1);
+            return resp;
+
+        }catch (Exception e){
+
+        }
+        return false;
+    }
+
+    public static boolean consultarNotificacion(int idEvento, String user){
+        DB db=new DB();
+        Connection c =db.connect();
+        try {
+            CallableStatement oCall = c.prepareCall("{ ? = call saberestadonotificacion(?,?) }");
+            oCall.registerOutParameter(1, Types.BOOLEAN);
+            oCall.setString(3,user);
+            oCall.setInt(2,idEvento);
+            oCall.execute();
+
+            boolean resp = oCall.getBoolean(1);
+            return resp;
+
+        }catch (Exception e){
+
+        }
+        return false;
+    }
+
+
 }
