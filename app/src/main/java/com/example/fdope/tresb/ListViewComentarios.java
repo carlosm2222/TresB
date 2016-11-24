@@ -78,7 +78,9 @@ public class ListViewComentarios extends AppCompatActivity {
             enviar.setEnabled(false);
         } else if (input.equals("")&&(pressed==true)){
             enviar.setEnabled(false);
-        }else
+        }else if (!input.equals("")&&(pressed==false))
+            enviar.setEnabled(false);
+        else
             enviar.setEnabled(true);
     }
 
