@@ -1,11 +1,8 @@
 package com.example.fdope.tresb;
 
-import android.app.Activity;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,7 +14,7 @@ public class ListviewFavoritos extends AppCompatActivity {
     private ListView lista;
     private TextView numeroFav;
     private FloatingActionButton botonFav;
-    private EnviarFlagFavorito mCallback;
+    private InfoPostDialog mCallback;
     private boolean flag;
 
 

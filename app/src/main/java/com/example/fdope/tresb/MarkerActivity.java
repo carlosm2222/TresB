@@ -8,14 +8,12 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,7 +23,7 @@ public class MarkerActivity extends DialogFragment {
     public String titulo,info;
     public boolean flag;
     FloatingActionButton botonFav,botonComentarios, botonDenuncia;
-    private EnviarFlagFavorito mCallback;
+    private InfoPostDialog mCallback;
     public int idEvento;
     private String username;
     @Override
@@ -33,7 +31,7 @@ public class MarkerActivity extends DialogFragment {
         super.onAttach(activity);
 
         try {
-            mCallback = (EnviarFlagFavorito) activity;
+            mCallback = (InfoPostDialog) activity;
         }
         catch (ClassCastException e) {
             Log.d("MyDialog", "Activity doesn't implement the ISelectedData interface");
@@ -73,14 +71,12 @@ public class MarkerActivity extends DialogFragment {
                 if (flag==false) {
                     botonFav.setImageResource(R.drawable.ic_star_black_24dp);
                     flag=true;
-                    mCallback.onFinishDialog(flag);
-                    //dismiss();
+                    mCallback.onFinishDialogFavorito(flag);
                 }
                 else{
                     botonFav.setImageResource(R.drawable.ic_star_border_black_24dp);
                     flag=false;
-                    mCallback.onFinishDialog(flag);
-                    //dismiss();
+                    mCallback.onFinishDialogFavorito(flag);
                 }
             }
         });

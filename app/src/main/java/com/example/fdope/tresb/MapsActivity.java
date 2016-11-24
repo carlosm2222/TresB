@@ -47,7 +47,7 @@ import java.util.TimerTask;
 import static com.example.fdope.tresb.ActivityFiltrarProductos.FILTRO_OK;
 
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,EnviarFlagFavorito {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,InfoPostDialog {
     private GoogleMap mMap;
     private double lat;
     private double lng;
@@ -196,7 +196,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     @Override // RECIBE EL ESTADO DEL CHECKBOX FAVORITOS
-    public void onFinishDialog(boolean flag) {
+    public void onFinishDialogFavorito(boolean flag) {
         // flag 0 neutro , 1 true,2 false
         if (flagfav == 0 && flag==true){ /// SI NO ERA FAVORITO
             Toast.makeText(this,"Agregado a favorito",Toast.LENGTH_SHORT).show();
@@ -210,6 +210,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             flagfav=0;
             refresh();
         }
+    }
+
+    @Override
+    public void onFinishDialogComparar() {
+        
     }
 
     private void mostrarMensaje(String titulo, String info, byte[] img, boolean flag, int idEvento) {

@@ -85,15 +85,14 @@
             android:layout_alignBottom="@+id/t5"
             android:layout_toEndOf="@+id/t7" />
 
-        <ImageButton
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
-            android:id="@+id/imageButton"
+        <Button
+            android:layout_width="26dp"
+            android:layout_height="24dp"
+            android:id="@+id/salirComparar"
             android:background="@drawable/mr_ic_close_light"
-            android:backgroundTint="?android:attr/colorControlActivated"
+            android:backgroundTint="@android:color/holo_red_dark"
             android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"/>
+            android:layout_alignParentEnd="true" />
 
     </RelativeLayout>
 
@@ -152,7 +151,7 @@
             android:layout_alignParentStart="true"
             android:layout_marginStart="54dp"
             android:layout_marginTop="184dp"
-            android:id="@+id/marca1" />
+            android:id="@+id/marca2" />
 
         <TextView
             android:layout_width="wrap_content"
