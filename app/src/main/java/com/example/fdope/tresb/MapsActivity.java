@@ -167,7 +167,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                             prodMomentaneo=app.getListaProductos().get(i);
                             b = app.getListaProductos().get(i).mostrarImagen();// se obtiene la imagen del producto
-                            prodFav = buscarFav(app.getListaProductos().get(i)); // SE OBTIENE PRODUCTO FAVORITO SI ESQUE EXISTE
+                            prodFav = usuario.buscarFav(app.getListaProductos().get(i)); // SE OBTIENE PRODUCTO FAVORITO SI ESQUE EXISTE
                             if (prodFav!=null) // SE SETEA EL FLAG A TRUE SI EXISTE FAV
                                 fav = true;
 
@@ -199,22 +199,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onFinishDialogFavorito(boolean flag) {
         // flag 0 neutro , 1 true,2 false
         if (flagfav == 0 && flag==true){ /// SI NO ERA FAVORITO
-            Toast.makeText(this,"Agregado a favorito",Toast.LENGTH_SHORT).show();
-            agregarFavorito(prodMomentaneo);
-            refresh();
+            if (usuario.agregarFavorito(prodMomentaneo)) {
+                Toast.makeText(this, "Agregado a favorito", Toast.LENGTH_SHORT).show();
+                refresh();
+            }
+            else
+                Toast.makeText(this, "Ha ocurrido un error al intentar agregarlo", Toast.LENGTH_SHORT).show();
         }
         if(flag==false)
         {
             Toast.makeText(this,"Eliminado de favorito",Toast.LENGTH_SHORT).show();
-            eliminarFavorito(prodMomentaneo);
-            flagfav=0;
-            refresh();
+            if(usuario.eliminarFavorito(prodMomentaneo)) {
+                Toast.makeText(this, "Eliminado de favorito", Toast.LENGTH_SHORT).show();
+                flagfav = 0;
+                refresh();
+            }
+            else
+                Toast.makeText(this, "Ha ocurrido un error al intentar eliminarlo", Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
     public void onFinishDialogComparar() {
-        
+
     }
 
     private void mostrarMensaje(String titulo, String info, byte[] img, boolean flag, int idEvento) {
@@ -315,20 +322,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void agregarMarcado(Double lat, Double lng) {
         LatLng coordenadas = new LatLng(lat, lng);
         CameraUpdate miUbicacion = CameraUpdateFactory.newLatLngZoom(coordenadas, 16);
-        /*if (marcador != null)
-            marcador.remove();*/
-        /*marcador = mMap.addMarker(new MarkerOptions().
-                position(coordenadas).
-                title(this.firstName).
-                icon(BitmapDescriptorFactory.fromResource(R.mipmap.yop)));*/
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
         mMap.setMyLocationEnabled(true);
@@ -388,6 +382,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,150000,0,locListener);
     }
 
+    public void logout(View view){
+        LoginManager.getInstance().logOut();
+        Intent login = new Intent(this, LoginActivity.class);
+        startActivity(login);
+        finish();
+    }
+
+    public void ventanaFav(View view){
+        Intent intent = new Intent(this,ListviewFavoritos.class);
+        intent.putExtra("user",usuario);
+        startActivity(intent);
+    }
+
     public void cargarDatos() {
         try {
             // obtendo la lista de productos de la bd
@@ -402,26 +409,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
     }
-
-    public Producto buscarFav(Producto p){
-        for (int i=0; i<usuario.getListaFavoritos().size() ; i++){
-           if (usuario.getListaFavoritos().get(i).mostrarCategoria().equals(p.mostrarCategoria()))
-                if (usuario.getListaFavoritos().get(i).coordenadasProducto().latitude == p.coordenadasProducto().latitude && usuario.getListaFavoritos().get(i).coordenadasProducto().longitude == p.coordenadasProducto().longitude)
-                     if (usuario.getListaFavoritos().get(i).mostrarmodelo().equals(p.mostrarmodelo()))
-                         if (usuario.getListaFavoritos().get(i).mostrarMarca().equals(p.mostrarMarca()))
-                             if (usuario.getListaFavoritos().get(i).mostrarPrecio() == p.mostrarPrecio())
-                                    return usuario.getListaFavoritos().get(i);
-        }
-        return null;
-    }
-    public Producto buscarEnNotificaciones(Producto p){
-        for (int i=0; i<usuario.getNotificaciones().size() ; i++)
-          if (usuario.getNotificaciones().get(i).mostrarIdEvento() == (p.mostrarIdEvento()))
-              return usuario.getNotificaciones().get(i);
-
-        return null;
-    }
-
 
     public ArrayList<Producto> buscarProductoPorMarcaModelo(Producto p){
         ArrayList<Producto> lista = new ArrayList<Producto>();
@@ -448,29 +435,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return listProdNoti;
     }
 
-    public boolean agregarFavorito(Producto p){
-        if (buscarFav(p) == null){ // si no esta repetido se agrega
-            if ( ConsultasUsuarios.agregarFav(usuario.getUsername(),p.mostrarIdEvento()) )
-            {
-                usuario.getListaFavoritos().add(p);
-                return true;
-            }
-        }
-        return false;
-    }
-    public boolean eliminarFavorito(Producto p){
-        if (buscarFav(p)!=null){
-            if ( ConsultasUsuarios.eliminarFav(usuario.getUsername(),p.mostrarIdEvento()) ) {
-                usuario.getListaFavoritos().remove(p);
-                return true;
-            }
-
-        }
-        return false;
-    }
 
     public void obtenerFavs(){
-        ArrayList<Integer> idsEventos = ConsultasUsuarios.obtenerFavoritos(usuario.getUsername());
+        ArrayList<Integer> idsEventos = usuario.listarFavoritos();
         ArrayList<Producto> favs = new ArrayList<Producto>();
 
         for (int i = 0 ; i< app.getListaProductos().size() ; i++)
@@ -479,19 +446,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     favs.add(app.getListaProductos().get(i));
 
         usuario.setListaFavoritos(favs);
-    }
-    
-    public void logout(View view){
-        LoginManager.getInstance().logOut();
-        Intent login = new Intent(this, LoginActivity.class);
-        startActivity(login);
-        finish();
-    }
-
-    public void ventanaFav(View view){
-        Intent intent = new Intent(this,ListviewFavoritos.class);
-        intent.putExtra("user",usuario);
-        startActivity(intent);
     }
 
     public void autoNotificaciones(){
@@ -518,10 +472,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             for (int i = 0; i < coicidencias.size(); i++) {
 
-                if ( !ConsultasUsuarios.consultarNotificacion(coicidencias.get(i).mostrarIdEvento(),usuario.getUsername()) ) {
-                    if (ConsultasUsuarios.agregarNotificacion(coicidencias.get(i).mostrarIdEvento(), usuario.getUsername())){
+                if ( ! usuario.buscarNotificacionBD(coicidencias.get(i)) ) {
+                    if ( usuario.agregarNotificacion(coicidencias.get(i)) ){
 
-                        usuario.getNotificaciones().add(coicidencias.get(i));
                         Intent intent = new Intent(MapsActivity.this, ListViewNotificacion.class);
                         intent.putExtra("noti", usuario);
                         PendingIntent pendingIntent = PendingIntent.getActivity(MapsActivity.this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
@@ -537,7 +490,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         builder.setSound(sound);
 
                         builder.setContentTitle("Nuevos productos!");
-                        builder.setContentText("Productos de su interes: " + usuario.getNotificaciones().get(i).mostrarMarca() + " " + usuario.getNotificaciones().get(i).mostrarmodelo());
+                        builder.setContentText("Productos de su interes: " + coicidencias.get(i).mostrarMarca() + " " + coicidencias.get(i).mostrarmodelo());
                         builder.setSubText("toque para ver los productos, apresurate !");
 
                         //Enviar notificacion
@@ -546,32 +499,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     }
                 }
             }
-/*
-            if (usuario.getNotificaciones().size()>0){
-
-                Intent intent = new Intent(MapsActivity.this,ListViewNotificacion.class);
-                intent.putExtra("noti",usuario);
-                PendingIntent pendingIntent = PendingIntent.getActivity(MapsActivity.this,0,intent,PendingIntent.FLAG_CANCEL_CURRENT);
-
-                //notificacion
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(MapsActivity.this);
-                builder.setContentIntent(pendingIntent);
-                builder.setAutoCancel(true);
-                builder.setSmallIcon(android.R.drawable.ic_dialog_info);
-                builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.logo));
-
-                Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                builder.setSound(sound);
-
-                builder.setContentTitle("Nuevos productos!");
-                builder.setContentText("Productos de su interes: "+usuario.getNotificaciones().size());
-                builder.setSubText("toque para ver los productos, apresurate !");
-
-                //Enviar notificacion
-                NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-                notificationManager.notify(NOTIFICACION_ID,builder.build());
-            }
-            */
             coicidencias=null;
         }
     };

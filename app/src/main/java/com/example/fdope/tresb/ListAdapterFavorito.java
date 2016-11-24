@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -51,14 +52,14 @@ public class ListAdapterFavorito extends ArrayAdapter<Producto> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         View rowView = convertView;
         if (convertView == null)
         {            // Create a new view into the list.
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            rowView = inflater.inflate(R.layout.list_fila, parent,false);
+            rowView = inflater.inflate(R.layout.list_fila_fav, parent,false);
         }
 
         Producto p = listaProd.get(position);
@@ -69,6 +70,7 @@ public class ListAdapterFavorito extends ArrayAdapter<Producto> {
         TextView precio = (TextView)rowView.findViewById(R.id.precio);
         TextView tienda = (TextView) rowView.findViewById(R.id.tienda);
         TextView usuario = (TextView) rowView.findViewById(R.id.usuario);
+        Button delete = (Button) rowView.findViewById(R.id.botonElimiarFav);
 
         imagen.setImageBitmap(bpm);
         String tit = p.mostrarMarca() + " "+p.mostrarmodelo();
@@ -79,6 +81,14 @@ public class ListAdapterFavorito extends ArrayAdapter<Producto> {
         tienda.setText(prov);
         String usr = "Publicado por: "+p.mostrarCreadorPublicacion();
         usuario.setText(usr);
+
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //listaProd.remove(position);
+            }
+        });
+
         return rowView;
     }
 }
