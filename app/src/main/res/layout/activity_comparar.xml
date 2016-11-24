@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="190dp">
+
+        <ImageView
+            android:id="@+id/img1"
+            android:layout_width="100dp"
+            android:layout_height="140dp" />
+
+        <TextView
+            android:text="Marca: "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/t8"
+            android:layout_below="@+id/img1"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="43dp" />
+
+        <TextView
+            android:text="Modelo: "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/relativeLayout"
+            android:layout_marginTop="204dp"
+            android:id="@+id/t7" />
+
+        <TextView
+            android:text="Precio: $"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/t6"
+            android:layout_below="@+id/t7"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="11dp" />
+
+        <TextView
+            android:text="Tienda: "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignStart="@+id/relativeLayout"
+            android:layout_marginBottom="232dp"
+            android:id="@+id/t5" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/marca1"
+            android:layout_alignBaseline="@+id/t8"
+            android:layout_alignBottom="@+id/t8"
+            android:layout_toEndOf="@+id/t5" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/relativeLayout"
+            android:layout_marginStart="56dp"
+            android:layout_marginTop="205dp"
+            android:id="@+id/modelo1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/precio1"
+            android:layout_alignBaseline="@+id/t6"
+            android:layout_alignBottom="@+id/t6"
+            android:layout_alignStart="@+id/modelo1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tienda1"
+            android:layout_alignBaseline="@+id/t5"
+            android:layout_alignBottom="@+id/t5"
+            android:layout_toEndOf="@+id/t7" />
+
+        <ImageButton
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
+            android:id="@+id/imageButton"
+            android:background="@drawable/mr_ic_close_light"
+            android:backgroundTint="?android:attr/colorControlActivated"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="191dp">
+
+        <ImageView
+            android:id="@+id/img2"
+            android:layout_width="100dp"
+            android:layout_height="140dp" />
+
+        <TextView
+            android:text="Marca: "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="184dp"
+            android:id="@+id/t1" />
+
+        <TextView
+            android:text="Modelo: "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="207dp"
+            android:id="@+id/t2" />
+
+        <TextView
+            android:text="Precio: $"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="230dp"
+            android:id="@+id/t3" />
+
+        <TextView
+            android:text="Tienda: "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="234dp"
+            android:id="@+id/t4" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="54dp"
+            android:layout_marginTop="184dp"
+            android:id="@+id/marca1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="56dp"
+            android:layout_marginTop="208dp"
+            android:id="@+id/modelo2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="55dp"
+            android:layout_marginTop="230dp"
+            android:id="@+id/precio2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tienda2"
+            android:layout_alignBaseline="@+id/t4"
+            android:layout_alignBottom="@+id/t4"
+            android:layout_toEndOf="@+id/t4" />
+
+    </RelativeLayout>
+</RelativeLayout>
