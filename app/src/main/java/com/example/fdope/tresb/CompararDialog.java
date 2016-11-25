@@ -38,7 +38,7 @@ public class CompararDialog extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.activity_marker, container, false);
+        final View rootView = inflater.inflate(R.layout.activity_comparar, container, false);
         super.onCreate(savedInstanceState);
 
         TextView mar1 = (TextView)rootView.findViewById(R.id.marca1);
@@ -53,14 +53,14 @@ public class CompararDialog extends DialogFragment {
         img2 = (ImageView)rootView.findViewById(R.id.img2);
         Button salir = (Button)rootView.findViewById(R.id.salirComparar);
 
-        marca1 = getArguments().getString("marca1");
-        marca2= getArguments().getString("marca2");
-        modelo1 = getArguments().getString("modelo1");
-        modelo2 = getArguments().getString("modelo2");
-        precio1 = getArguments().getString("precio1");
-        precio2= getArguments().getString("precio2");
-        tienda1= getArguments().getString("tienda1");
-        tienda2 = getArguments().getString("tienda2");
+        marca1 = "Marca: "+getArguments().getString("marca1");
+        marca2="Marca: "+ getArguments().getString("marca2");
+        modelo1 = "Modelo: "+getArguments().getString("modelo1");
+        modelo2 = "Modelo: "+getArguments().getString("modelo2");
+        precio1 = "Precio: $"+String.valueOf(getArguments().getInt("precio1"))+" CLP";
+        precio2= "Precio: $"+String.valueOf(getArguments().getInt("precio2"))+" CLP";
+        tienda1= "Tienda: "+getArguments().getString("tienda1");
+        tienda2 = "Tienda: "+getArguments().getString("tienda2");
         b1 = getArguments().getByteArray("img1");
         b2 = getArguments().getByteArray("img2");
 

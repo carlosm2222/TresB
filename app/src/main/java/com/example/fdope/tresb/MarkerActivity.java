@@ -57,6 +57,7 @@ public class MarkerActivity extends DialogFragment {
         byte[] b = getArguments().getByteArray("img");
         flag = getArguments().getBoolean("flag");
         idEvento=getArguments().getInt("idEvento");
+      //  boolean flagComparar = getArguments().getBoolean("falgComparar");
         Bitmap bmp=null;
         bmp = BitmapFactory.decodeByteArray(b, 0, b.length);
         mImageView.setImageBitmap(bmp);
@@ -95,11 +96,17 @@ public class MarkerActivity extends DialogFragment {
                 startActivity(intent);
             }
         });
-
+/*
+        if (flagComparar)
+            comparar.setChecked(true);
+        else
+            comparar.setChecked(false);
+        */
         comparar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    mCallback.onFinishDialogCerrarComparar(comparar.isChecked());
+                    mCallback.onFinishDialogComparar(comparar.isChecked());
+                dismiss();
             }
         });
 

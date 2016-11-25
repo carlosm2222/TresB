@@ -219,28 +219,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onFinishDialogComparar(boolean flag) {
-        Toast.makeText(this,"estado "+flag,Toast.LENGTH_SHORT).show();
 
         if (flagComparacion1 == 0 && flagComparacion2 == 0 && flag==true){
             flagComparacion1=1;
             productoComp1=prodMomentaneo;
-            Toast.makeText(this,"Has seleccionado 1 producto para comparar",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Has seleccionado 1 producto para comparar, selecciona otro",Toast.LENGTH_LONG).show();
         }
         if (flagComparacion1==1 && flagComparacion2==0 && flag==true){
             if (productoComp1!=prodMomentaneo)
             {
                 flagComparacion2=1;
                 productocom2=prodMomentaneo;
-                Toast.makeText(this,"Has seleccionado el 2 producto para comparar",Toast.LENGTH_SHORT).show();
+                if (productocom2 != null && productoComp1!=null)
+                    dialogComparar(productoComp1,productocom2);
             }
         }
     }
 
-    @Override
-    public void onFinishDialogCerrarComparar(boolean flag){
-        if (flagCerrarComparacion==false && flag==true)
-            flagCerrarComparacion=true;
-    }
 
     private void mostrarMensaje(String titulo, String info, byte[] img, boolean flag, int idEvento) {
         FragmentManager fm = getFragmentManager();
@@ -254,33 +249,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         bundle.putBoolean("flag",flag);
         dialogFragment.setArguments(bundle);
         dialogFragment.show(fm, "Sample Fragment");
-
-        if (flagComparacion1==1 && flagComparacion2==1 ) {
-            dialogFragment.dismiss();
-            dialogComparar();
-        }
     }
 
-    private void dialogComparar(){
+    private void dialogComparar(Producto p1,Producto p2){
 
         FragmentManager fm1 = getFragmentManager();
         CompararDialog compararDialog = new CompararDialog();
         Bundle bundle1 =new Bundle();
-        bundle1.putString("marca1", productoComp1.mostrarMarca());
-        bundle1.putString("marca2", productocom2.mostrarMarca());
-        bundle1.putString("modelo1",productoComp1.mostrarmodelo());
-        bundle1.putString("modelo2",productocom2.mostrarmodelo());
-        bundle1.putString("tienda1",productoComp1.mostrarProveedor());
-        bundle1.putString("tienda2",productocom2.mostrarProveedor());
-        bundle1.putInt("precio1",productoComp1.mostrarPrecio());
-        bundle1.putInt("precio2",productocom2.mostrarPrecio());
-        bundle1.putByteArray("img1",productoComp1.mostrarImagen());
-        bundle1.putByteArray("img2",productocom2.mostrarImagen());
+        bundle1.putString("marca1", p1.mostrarMarca());
+        bundle1.putString("marca2", p2.mostrarMarca());
+        bundle1.putString("modelo1",p1.mostrarmodelo());
+        bundle1.putString("modelo2",p2.mostrarmodelo());
+        bundle1.putString("tienda1",p1.mostrarProveedor());
+        bundle1.putString("tienda2",p2.mostrarProveedor());
+        bundle1.putInt("precio1",p1.mostrarPrecio());
+        bundle1.putInt("precio2",p2.mostrarPrecio());
+        bundle1.putByteArray("img1",p1.mostrarImagen());
+        bundle1.putByteArray("img2",p2.mostrarImagen());
         compararDialog.setArguments(bundle1);
         compararDialog.show(fm1," comparar");
 
-        if (flagCerrarComparacion)
-            compararDialog.dismiss();
+        productocom2=null;
+        productoComp1=null;
+        flagComparacion2=0;
+        flagComparacion1=0;
     }
 
     public void refresh() {
