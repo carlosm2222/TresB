@@ -21,5 +21,6 @@ import java.util.List;
 
 public interface InfoPostDialog {
     void onFinishDialogFavorito(boolean flag);
-    void onFinishDialogComparar();
+    void onFinishDialogComparar(boolean flag);
+    void onFinishDialogCerrarComparar(boolean flag);
 }

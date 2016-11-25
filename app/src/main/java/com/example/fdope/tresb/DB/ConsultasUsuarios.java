@@ -102,7 +102,7 @@ public class ConsultasUsuarios {
             oCall.setInt(2,idEvento);
             oCall.execute();
 
-            boolean resp = oCall.getBoolean(1);
+            Boolean resp = oCall.getBoolean(1);
             return resp;
 
         }catch (Exception e){
@@ -138,7 +138,7 @@ public class ConsultasUsuarios {
         ArrayList<Integer> favoritos = new ArrayList<Integer>();
         try {
 
-            ResultSet resultSet = db.execute("SELECT * FROM getinfofavorito('"+username+"');");
+            ResultSet resultSet = db.execute("SELECT id_evento FROM getinfofavorito('"+username+"');");
             if (resultSet!=null){
                 while(resultSet.next()){
                     int idEvento = resultSet.getInt("id_evento");

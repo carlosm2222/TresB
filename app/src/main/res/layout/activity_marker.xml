@@ -9,29 +9,38 @@
     android:weightSum="1">
 
 
-    <LinearLayout
+    <RelativeLayout
         android:orientation="horizontal"
         android:weightSum="1"
         android:layout_width="100dp"
-        android:layout_height="140dp">
+        android:layout_height="187dp"
+        android:layout_weight="0.47">
 
         <ImageView
             android:id="@+id/img"
             android:layout_width="100dp"
             android:layout_height="140dp" />
 
-    </LinearLayout>
+        <CheckBox
+            android:text="Comparar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/checkboxCom"
+            android:layout_below="@+id/img"
+            android:layout_alignParentStart="true" />
+
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:orientation="vertical"
-        android:layout_height="140dp"
+        android:layout_height="184dp"
         android:weightSum="1">
 
         <RelativeLayout
             android:orientation="horizontal"
-            android:layout_width="211dp"
-            android:layout_height="90dp">
+            android:layout_width="228dp"
+            android:layout_height="119dp">
 
             <Button
                 android:layout_width="26dp"
@@ -54,16 +63,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/prod_snippet"
-                android:layout_marginStart="19dp"
-                android:layout_centerVertical="true"
+                android:layout_marginStart="17dp"
+                android:layout_marginTop="12dp"
+                android:layout_below="@+id/infoProd"
                 android:layout_alignParentStart="true" />
 
         </RelativeLayout>
 
         <RelativeLayout
             android:orientation="horizontal"
-            android:layout_width="241dp"
-            android:layout_height="wrap_content"
+            android:layout_width="225dp"
+            android:layout_height="match_parent"
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true">
 
@@ -75,8 +85,7 @@
                 fab:fab_size="mini"
                 android:layout_weight="1.56"
                 android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="27dp" />
+                android:layout_alignParentEnd="true" />
 
             <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/comentarios"
@@ -93,9 +102,10 @@
                 android:layout_height="29dp"
                 android:src="@drawable/ic_star_border_black_24dp"
                 fab:fab_size="mini"
-                android:layout_centerVertical="true"
+                android:layout_alignParentBottom="true"
                 android:layout_alignParentStart="true"
-                android:layout_marginStart="18dp" />
+                android:layout_marginStart="15dp" />
+
         </RelativeLayout>
 
 

@@ -55,13 +55,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     static final int request_code = 1;
     static final int request_code_filtro = 2;
     static final int NOTIFICACION_ID=5;
-    private Producto p,prodMomentaneo;
+    private Producto p,prodMomentaneo,productoComp1,productocom2;
     private Usuario usuario;
     boolean isOpen = false;
     private boolean flagFiltro = false;
     FloatingActionMenu materialDesignFAM;
     FloatingActionButton floatingActionButton1, floatingActionButton2, floatingActionButton3,floatingActionButton4,floatingActionButton5;
     private int flagfav=0; /// flag= true es favorito , false no es favorito
+    private int flagComparacion1=0;
+    private int flagComparacion2=0;
+    private boolean flagCerrarComparacion=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -199,29 +202,44 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onFinishDialogFavorito(boolean flag) {
         // flag 0 neutro , 1 true,2 false
         if (flagfav == 0 && flag==true){ /// SI NO ERA FAVORITO
-            if (usuario.agregarFavorito(prodMomentaneo)) {
-                Toast.makeText(this, "Agregado a favorito", Toast.LENGTH_SHORT).show();
-                refresh();
-            }
-            else
-                Toast.makeText(this, "Ha ocurrido un error al intentar agregarlo", Toast.LENGTH_SHORT).show();
+            usuario.agregarFavorito(prodMomentaneo);
+            Toast.makeText(this, "Agregado a favorito", Toast.LENGTH_SHORT).show();
+            refresh();
+
         }
         if(flag==false)
         {
-            Toast.makeText(this,"Eliminado de favorito",Toast.LENGTH_SHORT).show();
-            if(usuario.eliminarFavorito(prodMomentaneo)) {
+            if(usuario.eliminarFavorito(prodMomentaneo)){
                 Toast.makeText(this, "Eliminado de favorito", Toast.LENGTH_SHORT).show();
-                flagfav = 0;
+                flagfav = 2;
                 refresh();
             }
-            else
-                Toast.makeText(this, "Ha ocurrido un error al intentar eliminarlo", Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
-    public void onFinishDialogComparar() {
+    public void onFinishDialogComparar(boolean flag) {
+        Toast.makeText(this,"estado "+flag,Toast.LENGTH_SHORT).show();
 
+        if (flagComparacion1 == 0 && flagComparacion2 == 0 && flag==true){
+            flagComparacion1=1;
+            productoComp1=prodMomentaneo;
+            Toast.makeText(this,"Has seleccionado 1 producto para comparar",Toast.LENGTH_SHORT).show();
+        }
+        if (flagComparacion1==1 && flagComparacion2==0 && flag==true){
+            if (productoComp1!=prodMomentaneo)
+            {
+                flagComparacion2=1;
+                productocom2=prodMomentaneo;
+                Toast.makeText(this,"Has seleccionado el 2 producto para comparar",Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    public void onFinishDialogCerrarComparar(boolean flag){
+        if (flagCerrarComparacion==false && flag==true)
+            flagCerrarComparacion=true;
     }
 
     private void mostrarMensaje(String titulo, String info, byte[] img, boolean flag, int idEvento) {
@@ -236,6 +254,33 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         bundle.putBoolean("flag",flag);
         dialogFragment.setArguments(bundle);
         dialogFragment.show(fm, "Sample Fragment");
+
+        if (flagComparacion1==1 && flagComparacion2==1 ) {
+            dialogFragment.dismiss();
+            dialogComparar();
+        }
+    }
+
+    private void dialogComparar(){
+
+        FragmentManager fm1 = getFragmentManager();
+        CompararDialog compararDialog = new CompararDialog();
+        Bundle bundle1 =new Bundle();
+        bundle1.putString("marca1", productoComp1.mostrarMarca());
+        bundle1.putString("marca2", productocom2.mostrarMarca());
+        bundle1.putString("modelo1",productoComp1.mostrarmodelo());
+        bundle1.putString("modelo2",productocom2.mostrarmodelo());
+        bundle1.putString("tienda1",productoComp1.mostrarProveedor());
+        bundle1.putString("tienda2",productocom2.mostrarProveedor());
+        bundle1.putInt("precio1",productoComp1.mostrarPrecio());
+        bundle1.putInt("precio2",productocom2.mostrarPrecio());
+        bundle1.putByteArray("img1",productoComp1.mostrarImagen());
+        bundle1.putByteArray("img2",productocom2.mostrarImagen());
+        compararDialog.setArguments(bundle1);
+        compararDialog.show(fm1," comparar");
+
+        if (flagCerrarComparacion)
+            compararDialog.dismiss();
     }
 
     public void refresh() {
@@ -439,11 +484,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void obtenerFavs(){
         ArrayList<Integer> idsEventos = usuario.listarFavoritos();
         ArrayList<Producto> favs = new ArrayList<Producto>();
-
-        for (int i = 0 ; i< app.getListaProductos().size() ; i++)
-            for (int j = 0 ; j<idsEventos.size(); j++)
-                if (app.getListaProductos().get(i).mostrarIdEvento() == idsEventos.get(j))
-                    favs.add(app.getListaProductos().get(i));
+        if (idsEventos != null)
+            for (int i = 0 ; i< app.getListaProductos().size() ; i++)
+                for (int j = 0 ; j<idsEventos.size(); j++)
+                    if (app.getListaProductos().get(i).mostrarIdEvento() == idsEventos.get(j))
+                        favs.add(app.getListaProductos().get(i));
 
         usuario.setListaFavoritos(favs);
     }

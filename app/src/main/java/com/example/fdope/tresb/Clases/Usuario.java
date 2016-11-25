@@ -2,9 +2,11 @@ package com.example.fdope.tresb.Clases;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.widget.Toast;
 
 import com.example.fdope.tresb.DB.ConsultasUsuarios;
 import com.example.fdope.tresb.Factoria.Producto;
+import com.example.fdope.tresb.MapsActivity;
 
 import java.util.ArrayList;
 
@@ -150,22 +152,32 @@ public class Usuario implements Parcelable {
         return null;
     }
 
+    public int buscarPosFav(Producto p){
+        for (int i=0; i<listaFavoritos.size() ; i++){
+            if (listaFavoritos.get(i).mostrarCategoria().equals(p.mostrarCategoria()))
+                if (listaFavoritos.get(i).coordenadasProducto().latitude == p.coordenadasProducto().latitude && listaFavoritos.get(i).coordenadasProducto().longitude == p.coordenadasProducto().longitude)
+                    if (listaFavoritos.get(i).mostrarmodelo().equals(p.mostrarmodelo()))
+                        if (listaFavoritos.get(i).mostrarMarca().equals(p.mostrarMarca()))
+                            if (listaFavoritos.get(i).mostrarPrecio() == p.mostrarPrecio())
+                                return i;
+        }
+        return 0;
+    }
+
     public boolean agregarFavorito(Producto p){
         if (buscarFav(p) == null){ // si no esta repetido se agrega
-            if ( ConsultasUsuarios.agregarFav(username,p.mostrarIdEvento()) )
-            {
+            ConsultasUsuarios.agregarFav(username,p.mostrarIdEvento()); ;
                 listaFavoritos.add(p);
                 return true;
-            }
         }
         return false;
     }
     public boolean eliminarFavorito(Producto p){
         if (buscarFav(p)!=null){
-            if ( ConsultasUsuarios.eliminarFav(username,p.mostrarIdEvento()) ) {
-                listaFavoritos.remove(p);
-                return true;
-            }
+            ConsultasUsuarios.eliminarFav(username,p.mostrarIdEvento());
+            int pos = buscarPosFav(p);
+                if(listaFavoritos.remove(pos)!= null)
+                    return true;
         }
         return false;
     }
@@ -179,12 +191,11 @@ public class Usuario implements Parcelable {
     }
 
     public boolean agregarNotificacion(Producto p){
-        if ( ConsultasUsuarios.agregarNotificacion(p.mostrarIdEvento(),username)) {
+        ConsultasUsuarios.agregarNotificacion(p.mostrarIdEvento(),username);
             notificaciones.add(p);
             return true;
-        }
-        else
-            return false;
+       // else
+         //   return false;
     }
 
     public boolean buscarNotificacionBD(Producto p){

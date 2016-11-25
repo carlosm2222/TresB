@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,6 +27,7 @@ public class MarkerActivity extends DialogFragment {
     private InfoPostDialog mCallback;
     public int idEvento;
     private String username;
+    CheckBox comparar;
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -46,6 +48,7 @@ public class MarkerActivity extends DialogFragment {
         TextView infoProd = (TextView) rootView.findViewById(R.id.infoProd);
         TextView prodsnippet = (TextView) rootView.findViewById(R.id.prod_snippet);
         ImageView mImageView = (ImageView) rootView.findViewById(R.id.img);
+        comparar=(CheckBox)rootView.findViewById(R.id.checkboxCom);
 
         Button salir = (Button) rootView.findViewById(R.id.botonSalir) ;
         username= getArguments().getString("username");
@@ -90,6 +93,13 @@ public class MarkerActivity extends DialogFragment {
                 intent.putExtra("idEvento",idEvento);
                 intent.putExtra("username",username);
                 startActivity(intent);
+            }
+        });
+
+        comparar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    mCallback.onFinishDialogCerrarComparar(comparar.isChecked());
             }
         });
 
