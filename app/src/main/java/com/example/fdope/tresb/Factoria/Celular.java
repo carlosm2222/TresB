@@ -261,6 +261,11 @@ public class Celular implements Producto, Parcelable {
         return idEvento;
     }
 
+    @Override
+    public void setIDEvento(int id) {
+        idEvento=id;
+    }
+
     public Bitmap getBitmap(byte[] bitmap) {
 
         return BitmapFactory.decodeByteArray(bitmap, 0, bitmap.length);

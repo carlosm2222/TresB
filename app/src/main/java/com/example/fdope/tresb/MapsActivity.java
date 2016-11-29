@@ -24,7 +24,6 @@ import android.widget.Toast;
 import com.example.fdope.tresb.Clases.Filtro;
 import com.example.fdope.tresb.Clases.TresB;
 import com.example.fdope.tresb.DB.ConsultasProductos;
-import com.example.fdope.tresb.DB.ConsultasUsuarios;
 import com.example.fdope.tresb.Factoria.Producto;
 import com.example.fdope.tresb.Clases.Usuario;
 import com.facebook.login.LoginManager;
@@ -115,31 +114,36 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        //Creamos el Timer
-        Timer timer = new Timer();
-        //Que actue cada 2 minutos
-        //Empezando des de el segundo 30seg iniciado el mapa
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                //La función a ejecutar
-                if ( !flagFiltro)
-                    autoRefresh();
-
-                autoNotificaciones();
-
-            }
-        }, 30000, 120000);
-
-
         Bundle inBundle = getIntent().getExtras();//agregar desde aqui
+
+
         if (inBundle != null) {
             usuario = inBundle.getParcelable("UsuarioIn");
             if (usuario!=null) {
+
                 Toast.makeText(this, "Bienvenido " + usuario.getNombre(), Toast.LENGTH_SHORT).show();
+                obtenerFavs();
+
+
+                //Creamos el Timer
+                Timer timer = new Timer();
+                //Que actue cada 2 minutos
+                //Empezando des de el segundo 30seg iniciado el mapa
+                timer.scheduleAtFixedRate(new TimerTask() {
+                    @Override
+                    public void run() {
+                        //La función a ejecutar
+                        if ( !flagFiltro)
+                            autoRefresh();
+
+                        autoNotificaciones();
+
+                    }
+                }, 30000, 120000);
+
             }
             else
-                Toast.makeText(this, "NOSE PUDO OBTENER USUARIIO ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "NO HAY CONEXION ", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -149,8 +153,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         cargarDatos();
         miUbicacion();
-        obtenerFavs();
-        usuario.setNotificaciones(new ArrayList<Producto>());
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
@@ -174,17 +176,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             if (prodFav!=null) // SE SETEA EL FLAG A TRUE SI EXISTE FAV
                                 fav = true;
 
-                            if (fav==false && flagfav==1) {
-                                mostrarMensaje(marker.getTitle(),marker.getSnippet(),b,true, idEvento); // se envia el titulo y el snippet del marcador ala ventana del pin con la foto y el FLAG de favorito
+                            if ((productoComp1!=null) && (fav==false && flagfav==1)) {
+                                mostrarVentanaPin(marker.getTitle(),marker.getSnippet(),b,true, idEvento,true); // se envia el titulo y el snippet del marcador ala ventana del pin con la foto y el FLAG de favorito
                                 flagfav = 0;
                                 break;
                             }
-                            if (flagfav==2 && fav==true){
-                                mostrarMensaje(marker.getTitle(),marker.getSnippet(),b,false, idEvento);
+                            if (((productoComp1!=null)) && (flagfav==2 && fav==true)){
+                                mostrarVentanaPin(marker.getTitle(),marker.getSnippet(),b,false, idEvento,true);
                                 flagfav = 0;
                                 break;
                             }
-                            mostrarMensaje(marker.getTitle(),marker.getSnippet(),b,fav,idEvento); // se envia el titulo y el snippet del marcador ala ventana del pin con la foto y el FLAG de favorito
+                            if (productoComp1!=null)
+                                mostrarVentanaPin(marker.getTitle(),marker.getSnippet(),b,fav,idEvento,true); // se envia el titulo y el snippet del marcador ala ventana del pin con la foto y el FLAG de favorito
+                            else
+                                mostrarVentanaPin(marker.getTitle(),marker.getSnippet(),b,fav,idEvento,false);
+
                             flagfav = 0;
                             break;
                         }
@@ -194,7 +200,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     return true;
                 }
             });
-
     }
 
 
@@ -220,10 +225,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onFinishDialogComparar(boolean flag) {
 
+
+        if (flagComparacion1 == 1 && flagComparacion2 == 0 && flag==false){
+            productocom2=null;
+            productoComp1=null;
+            flagComparacion2=0;
+            flagComparacion1=0;
+            Toast.makeText(this,"Producto descartado para comparar",Toast.LENGTH_LONG).show();
+        }
         if (flagComparacion1 == 0 && flagComparacion2 == 0 && flag==true){
             flagComparacion1=1;
             productoComp1=prodMomentaneo;
-            Toast.makeText(this,"Has seleccionado 1 producto para comparar, selecciona otro",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"Has seleccionado 1 producto para comparar, selecciona otro !",Toast.LENGTH_LONG).show();
         }
         if (flagComparacion1==1 && flagComparacion2==0 && flag==true){
             if (productoComp1!=prodMomentaneo)
@@ -231,13 +244,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 flagComparacion2=1;
                 productocom2=prodMomentaneo;
                 if (productocom2 != null && productoComp1!=null)
-                    dialogComparar(productoComp1,productocom2);
+                    mostrarVentanaCompararPin(productoComp1,productocom2);
             }
         }
     }
 
-
-    private void mostrarMensaje(String titulo, String info, byte[] img, boolean flag, int idEvento) {
+    private void mostrarVentanaPin(String titulo, String info, byte[] img, boolean flag, int idEvento,boolean flagChecbox) {
         FragmentManager fm = getFragmentManager();
         MarkerActivity dialogFragment = new MarkerActivity ();
         Bundle bundle = new Bundle();
@@ -247,11 +259,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         bundle.putInt("idEvento",idEvento);
         bundle.putByteArray("img",img);
         bundle.putBoolean("flag",flag);
+        bundle.putBoolean("flagCheckbox",flagChecbox);
         dialogFragment.setArguments(bundle);
         dialogFragment.show(fm, "Sample Fragment");
     }
 
-    private void dialogComparar(Producto p1,Producto p2){
+    private void mostrarVentanaCompararPin(Producto p1, Producto p2){
 
         FragmentManager fm1 = getFragmentManager();
         CompararDialog compararDialog = new CompararDialog();
@@ -287,7 +300,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Location location = obetnerUbicacion();
         intent.putExtra("coordenadas", location);
         intent.putExtra("usuario",usuario.getUsername());
-
         startActivityForResult(intent, request_code);
     }
 
@@ -333,8 +345,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 floatingActionButton2.setLabelText("Deshacer Filtro");
             }else if (lista.isEmpty())
                 Toast.makeText(this, "No hay ofertas con esas características", Toast.LENGTH_SHORT).show();
-
-
     }
 
     private boolean comparar(Producto producto, Filtro filtro) {
@@ -435,7 +445,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void cargarDatos() {
         try {
             // obtendo la lista de productos de la bd
-            this.app.setListaSmartphone(ConsultasProductos.listarProductos());
+            app.obtenerProductos();
         } catch (Exception e) {
             e.getMessage();
         }
@@ -540,10 +550,3 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     };
 }
-
-
-
-
-
-
-

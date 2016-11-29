@@ -12,6 +12,7 @@ import java.sql.SQLException;
 
 public interface ProductosFactory {
 
-    public Producto crearProducto(String username,String nombre_categoria, String marca, String modelo, int precio, String proveedor, LatLng latLng, byte[] img, int largo) throws SQLException;
-    public Producto crearProducto(String username,String nombre_categoria, String marca, String modelo, int precio, String proveedor, LatLng latLng, Bitmap img) throws SQLException;
+    public Producto crearProducto(String username,String nombre_categoria, String marca, String modelo, int precio, String proveedor, LatLng latLng, byte[] img, int largo)  ;
+    public Producto crearProducto(String username,String nombre_categoria, String marca, String modelo, int precio, String proveedor, LatLng latLng, Bitmap img)  ;
+    public Producto guardarProductoBD(Producto producto) throws SQLException;
 }

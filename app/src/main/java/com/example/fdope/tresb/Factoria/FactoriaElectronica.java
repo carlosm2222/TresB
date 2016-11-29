@@ -20,20 +20,16 @@ public class FactoriaElectronica implements ProductosFactory {
 
 
     @Override
-    public Producto crearProducto(String username,String nombre_categoria, String marca, String modelo, int precio, String proveedor, LatLng latLng, byte[] img, int largo) throws SQLException{
+    public Producto crearProducto(String username,String nombre_categoria, String marca, String modelo, int precio, String proveedor, LatLng latLng, byte[] img, int largo)  {
 
         //se crea el producto
         Celular celular = new Celular(username,nombre_categoria,  marca,  modelo,  precio,  proveedor, latLng,img,largo);
-
-        //se guarda el producto
-        int idEvento = ConsultasProductos.agregarProducto(username,marca,modelo,precio,nombre_categoria,celular.getLatitud(),celular.getLongitud(),proveedor,img,largo);
-        celular.setIdEvento(idEvento);
         return celular;
 
     }
 
     @Override
-    public Producto crearProducto(String username,String nombre_categoria, String marca, String modelo, int precio, String proveedor, LatLng latLng, Bitmap img)throws SQLException {
+    public Producto crearProducto(String username,String nombre_categoria, String marca, String modelo, int precio, String proveedor, LatLng latLng, Bitmap img)  {
 
         Bitmap imgRecortada = resizeImage(img,100,140);
         String imagen = BitMapToString(imgRecortada);
@@ -42,11 +38,17 @@ public class FactoriaElectronica implements ProductosFactory {
 
         //se crea el producto
         Celular celular =  new Celular(username,nombre_categoria,  marca,  modelo,  precio,  proveedor, latLng,b,largo);
-        //se guarda
-        int idEvento = ConsultasProductos.agregarProducto(username,marca,modelo,precio,nombre_categoria,celular.getLatitud(),celular.getLongitud(),proveedor,b,largo);
-        celular.setIdEvento(idEvento);
         return celular;
 
+    }
+
+    @Override
+    public Producto guardarProductoBD(Producto producto)throws SQLException{
+        int id;
+        id=ConsultasProductos.agregarProducto(producto.mostrarCreadorPublicacion(), producto.mostrarMarca(), producto.mostrarmodelo(),
+                producto.mostrarPrecio(), producto.mostrarCategoria(), producto.coordenadasProducto().latitude, producto.coordenadasProducto().longitude, producto.mostrarProveedor(), producto.mostrarImagen(), producto.mostrarImagen().length);
+        producto.setIDEvento(id);
+        return producto;
     }
 
     public static Bitmap resizeImage(Bitmap b, int w, int h) {

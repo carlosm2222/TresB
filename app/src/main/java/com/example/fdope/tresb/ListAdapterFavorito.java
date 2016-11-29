@@ -4,32 +4,32 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.fdope.tresb.Factoria.Producto;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ListAdapterFavorito extends ArrayAdapter<Producto> {
 
     public Activity context;
     private ArrayList<Producto> listaProd;
+    private Producto peliminado;
+    private PostEliminarFav enviar;
 
     public ListAdapterFavorito(Activity context, int resource, ArrayList<Producto> listaProd) {
         super(context, resource);
         this.context=context;
         this.listaProd = listaProd;
     }
+
 
     @Override
     public int getItemViewType(int position) {
@@ -82,13 +82,27 @@ public class ListAdapterFavorito extends ArrayAdapter<Producto> {
         String usr = "Publicado por: "+p.mostrarCreadorPublicacion();
         usuario.setText(usr);
 
+        enviar = (PostEliminarFav) context;
+
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //listaProd.remove(position);
+                if (listaProd!=null )
+                    if (listaProd.size()>0) {
+                        if (listaProd.get(position) != null) {
+                            enviar.productoEliminado(listaProd.remove(position));
+                            notifyDataSetChanged();
+                            Toast.makeText(context,"Elimiado de favoritos",Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                            Toast.makeText(context,"Error al eliminar",Toast.LENGTH_SHORT).show();
+
+                    }
             }
         });
 
         return rowView;
     }
+
+
 }

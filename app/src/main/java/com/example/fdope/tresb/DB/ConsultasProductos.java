@@ -1,8 +1,10 @@
 package com.example.fdope.tresb.DB;
 
 import com.example.fdope.tresb.Factoria.Celular;
+import com.example.fdope.tresb.Factoria.FactoriaElectronica;
 import com.example.fdope.tresb.Factoria.Producto;
 import com.example.fdope.tresb.Clases.Filtro;
+import com.example.fdope.tresb.Factoria.ProductosFactory;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.sql.Connection;
@@ -35,7 +37,6 @@ public class ConsultasProductos {
                     double lng = resultado.getDouble("longitud");
                     LatLng latLng = new LatLng(lat,lng);
                     int largo = resultado.getInt("largo");
-                  //  byte img[]=new byte[largo];
                    byte[] img = resultado.getBytes("archivo");
                     String tipo = resultado.getString("nombre_categoria");
                     String marc = resultado.getString("marca");
@@ -43,10 +44,10 @@ public class ConsultasProductos {
                     String mode = resultado.getString("modelo");
                     String prov = resultado.getString("proveedor");
                     int idevento= resultado.getInt("id_evento");
-                    if (tipo.equals("Smartphone")) {
-                        Celular producto = new Celular(user,tipo,marc,mode,precio,prov,latLng,img,largo,idevento);
-                        if (producto!=null)
-                            listap.add(producto);
+                    if (tipo.equals("smartphone")){
+                        ProductosFactory pf = new FactoriaElectronica();
+                        Producto producto = pf.crearProducto(user,tipo,marc,mode,precio,prov,latLng,img,largo);
+                        listap.add(producto);
                     }
 
                 }
@@ -119,8 +120,11 @@ public class ConsultasProductos {
                     String mode = resultado.getString("modelo");
                     String prov = resultado.getString("proveedor");
                     int idevento= resultado.getInt("id_evento");
-                    Celular producto = new Celular(user,tipo,marc,mode,precio,prov,latLng,img,largo,idevento);
-                    lista.add(producto);
+                    if (tipo.equals("smartphone")){
+                        ProductosFactory pf = new FactoriaElectronica();
+                        Producto producto = pf.crearProducto(user,tipo,marc,mode,precio,prov,latLng,img,largo);
+                        lista.add(producto);
+                    }
                 }
                 return lista;
             }

@@ -1,5 +1,6 @@
 package com.example.fdope.tresb.Clases;
 
+import com.example.fdope.tresb.DB.ConsultasProductos;
 import com.example.fdope.tresb.Factoria.Producto;
 
 import java.util.ArrayList;
@@ -29,5 +30,9 @@ public class TresB {
     }
     public void addProducto(Producto p){
         this.listaSmartphone.add(p);
+    }
+
+    public void obtenerProductos(){
+        listaSmartphone=ConsultasProductos.listarProductos();
     }
 }

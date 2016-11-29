@@ -26,5 +26,6 @@ public interface Producto {
     public String mostrarProveedor();
     public String mostrarCategoria();
     public int mostrarIdEvento();
+    public void setIDEvento(int id);
 
 }
