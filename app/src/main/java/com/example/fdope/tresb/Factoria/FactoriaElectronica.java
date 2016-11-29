@@ -20,10 +20,10 @@ public class FactoriaElectronica implements ProductosFactory {
 
 
     @Override
-    public Producto crearProducto(String username,String nombre_categoria, String marca, String modelo, int precio, String proveedor, LatLng latLng, byte[] img, int largo)  {
+    public Producto crearProducto(String username,String nombre_categoria, String marca, String modelo, int precio, String proveedor, LatLng latLng, byte[] img, int largo,int idEvento)  {
 
         //se crea el producto
-        Celular celular = new Celular(username,nombre_categoria,  marca,  modelo,  precio,  proveedor, latLng,img,largo);
+        Celular celular = new Celular(username,nombre_categoria,  marca,  modelo,  precio,  proveedor, latLng,img,largo,idEvento);
         return celular;
 
     }

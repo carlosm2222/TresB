@@ -222,17 +222,7 @@ public class LoginActivity extends AppCompatActivity {
     private Usuario obtenerUsuario(String u) {
             return ConsultasUsuarios.obtenerUsuario(u);
     }
-
-
-
-
-
-
-   /* private void nextActivity() {   //Falta enviar datos de usuario a la siguiente actividad
-        Intent main = new Intent(this, MapsActivity.class);
-        startActivity(main);
-        finish();
-    }*/
+    /*
 
     private Usuario getFacebookData(JSONObject object) {
 
@@ -264,6 +254,7 @@ public class LoginActivity extends AppCompatActivity {
             }
     return u;
     }
+    */
 }
 
 

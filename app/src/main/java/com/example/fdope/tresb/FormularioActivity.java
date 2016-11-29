@@ -79,8 +79,8 @@ public class FormularioActivity extends AppCompatActivity {
 
             ProductosFactory pf = new FactoriaElectronica();
             Producto producto = pf.crearProducto(usuario,nombre_categoria,marca,modelo,precio,proveedor,latLng,img);
-
-            if ( pf.guardarProductoBD(producto) !=null){
+            producto = pf.guardarProductoBD(producto);
+            if ( producto !=null){
                 mostrarMensaje();
                 Intent intent = new Intent();
                 intent.putExtra("productoOut",(Celular)producto);

@@ -123,7 +123,7 @@ public class ConsultasUsuarios {
             Boolean resp = oCall.getBoolean(1);
             return resp;
 */
-            ResultSet resultSet = db.execute(" SELECT * FROM agregarfavorito('"+ idEvento +"','"+ user +"');");
+            ResultSet resultSet = db.execute(" SELECT * FROM agregarfavorito("+ idEvento +",'"+ user +"');");
             if (resultSet != null)
                 return true;
             else
@@ -190,7 +190,7 @@ public class ConsultasUsuarios {
 
             return   oCall.getBoolean(1);
             */
-            ResultSet resultSet = db.execute("SELECT * FROM agregarnotificacion('"+idEvento+"','"+user+"');");
+            ResultSet resultSet = db.execute("SELECT * FROM agregarnotificacion("+idEvento+",'"+user+"');");
             if (resultSet != null)
                 return true;
             else
@@ -236,7 +236,7 @@ public class ConsultasUsuarios {
             return resp;
             */
 
-            ResultSet resultSet = db.execute("SELECT * FROM saberestadonotificacion('"+idEvento+"','"+user+"');");
+            ResultSet resultSet = db.execute("SELECT * FROM saberestadonotificacion("+idEvento+",'"+user+"');");
             if (resultSet != null)
                 return true;
             else

@@ -30,9 +30,6 @@ public class Usuario implements Parcelable {
         this.notificaciones = new ArrayList<Producto>();
     }
 
-    public  Usuario (){
-    }
-
     public ArrayList<Producto> getNotificaciones() {
         return notificaciones;
     }
@@ -166,18 +163,20 @@ public class Usuario implements Parcelable {
 
     public boolean agregarFavorito(Producto p){
         if (buscarFav(p) == null){ // si no esta repetido se agrega
-            ConsultasUsuarios.agregarFav(username,p.mostrarIdEvento()); ;
+            if(ConsultasUsuarios.agregarFav(username,p.mostrarIdEvento())){
                 listaFavoritos.add(p);
                 return true;
+            }
         }
         return false;
     }
     public boolean eliminarFavorito(Producto p){
         if (buscarFav(p)!=null){
-            ConsultasUsuarios.eliminarFav(username,p.mostrarIdEvento());
-            int pos = buscarPosFav(p);
+            if(ConsultasUsuarios.eliminarFav(username,p.mostrarIdEvento())){
+                int pos = buscarPosFav(p);
                 if(listaFavoritos.remove(pos)!= null)
                     return true;
+            }
         }
         return false;
     }
@@ -191,11 +190,12 @@ public class Usuario implements Parcelable {
     }
 
     public boolean agregarNotificacion(Producto p){
-        ConsultasUsuarios.agregarNotificacion(p.mostrarIdEvento(),username);
+        if(ConsultasUsuarios.agregarNotificacion(p.mostrarIdEvento(),username)) {
             notificaciones.add(p);
             return true;
-       // else
-         //   return false;
+        }
+        else
+        return false;
     }
 
     public boolean buscarNotificacionBD(Producto p){

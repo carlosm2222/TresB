@@ -120,29 +120,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (inBundle != null) {
             usuario = inBundle.getParcelable("UsuarioIn");
             if (usuario!=null) {
-
                 Toast.makeText(this, "Bienvenido " + usuario.getNombre(), Toast.LENGTH_SHORT).show();
-
-                //Creamos el Timer
-                Timer timer = new Timer();
-                //Que actue cada 2 minutos
-                //Empezando des de el segundo 30seg iniciado el mapa
-                timer.scheduleAtFixedRate(new TimerTask() {
-                    @Override
-                    public void run() {
-                        //La función a ejecutar
-                        if ( !flagFiltro)
-                            autoRefresh();
-
-                        autoNotificaciones();
-
-                    }
-                }, 30000, 120000);
-
             }
             else
                 Toast.makeText(this, "NO HAY CONEXION ", Toast.LENGTH_SHORT).show();
         }
+
+        //Creamos el Timer
+        Timer timer = new Timer();
+        //Que actue cada 2 minutos
+        //Empezando des de el segundo 30seg iniciado el mapa
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                //La función a ejecutar
+                if ( !flagFiltro)
+                    autoRefresh();
+                if (usuario!=null)
+                    autoNotificaciones();
+
+            }
+        }, 30000, 120000);
     }
 
 
@@ -151,8 +149,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         cargarDatos();
         miUbicacion();
-        if (usuario!=null)
-            obtenerFavs();
+        obtenerFavs();
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
@@ -173,20 +170,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             prodMomentaneo=app.getListaProductos().get(i);
                             b = app.getListaProductos().get(i).mostrarImagen();// se obtiene la imagen del producto
                             prodFav = usuario.buscarFav(app.getListaProductos().get(i)); // SE OBTIENE PRODUCTO FAVORITO SI ESQUE EXISTE
+
                             if (prodFav!=null) // SE SETEA EL FLAG A TRUE SI EXISTE FAV
                                 fav = true;
 
-                            if ((productoComp1!=null) && (fav==false && flagfav==1)) {
+                            if ((productoComp1!=null && productoComp1==prodMomentaneo) && (!fav && flagfav==1)) {
                                 mostrarVentanaPin(marker.getTitle(),marker.getSnippet(),b,true, idEvento,true); // se envia el titulo y el snippet del marcador ala ventana del pin con la foto y el FLAG de favorito
                                 flagfav = 0;
                                 break;
                             }
-                            if (((productoComp1!=null)) && (flagfav==2 && fav==true)){
+                            if ((productoComp1!=null && productoComp1==prodMomentaneo) && (flagfav==2 && fav)){
                                 mostrarVentanaPin(marker.getTitle(),marker.getSnippet(),b,false, idEvento,true);
                                 flagfav = 0;
                                 break;
                             }
-                            if (productoComp1!=null)
+                            if (productoComp1!=null && productoComp1==prodMomentaneo)
                                 mostrarVentanaPin(marker.getTitle(),marker.getSnippet(),b,fav,idEvento,true); // se envia el titulo y el snippet del marcador ala ventana del pin con la foto y el FLAG de favorito
                             else
                                 mostrarVentanaPin(marker.getTitle(),marker.getSnippet(),b,fav,idEvento,false);
@@ -207,10 +205,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onFinishDialogFavorito(boolean flag) {
         // flag 0 neutro , 1 true,2 false
         if (flagfav == 0 && flag==true){ /// SI NO ERA FAVORITO
-            usuario.agregarFavorito(prodMomentaneo);
-            Toast.makeText(this, "Agregado a favorito", Toast.LENGTH_SHORT).show();
-            refresh();
-
+            if(usuario.agregarFavorito(prodMomentaneo)){
+                Toast.makeText(this, "Agregado a favorito", Toast.LENGTH_SHORT).show();
+                refresh();
+            }
         }
         if(flag==false)
         {
@@ -486,13 +484,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void obtenerFavs(){
         ArrayList<Integer> idsEventos = usuario.listarFavoritos();
         ArrayList<Producto> favs = new ArrayList<Producto>();
-        if (idsEventos != null)
-            for (int i = 0 ; i< app.getListaProductos().size() ; i++)
-                for (int j = 0 ; j<idsEventos.size(); j++)
-                    if (app.getListaProductos().get(i).mostrarIdEvento() == idsEventos.get(j))
+        if (idsEventos != null) {
+            for (int i = 0; i < app.getListaProductos().size(); i++)
+                for (int j = 0; j < idsEventos.size(); j++)
+                    if (app.getListaProductos().get(i).mostrarIdEvento() == idsEventos.get(j)) {
                         favs.add(app.getListaProductos().get(i));
+                    }
+        }
 
-        usuario.setListaFavoritos(favs);
+        if (favs!=null)
+            usuario.setListaFavoritos(favs);
+
+
     }
 
     public void autoNotificaciones(){

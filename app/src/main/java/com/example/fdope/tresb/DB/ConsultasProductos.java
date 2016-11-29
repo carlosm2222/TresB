@@ -44,9 +44,9 @@ public class ConsultasProductos {
                     String mode = resultado.getString("modelo");
                     String prov = resultado.getString("proveedor");
                     int idevento= resultado.getInt("id_evento");
-                    if (tipo.equals("smartphone")){
+                    if (tipo.equals("Smartphone")){
                         ProductosFactory pf = new FactoriaElectronica();
-                        Producto producto = pf.crearProducto(user,tipo,marc,mode,precio,prov,latLng,img,largo);
+                        Producto producto = pf.crearProducto(user,tipo,marc,mode,precio,prov,latLng,img,largo,idevento);
                         listap.add(producto);
                     }
 
@@ -120,9 +120,9 @@ public class ConsultasProductos {
                     String mode = resultado.getString("modelo");
                     String prov = resultado.getString("proveedor");
                     int idevento= resultado.getInt("id_evento");
-                    if (tipo.equals("smartphone")){
+                    if (tipo.equals("Smartphone")){
                         ProductosFactory pf = new FactoriaElectronica();
-                        Producto producto = pf.crearProducto(user,tipo,marc,mode,precio,prov,latLng,img,largo);
+                        Producto producto = pf.crearProducto(user,tipo,marc,mode,precio,prov,latLng,img,largo,idevento);
                         lista.add(producto);
                     }
                 }
