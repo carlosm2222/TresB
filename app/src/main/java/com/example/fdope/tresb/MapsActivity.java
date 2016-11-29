@@ -122,8 +122,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if (usuario!=null) {
 
                 Toast.makeText(this, "Bienvenido " + usuario.getNombre(), Toast.LENGTH_SHORT).show();
-                obtenerFavs();
-
 
                 //Creamos el Timer
                 Timer timer = new Timer();
@@ -153,6 +151,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         cargarDatos();
         miUbicacion();
+        if (usuario!=null)
+            obtenerFavs();
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override

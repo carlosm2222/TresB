@@ -80,12 +80,10 @@ public class FormularioRegistro extends AppCompatActivity {
         if (ConsultasUsuarios.checkUsuario(usuario,pass))
             Toast.makeText(this,"Nombre de usuario no disponible",Toast.LENGTH_SHORT).show();
         else {
-            if (ConsultasUsuarios.registrar(nombres, apellidos, email, pass, usuario)!= null) {
+            if (ConsultasUsuarios.registrar(nombres, apellidos, email, pass, usuario)) {
                 Toast.makeText(this,"Grasias por registrarte",Toast.LENGTH_SHORT).show();
                 nextActtivity();
             }
-            else
-                Toast.makeText(this, "NOSE PUEDE PASAR ALA ACTIVIDAD", Toast.LENGTH_SHORT).show();
         }
     }
 

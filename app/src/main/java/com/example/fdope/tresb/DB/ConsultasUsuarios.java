@@ -20,11 +20,12 @@ import java.util.ArrayList;
 public class ConsultasUsuarios {
 
 
-    public  static Boolean registrar(String nombre, String apellidos, String email, String password, String username) {
+    public  static boolean registrar(String nombre, String apellidos, String email, String password, String username) {
         DB db=new DB();
         Connection c =db.connect();
 
         try {
+            /*
             CallableStatement oCall;
             oCall = c.prepareCall("{ ? = call agregarcliente(?,?,?,?,?) }");
             oCall.registerOutParameter(1, Types.BOOLEAN);
@@ -37,18 +38,27 @@ public class ConsultasUsuarios {
 
             boolean resp = oCall.getBoolean(1);
             return resp;
+
+            */
+            ResultSet resultSet = db.execute("SELECT * FROM agregarcliente('"+username+"','"+password+"','"+nombre+"','"+apellidos+"','"+email+"') ;");
+            if (resultSet != null)
+                return true;
+            else
+                return false;
+
+
         }catch (Exception e){
 
         }
         return false;
     }
 
-    public static Boolean checkUsuario(String username,String password) {
+    public static boolean checkUsuario(String username,String password) {
         DB db=new DB();
         Connection c =db.connect();
 
         try {
-
+/*
             CallableStatement oCall = c.prepareCall("{ ? = call validarlogin(?,?) }");
             oCall.registerOutParameter(1, Types.BOOLEAN);
             oCall.setString(2,username);
@@ -57,6 +67,14 @@ public class ConsultasUsuarios {
 
             boolean resp = oCall.getBoolean(1);
             return resp;
+            */
+
+            ResultSet resultSet = db.execute("SELECT * FROM validarlogin('"+username+"','"+password+"')");
+            if (resultSet != null)
+                return true;
+            else
+                return false;
+
 
         }catch (Exception e){
 
@@ -95,7 +113,7 @@ public class ConsultasUsuarios {
         Connection c =db.connect();
 
         try {
-
+/*
             CallableStatement oCall = c.prepareCall("{ ? = call agregarfavorito(?,?) }");
             oCall.registerOutParameter(1, Types.BOOLEAN);
             oCall.setString(3,user);
@@ -104,6 +122,12 @@ public class ConsultasUsuarios {
 
             Boolean resp = oCall.getBoolean(1);
             return resp;
+*/
+            ResultSet resultSet = db.execute(" SELECT * FROM agregarfavorito('"+ idEvento +"','"+ user +"');");
+            if (resultSet != null)
+                return true;
+            else
+                return false;
 
         }catch (Exception e){
 
@@ -157,6 +181,7 @@ public class ConsultasUsuarios {
         DB db=new DB();
         Connection c =db.connect();
         try {
+            /*
             CallableStatement oCall = c.prepareCall("{ ? = call agregarnotificacion(?,?) }");
             oCall.registerOutParameter(1, Types.BOOLEAN);
             oCall.setString(3,user);
@@ -164,6 +189,12 @@ public class ConsultasUsuarios {
             oCall.execute();
 
             return   oCall.getBoolean(1);
+            */
+            ResultSet resultSet = db.execute("SELECT * FROM agregarnotificacion('"+idEvento+"','"+user+"');");
+            if (resultSet != null)
+                return true;
+            else
+                return false;
 
         }catch (Exception e){
 
@@ -194,6 +225,7 @@ public class ConsultasUsuarios {
         DB db=new DB();
         Connection c =db.connect();
         try {
+            /*
             CallableStatement oCall = c.prepareCall("{ ? = call saberestadonotificacion(?,?) }");
             oCall.registerOutParameter(1, Types.BOOLEAN);
             oCall.setString(3,user);
@@ -202,6 +234,13 @@ public class ConsultasUsuarios {
 
             boolean resp = oCall.getBoolean(1);
             return resp;
+            */
+
+            ResultSet resultSet = db.execute("SELECT * FROM saberestadonotificacion('"+idEvento+"','"+user+"');");
+            if (resultSet != null)
+                return true;
+            else
+                return false;
 
         }catch (Exception e){
 
