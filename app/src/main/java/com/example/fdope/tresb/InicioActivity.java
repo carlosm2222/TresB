@@ -29,10 +29,8 @@ public class InicioActivity extends AppCompatActivity {
         Bundle inBundle = getIntent().getExtras();//agregar desde aqui
         if (inBundle != null) {
             usuario = inBundle.getParcelable("UsuarioIn");
-            if (usuario!=null)
-                Toast.makeText(this, "Bienvenido " + usuario.getNombre(), Toast.LENGTH_SHORT).show();
-            else
-                Toast.makeText(this, "NOSE PUDO OBTENER USUARIIO ", Toast.LENGTH_SHORT).show();
+            if (usuario==null)
+                Toast.makeText(this, "ERROR EN LA CONEXION", Toast.LENGTH_SHORT).show();
 
             ArrayList<Producto>  recientes = ConsultasProductos.listarProductos();
 
@@ -45,8 +43,6 @@ public class InicioActivity extends AppCompatActivity {
                     Toast.makeText(this,"No hay productos agregados recientemente",Toast.LENGTH_LONG).show();
                     irMapa();
                 }
-
-
             }else
                 Toast.makeText(this,"No se pudo cargar datos",Toast.LENGTH_SHORT).show();
         }
