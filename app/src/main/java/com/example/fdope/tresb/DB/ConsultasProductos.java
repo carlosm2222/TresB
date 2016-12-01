@@ -144,6 +144,23 @@ public class ConsultasProductos {
 
        return new ArrayList<Producto>();
     }
+
+    public static boolean agregarDenuncia (int idEvento, String motivo){
+        DB db= new DB();
+        Connection c = db.connect();
+
+        try {
+            ResultSet resultado = db.execute("SELECT * FROM agregarDenuncia('"+idEvento+"','"+motivo+"');");
+            if(resultado !=null){
+                return true;
+            }
+
+        }catch (Exception e){
+
+        }
+        db.desconectarBd();
+        return false;
+    }
 }
 
 

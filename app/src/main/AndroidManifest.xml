@@ -91,9 +91,12 @@
         <activity
             android:name=".ListViewComentarios"
             android:label="Comentarios"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".ListViewNotificacion" />
-        <activity android:name=".InicioActivity"></activity>
+        <activity android:name=".InicioActivity" />
+        <activity android:name=".DenunciarActivity"
+            android:label="Denunciar">
+        </activity>
     </application>
 
 </manifest>

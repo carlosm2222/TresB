@@ -62,7 +62,7 @@ public class MarkerActivity extends DialogFragment {
         bmp = BitmapFactory.decodeByteArray(b, 0, b.length);
         mImageView.setImageBitmap(bmp);
         botonFav = (FloatingActionButton) rootView.findViewById(R.id.favorito);
-
+        botonDenuncia = (FloatingActionButton) rootView.findViewById(R.id.denunciar);
 
         if (flag)
             botonFav.setImageResource(R.drawable.ic_star_black_24dp);
@@ -82,6 +82,15 @@ public class MarkerActivity extends DialogFragment {
                     flag=false;
                     mCallback.onFinishDialogFavorito(flag);
                 }
+            }
+        });
+
+        botonDenuncia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),DenunciarActivity.class);
+                intent.putExtra("idEvento",idEvento);
+                startActivity(intent);
             }
         });
 

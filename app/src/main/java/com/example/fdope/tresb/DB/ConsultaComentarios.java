@@ -30,7 +30,7 @@ public class ConsultaComentarios {
 
                 while(resultado.next()){
                     Timestamp fechaPublicacion= resultado.getTimestamp("fecha_publicacion");
-                    String fecha = new SimpleDateFormat("MM/dd/yyyy HH:mm").format(fechaPublicacion);
+                    String fecha = new SimpleDateFormat("dd/MMMM/yyyy HH:mm").format(fechaPublicacion);
                     Comentario coment = new Comentario(resultado.getString("usuariocomentarista"),resultado.getString("comentario"),resultado.getBoolean("megusta"),fecha);
                     listap.add(coment);
 
