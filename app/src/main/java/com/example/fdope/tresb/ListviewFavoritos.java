@@ -43,6 +43,9 @@ public class ListviewFavoritos extends AppCompatActivity implements PostEliminar
                 }
             });
 
+            if (usuario.getListaFavoritos().size()<1)
+                Toast.makeText(this,"No tienes productos guardados en favoritos.",Toast.LENGTH_LONG).show();
+
             listadapter = new ListAdapterFavorito(ListviewFavoritos.this,R.layout.list_fila_fav,usuario.getListaFavoritos());
             lista.setAdapter(listadapter);
 

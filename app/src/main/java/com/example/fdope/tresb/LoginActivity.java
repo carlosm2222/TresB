@@ -80,9 +80,12 @@ public class LoginActivity extends AppCompatActivity {
             public void onSuccess(LoginResult loginResult) {
              AccessToken accessToken = loginResult.getAccessToken();
                 Profile profile = Profile.getCurrentProfile();
-                registrarUsuarioFacebookYEntrar(profile);
-
-                Toast.makeText(getApplicationContext(), "Cargando mapa...", Toast.LENGTH_SHORT).show();
+                if (profile!=null) {
+                    registrarUsuarioFacebookYEntrar(profile);
+                    Toast.makeText(getApplicationContext(), "Cargando mapa...", Toast.LENGTH_SHORT).show();
+                }
+                else
+                    Toast.makeText(getApplicationContext(), "NOSE PUDO OBTENER PERFIL DE FACEBOOK", Toast.LENGTH_SHORT).show();
                 /*GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
 
                     @Override
