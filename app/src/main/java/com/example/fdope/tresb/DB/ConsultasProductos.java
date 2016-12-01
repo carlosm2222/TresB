@@ -120,7 +120,6 @@ public class ConsultasProductos {
                     double lng = resultado.getDouble("longitud");
                     LatLng latLng = new LatLng(lat,lng);
                     int largo = resultado.getInt("largo");
-                    //  byte img[]=new byte[largo];
                     byte[] img = resultado.getBytes("archivo");
                     String tipo = resultado.getString("nombre_categoria");
                     String marc = resultado.getString("marca");
@@ -150,10 +149,16 @@ public class ConsultasProductos {
         Connection c = db.connect();
 
         try {
-            ResultSet resultado = db.execute("SELECT * FROM agregarDenuncia('"+idEvento+"','"+motivo+"');");
-            if(resultado !=null){
-                return true;
+            ResultSet resultSet = db.execute("SELECT * FROM agregardenuncia("+idEvento+",'"+motivo+"');");
+            if (resultSet != null)
+            {
+                while(resultSet.next()){
+                    boolean resp = resultSet.getBoolean("agregardenuncia");
+                    return resp;
+                }
             }
+            else
+                return false;
 
         }catch (Exception e){
 
