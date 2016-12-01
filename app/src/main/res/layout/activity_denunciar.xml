@@ -37,19 +37,19 @@
             android:id="@+id/motivo1" />
 
         <RadioButton
-            android:text="La imagen es inapropiada."
+            android:text="La imagen no corresponde."
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/motivo2" />
 
         <RadioButton
-            android:text="Es ofensivo."
+            android:text="Contenido inapropiado."
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/motivo3" />
 
         <RadioButton
-            android:text="Otro"
+            android:text="Producto ya no está disponible."
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/motivo4" />
@@ -63,17 +63,6 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true">
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:inputType="textMultiLine"
-            android:ems="10"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/motivo"
-            android:background="@drawable/borde"
-            android:hint="Escriba aquí su motivo de denuncia..." />
-
         <Button
             android:text="enviar"
             android:layout_width="wrap_content"
@@ -83,5 +72,6 @@
             android:layout_marginEnd="13dp"
             android:layout_marginTop="23dp"
             android:id="@+id/Denunciar" />
+
     </RelativeLayout>
 </RelativeLayout>
