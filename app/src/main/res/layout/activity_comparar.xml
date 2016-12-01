@@ -16,24 +16,6 @@
             android:layout_alignParentStart="true"
             android:layout_width="160dp">
 
-            <ImageView
-                android:id="@+id/img2"
-                android:layout_width="100dp"
-                android:layout_height="140dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="18dp" />
-
-            <TextView
-                android:text="Precio: $"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/precio1"
-                android:textAppearance="@style/TextAppearance.AppCompat"
-                android:layout_above="@+id/tienda1"
-                android:layout_alignStart="@+id/img2" />
-
             <TextView
                 android:text="Tienda: "
                 android:layout_width="wrap_content"
@@ -44,14 +26,23 @@
                 android:layout_alignParentBottom="true"
                 android:layout_alignStart="@+id/precio1" />
 
+            <ImageView
+                android:id="@+id/img1"
+                android:layout_width="100dp"
+                android:layout_height="140dp"
+                android:layout_marginTop="17dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
+
+
             <TextView
-                android:text="Modelo: "
+                android:text="Precio: $"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/modelo1"
+                android:id="@+id/precio1"
                 android:textAppearance="@style/TextAppearance.AppCompat"
-                android:layout_above="@+id/precio1"
-                android:layout_alignStart="@+id/precio1" />
+                android:layout_above="@+id/tienda1"
+                android:layout_centerHorizontal="true" />
 
             <TextView
                 android:text="Marca: "
@@ -60,7 +51,16 @@
                 android:id="@+id/marca1"
                 android:textAppearance="@style/TextAppearance.AppCompat"
                 android:layout_above="@+id/modelo1"
-                android:layout_alignStart="@+id/modelo1" />
+                android:layout_alignStart="@+id/img1" />
+
+            <TextView
+                android:text="Modelo: "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/modelo1"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:layout_above="@+id/precio1"
+                android:layout_alignStart="@+id/marca1" />
 
         </RelativeLayout>
 
@@ -72,7 +72,7 @@
             android:layout_width="160dp">
 
             <ImageView
-                android:id="@+id/img1"
+                android:id="@+id/img2"
                 android:layout_width="100dp"
                 android:layout_height="140dp"
                 android:layout_marginTop="17dp"
@@ -114,8 +114,8 @@
                 android:id="@+id/marca2"
                 android:textAppearance="@style/TextAppearance.AppCompat"
                 android:layout_marginTop="16dp"
-                android:layout_below="@+id/img1"
-                android:layout_alignStart="@+id/img1" />
+                android:layout_below="@+id/img2"
+                android:layout_alignStart="@+id/img2" />
 
         </RelativeLayout>
 

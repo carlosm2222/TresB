@@ -37,9 +37,15 @@ public class InicioActivity extends AppCompatActivity {
             ArrayList<Producto>  recientes = ConsultasProductos.listarProductos();
 
             if (recientes!=null){
+                if (recientes.size()>0){
+                    ListAdapterInicio listadapter = new ListAdapterInicio(InicioActivity.this,R.layout.list_fila,recientes);
+                    listView.setAdapter(listadapter);
+                }
+                else {
+                    Toast.makeText(this,"No hay productos agregados recientemente",Toast.LENGTH_LONG).show();
+                    irMapa();
+                }
 
-                ListAdapterInicio listadapter = new ListAdapterInicio(InicioActivity.this,R.layout.list_fila,recientes);
-                listView.setAdapter(listadapter);
 
             }else
                 Toast.makeText(this,"No se pudo cargar datos",Toast.LENGTH_SHORT).show();
@@ -47,6 +53,10 @@ public class InicioActivity extends AppCompatActivity {
     }
 
     public void irMapa(View view){
+        nextActivity(usuario);
+    }
+
+    public void irMapa(){
         nextActivity(usuario);
     }
     public void salir(View view){

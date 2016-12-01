@@ -90,13 +90,8 @@ public class ListAdapterFavorito extends ArrayAdapter<Producto> {
                 if (listaProd!=null )
                     if (listaProd.size()>0) {
                         if (listaProd.get(position) != null) {
-                            enviar.productoEliminado(listaProd.remove(position));
-                            notifyDataSetChanged();
-                            Toast.makeText(context,"Elimiado de favoritos",Toast.LENGTH_SHORT).show();
+                            enviar.productoEliminado(listaProd.get(position));
                         }
-                        else
-                            Toast.makeText(context,"Error al eliminar",Toast.LENGTH_SHORT).show();
-
                     }
             }
         });

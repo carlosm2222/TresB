@@ -49,7 +49,7 @@ public class CompararDialog extends DialogFragment {
         TextView pre2= (TextView)rootView.findViewById(R.id.precio2);
         TextView prov1 = (TextView)rootView.findViewById(R.id.tienda1);
         TextView prov2 = (TextView)rootView.findViewById(R.id.tienda2);
-        img1 = (ImageView)rootView.findViewById(R.id.img1);
+        img1 = (ImageView)rootView.findViewById(R.id.img2);
         img2 = (ImageView)rootView.findViewById(R.id.img2);
         Button salir = (Button)rootView.findViewById(R.id.salirComparar);
 

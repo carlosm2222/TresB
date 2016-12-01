@@ -122,11 +122,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if (usuario!=null) {
                 Toast.makeText(this, "Bienvenido " + usuario.getNombre(), Toast.LENGTH_SHORT).show();
             }
-            else
+            else {
                 Toast.makeText(this, "NO HAY CONEXION ", Toast.LENGTH_SHORT).show();
+                logout();
+                finish();
+            }
         }
 
-        //Creamos el Timer
+        //Timer
         Timer timer = new Timer();
         //Que actue cada 2 minutos
         //Empezando des de el segundo 30seg iniciado el mapa
@@ -134,10 +137,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void run() {
                 //La función a ejecutar
-                if ( !flagFiltro)
-                    autoRefresh();
-                if (usuario!=null)
-                    autoNotificaciones();
+                if (usuario!=null){
+
+                    if ( !flagFiltro )
+                        autoRefresh();
+                    if ( usuario.estadoRecibirNotificacion() ) // si tiene activada el recibir notificacion se ejecuta las notificaciones
+                        autoNotificaciones();
+                }
 
             }
         }, 30000, 120000);
@@ -149,7 +155,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         cargarDatos();
         miUbicacion();
-        obtenerFavs();
+        if (usuario!=null)
+            obtenerFavs();
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
@@ -384,7 +391,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void filtrarProducto(View view){
-        int respuestaFiltro=0;
         Intent intent = new Intent(this, ActivityFiltrarProductos.class);
         startActivityForResult(intent,request_code_filtro);
         flagFiltro=false;
@@ -434,6 +440,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         finish();
     }
 
+    public void logout(){
+        LoginManager.getInstance().logOut();
+        Intent login = new Intent(this, LoginActivity.class);
+        startActivity(login);
+        finish();
+    }
+
     public void ventanaFav(View view){
         Intent intent = new Intent(this,ListviewFavoritos.class);
         intent.putExtra("user",usuario);
@@ -461,7 +474,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //busco coincidencias
         for (int i = 0; i< app.getListaProductos().size(); i++){
             if (p.mostrarMarca().equals(app.getListaProductos().get(i).mostrarMarca()))
-                if ( (p.mostrarmodelo().equals(app.getListaProductos().get(i).mostrarmodelo())) && ( p.mostrarIdEvento() != app.getListaProductos().get(i).mostrarIdEvento() )  )
+                if ( (p.mostrarmodelo().equals(app.getListaProductos().get(i).mostrarmodelo())) && ( p.mostrarIdEvento() != app.getListaProductos().get(i).mostrarIdEvento() && ( !p.mostrarCreadorPublicacion().equals(usuario.getUsername()) ))  )
                     lista.add(app.getListaProductos().get(i));
         }
 
@@ -522,7 +535,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             for (int i = 0; i < coicidencias.size(); i++) {
 
-                if ( ! usuario.buscarNotificacionBD(coicidencias.get(i)) ) {
+                if ( usuario.buscarNotificacionBD(coicidencias.get(i))==false ) {
                     if ( usuario.agregarNotificacion(coicidencias.get(i)) ){
 
                         Intent intent = new Intent(MapsActivity.this, ListViewNotificacion.class);

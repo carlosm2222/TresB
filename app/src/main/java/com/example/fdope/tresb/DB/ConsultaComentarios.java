@@ -24,8 +24,6 @@ public class ConsultaComentarios {
 
         ArrayList<Comentario> listap = new ArrayList<Comentario>();
         try{
-            //CallableStatement oCall = c.prepareCall("{call getINFO()}");
-            //ResultSet resultado = oCall.executeQuery();
 
             ResultSet resultado = base.select("SELECT *from getinfocomentario('"+idEvento+"');");
             if(resultado !=null){
@@ -50,14 +48,22 @@ public class ConsultaComentarios {
     public static boolean publicarComentario(int idEvento,String comentario,String username, boolean flag) {
         DB base = new DB();
         Connection c = base.connect();
-        //CallableStatement oCall = c.prepareCall("{call getINFO()}");
-        //ResultSet resultado = oCall.executeQuery();
+        try {
 
-        ResultSet resultado = base.select("SELECT * FROM agregarcomentario('"+idEvento+"','"+comentario+"','"+username+"','"+flag+"');");
-        if (resultado != null) {
-            return true;
-        }else
-            return false;
+            ResultSet resultSet = base.select("SELECT * FROM agregarcomentario('"+idEvento+"','"+comentario+"','"+username+"','"+flag+"');");
+            if (resultSet != null)
+            {
+                while(resultSet.next()){
+                    boolean resp = resultSet.getBoolean("agregarcomentario");
+                    return resp;
+                }
+            }
+            else
+                return false;
+        }catch (Exception e){
+
+        }
+        return false;
     }
 }
 

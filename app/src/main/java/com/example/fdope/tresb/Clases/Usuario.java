@@ -2,11 +2,9 @@ package com.example.fdope.tresb.Clases;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.widget.Toast;
 
 import com.example.fdope.tresb.DB.ConsultasUsuarios;
 import com.example.fdope.tresb.Factoria.Producto;
-import com.example.fdope.tresb.MapsActivity;
 
 import java.util.ArrayList;
 
@@ -18,7 +16,7 @@ public class Usuario implements Parcelable {
     private String nombre, apellidos, email,password,username;
     private ArrayList<Producto> listaFavoritos;
     private ArrayList<Producto> notificaciones;
-    private double rating;
+    private boolean recibirNotificacion;
 
     public Usuario(String nombre, String apellidos, String email, String password, String username) {
         this.nombre = nombre;
@@ -28,6 +26,16 @@ public class Usuario implements Parcelable {
         this.username = username;
         this.listaFavoritos = new ArrayList<Producto>();
         this.notificaciones = new ArrayList<Producto>();
+    }
+    public Usuario(String nombre, String apellidos, String email, String password, String username,boolean recibirNotificacion ) {
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.email = email;
+        this.password = password;
+        this.username = username;
+        this.listaFavoritos = new ArrayList<Producto>();
+        this.notificaciones = new ArrayList<Producto>();
+        this.recibirNotificacion = recibirNotificacion;
     }
 
     public ArrayList<Producto> getNotificaciones() {
@@ -46,14 +54,6 @@ public class Usuario implements Parcelable {
         this.listaFavoritos = listaFavoritos;
     }
 
-    public double getRating() {
-        return rating;
-    }
-
-    public void setRating(double rating) {
-        this.rating = rating;
-    }
-
     public String getNombre() {
         return nombre;
     }
@@ -66,76 +66,13 @@ public class Usuario implements Parcelable {
         return apellidos;
     }
 
-    public void setApellidos(String apellidos) {
-        this.apellidos = apellidos;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getEmail() {
         return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getUsername() {
         return username;
     }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.nombre);
-        dest.writeString(this.apellidos);
-        dest.writeString(this.email);
-        dest.writeString(this.password);
-        dest.writeString(this.username);
-        dest.writeList(this.listaFavoritos);
-        dest.writeList(this.notificaciones);
-        dest.writeDouble(this.rating);
-    }
-
-    protected Usuario(Parcel in) {
-        this.nombre = in.readString();
-        this.apellidos = in.readString();
-        this.email = in.readString();
-        this.password = in.readString();
-        this.username = in.readString();
-        this.listaFavoritos = new ArrayList<Producto>();
-        in.readList(this.listaFavoritos, Producto.class.getClassLoader());
-        this.notificaciones = new ArrayList<Producto>();
-        in.readList(this.notificaciones, Producto.class.getClassLoader());
-        this.rating = in.readDouble();
-    }
-
-    public static final Creator<Usuario> CREATOR = new Creator<Usuario>() {
-        @Override
-        public Usuario createFromParcel(Parcel source) {
-            return new Usuario(source);
-        }
-
-        @Override
-        public Usuario[] newArray(int size) {
-            return new Usuario[size];
-        }
-    };
 
     public Producto buscarFav(Producto p){
         for (int i=0; i<listaFavoritos.size() ; i++){
@@ -172,9 +109,9 @@ public class Usuario implements Parcelable {
     }
     public boolean eliminarFavorito(Producto p){
         if (buscarFav(p)!=null){
-            if(ConsultasUsuarios.eliminarFav(username,p.mostrarIdEvento())){
+            if( ConsultasUsuarios.eliminarFav(username,p.mostrarIdEvento()) ){
                 int pos = buscarPosFav(p);
-                if(listaFavoritos.remove(pos)!= null)
+                if(listaFavoritos.remove(pos)!=null)
                     return true;
             }
         }
@@ -195,7 +132,7 @@ public class Usuario implements Parcelable {
             return true;
         }
         else
-        return false;
+            return false;
     }
 
     public boolean buscarNotificacionBD(Producto p){
@@ -210,5 +147,61 @@ public class Usuario implements Parcelable {
         return ids;
     }
 
+    public boolean actYDesacNotificacion(boolean flag){
+
+        if (ConsultasUsuarios.cambiarEstadoRecibirNotificacion(flag,username)) {
+            recibirNotificacion = flag;
+            return true;
+        }else
+            return false;
+
+    }
+
+    public boolean estadoRecibirNotificacion(){
+        return ConsultasUsuarios.estadoRecibirNotificacion(username);
+    }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.nombre);
+        dest.writeString(this.apellidos);
+        dest.writeString(this.email);
+        dest.writeString(this.password);
+        dest.writeString(this.username);
+        dest.writeList(this.listaFavoritos);
+        dest.writeList(this.notificaciones);
+        dest.writeByte(this.recibirNotificacion ? (byte) 1 : (byte) 0);
+    }
+
+    protected Usuario(Parcel in) {
+        this.nombre = in.readString();
+        this.apellidos = in.readString();
+        this.email = in.readString();
+        this.password = in.readString();
+        this.username = in.readString();
+        this.listaFavoritos = new ArrayList<Producto>();
+        in.readList(this.listaFavoritos, Producto.class.getClassLoader());
+        this.notificaciones = new ArrayList<Producto>();
+        in.readList(this.notificaciones, Producto.class.getClassLoader());
+        this.recibirNotificacion = in.readByte() != 0;
+    }
+
+    public static final Creator<Usuario> CREATOR = new Creator<Usuario>() {
+        @Override
+        public Usuario createFromParcel(Parcel source) {
+            return new Usuario(source);
+        }
+
+        @Override
+        public Usuario[] newArray(int size) {
+            return new Usuario[size];
+        }
+    };
 }
 
