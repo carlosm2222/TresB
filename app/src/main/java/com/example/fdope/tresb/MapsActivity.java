@@ -137,13 +137,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void run() {
                 //La función a ejecutar
-                if (usuario!=null){
-
                     if ( !flagFiltro )
                         autoRefresh();
-                    if ( usuario.estadoRecibirNotificacion() ) // si tiene activada el recibir notificacion se ejecuta las notificaciones
+                    if ( usuario.estadoRecibirNotificacion() )// si tiene activada el recibir notificacion se ejecuta las notificaciones
                         autoNotificaciones();
-                }
 
             }
         }, 30000, 120000);
@@ -301,7 +298,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void formulario(View view) {
-        Intent intent = new Intent(this, FormularioActivity.class);
+        Intent intent = new Intent(this, FormularioProductoActivity.class);
         Location location = obetnerUbicacion();
         intent.putExtra("coordenadas", location);
         intent.putExtra("usuario",usuario.getUsername());
@@ -474,7 +471,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //busco coincidencias
         for (int i = 0; i< app.getListaProductos().size(); i++){
             if (p.mostrarMarca().equals(app.getListaProductos().get(i).mostrarMarca()))
-                if ( (p.mostrarmodelo().equals(app.getListaProductos().get(i).mostrarmodelo())) && ( p.mostrarIdEvento() != app.getListaProductos().get(i).mostrarIdEvento() && ( !p.mostrarCreadorPublicacion().equals(usuario.getUsername()) ))  )
+                if ( (p.mostrarmodelo().equals(app.getListaProductos().get(i).mostrarmodelo())) && ( p.mostrarIdEvento() != app.getListaProductos().get(i).mostrarIdEvento())   )
                     lista.add(app.getListaProductos().get(i));
         }
 
@@ -532,37 +529,39 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         public void run() {
 
             ArrayList<Producto> coicidencias = buscarProdParaNotificar();
+            if (coicidencias!=null){
+                if (coicidencias.size()>0){
+                    for (int i = 0; i < coicidencias.size(); i++) {
 
-            for (int i = 0; i < coicidencias.size(); i++) {
+                        if (usuario.buscarNotificacionBD(coicidencias.get(i)) == false) {
+                            if (usuario.agregarNotificacion(coicidencias.get(i))) {
 
-                if ( usuario.buscarNotificacionBD(coicidencias.get(i))==false ) {
-                    if ( usuario.agregarNotificacion(coicidencias.get(i)) ){
+                                Intent intent = new Intent(MapsActivity.this, ListViewNotificacion.class);
+                                intent.putExtra("noti", usuario);
+                                PendingIntent pendingIntent = PendingIntent.getActivity(MapsActivity.this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
-                        Intent intent = new Intent(MapsActivity.this, ListViewNotificacion.class);
-                        intent.putExtra("noti", usuario);
-                        PendingIntent pendingIntent = PendingIntent.getActivity(MapsActivity.this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+                                //notificacion
+                                NotificationCompat.Builder builder = new NotificationCompat.Builder(MapsActivity.this);
+                                builder.setContentIntent(pendingIntent);
+                                builder.setAutoCancel(true);
+                                builder.setSmallIcon(android.R.drawable.ic_dialog_info);
+                                builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.logo));
 
-                        //notificacion
-                        NotificationCompat.Builder builder = new NotificationCompat.Builder(MapsActivity.this);
-                        builder.setContentIntent(pendingIntent);
-                        builder.setAutoCancel(true);
-                        builder.setSmallIcon(android.R.drawable.ic_dialog_info);
-                        builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.logo));
+                                Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                                builder.setSound(sound);
 
-                        Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                        builder.setSound(sound);
+                                builder.setContentTitle("Nuevos productos!");
+                                builder.setContentText("Productos de su interes: " + coicidencias.get(i).mostrarMarca() + " " + coicidencias.get(i).mostrarmodelo());
+                                builder.setSubText("toque para ver los productos, apresurate !");
 
-                        builder.setContentTitle("Nuevos productos!");
-                        builder.setContentText("Productos de su interes: " + coicidencias.get(i).mostrarMarca() + " " + coicidencias.get(i).mostrarmodelo());
-                        builder.setSubText("toque para ver los productos, apresurate !");
-
-                        //Enviar notificacion
-                        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                        notificationManager.notify(NOTIFICACION_ID, builder.build());
+                                //Enviar notificacion
+                                NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                                notificationManager.notify(NOTIFICACION_ID, builder.build());
+                            }
+                        }
                     }
                 }
             }
-            coicidencias=null;
         }
     };
 }

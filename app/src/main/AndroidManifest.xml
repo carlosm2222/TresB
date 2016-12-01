@@ -27,7 +27,7 @@
 
         <activity
             android:name=".LoginActivity"
-            android:label="@string/title_activity_login">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -63,7 +63,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".FormularioActivity"
+            android:name=".FormularioProductoActivity"
             android:label="Formulario"
             android:parentActivityName=".MapsActivity">
             <meta-data

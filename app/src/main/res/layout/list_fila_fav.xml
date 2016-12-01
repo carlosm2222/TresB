@@ -33,13 +33,13 @@
             android:layout_marginTop="14dp" />
 
         <TextView
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/titulo"
             android:textAppearance="@android:style/TextAppearance.Material.Body1"
             android:layout_alignParentTop="true"
             android:layout_toEndOf="@+id/img"
-            android:layout_marginStart="16dp" />
+            android:layout_marginStart="16dp"
+            android:layout_width="150dp" />
 
         <TextView
             android:layout_width="match_parent"
@@ -57,13 +57,15 @@
             android:layout_alignStart="@+id/tienda" />
 
         <Button
-            android:text="Eliminar"
             android:id="@+id/botonElimiarFav"
             style="@style/com_facebook_button"
-            android:layout_width="67dp"
-            android:layout_height="25dp"
-            android:layout_above="@+id/tienda"
-            android:layout_alignParentEnd="true" />
+            android:background="@android:drawable/ic_delete"
+            android:backgroundTint="@android:color/holo_red_dark"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+
     </RelativeLayout>
 
 </RelativeLayout>

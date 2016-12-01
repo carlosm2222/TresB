@@ -82,9 +82,17 @@ public class ConsultasProductos {
             oCall.setString(9,proveedor);
             oCall.setBytes(10,img);
             oCall.setInt(11,largo);
-            oCall.execute();
+            ResultSet resultSet = oCall.executeQuery();
 
-            return oCall.getInt(1);
+            if (resultSet != null)
+            {
+                while(resultSet.next()){
+                    int resp = resultSet.getInt("agregarevento");
+                    return resp;
+                }
+            }
+            else
+                return 0;
 
         }catch (Exception e){
 

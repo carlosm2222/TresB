@@ -33,7 +33,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Iterator;
 
-public class FormularioActivity extends AppCompatActivity {
+public class FormularioProductoActivity extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE = 1;
     private Bitmap mImageBitmap;
     private String mCurrentPhotoPath;
