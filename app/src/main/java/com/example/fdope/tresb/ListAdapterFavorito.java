@@ -28,6 +28,7 @@ public class ListAdapterFavorito extends ArrayAdapter<Producto> {
         super(context, resource);
         this.context=context;
         this.listaProd = listaProd;
+        enviar = (PostEliminarFav) context;
     }
 
 
@@ -82,7 +83,7 @@ public class ListAdapterFavorito extends ArrayAdapter<Producto> {
         String usr = "Publicado por: "+p.mostrarCreadorPublicacion();
         usuario.setText(usr);
 
-        enviar = (PostEliminarFav) context;
+
 
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,7 +92,7 @@ public class ListAdapterFavorito extends ArrayAdapter<Producto> {
                     if (listaProd.size()>0) {
                         if (listaProd.get(position) != null) {
                             enviar.productoEliminado(listaProd.get(position));
-//                            listaProd.remove(position);
+                            listaProd.remove(position);
                             notifyDataSetChanged();
                         }
                     }

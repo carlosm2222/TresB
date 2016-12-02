@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.fdope.tresb.Clases.Usuario;
+import com.example.fdope.tresb.DB.ConsultasUsuarios;
 import com.example.fdope.tresb.Factoria.Producto;
 
 public class ListviewFavoritos extends AppCompatActivity implements PostEliminarFav{
@@ -48,18 +49,16 @@ public class ListviewFavoritos extends AppCompatActivity implements PostEliminar
 
             listadapter = new ListAdapterFavorito(ListviewFavoritos.this,R.layout.list_fila_fav,usuario.getListaFavoritos());
             lista.setAdapter(listadapter);
+
         }
     }
 
     @Override
     public void productoEliminado(Producto peliminado) {
-
-            if(usuario.eliminarFav(peliminado)){
-                    Toast.makeText(this, peliminado.mostrarMarca()+ " "+peliminado.mostrarmodelo()+"Eliminado de favoritos.", Toast.LENGTH_SHORT).show();
-                    listadapter.notifyDataSetChanged();
-            }
-            else
+        if(ConsultasUsuarios.eliminarFav(usuario.getUsername(),peliminado.mostrarIdEvento())){
+            Toast.makeText(this, peliminado.mostrarMarca()+ " "+peliminado.mostrarmodelo()+"Eliminado de favoritos.", Toast.LENGTH_SHORT).show();
+        }
+        else
             Toast.makeText(this,"No se pudo eliminar de la BD ",Toast.LENGTH_SHORT).show();
     }
-
 }

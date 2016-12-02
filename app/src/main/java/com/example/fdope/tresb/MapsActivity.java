@@ -63,7 +63,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private int flagfav=0; /// flag= true es favorito , false no es favorito
     private int flagComparacion1=0;
     private int flagComparacion2=0;
-    private boolean flagCerrarComparacion=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,6 +130,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         //Timer
         Timer timer = new Timer();
+        Timer timer2 = new Timer();
+
         //Que actue cada 2 minutos
         //Empezando des de el segundo 30seg iniciado el mapa
         timer.scheduleAtFixedRate(new TimerTask() {
@@ -144,6 +145,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
         }, 30000, 120000);
+
+    // inicia alos 5 seg de abrir la app en mapa y cada 5 min  ejecuta
+        timer2.scheduleAtFixedRate(new TimerTask() {
+
+            @Override
+            public void run() {
+                revisarDenunciasUsuario();
+            }
+        }, 5000, 600000);
     }
 
 
@@ -226,7 +236,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onFinishDialogComparar(boolean flag) {
-
 
         if (flagComparacion1 == 1 && flagComparacion2 == 0 && flag==false){
             productocom2=null;
@@ -477,6 +486,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         return lista;
     }
+
     public ArrayList<Producto> buscarProdParaNotificar(){
         ArrayList<Producto> listProdNoti = new ArrayList<Producto>();
 
@@ -489,7 +499,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         return listProdNoti;
     }
-
 
     public void obtenerFavs(){
         ArrayList<Integer> idsEventos = usuario.listarFavoritos();
@@ -504,8 +513,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         if (favs!=null)
             usuario.setListaFavoritos(favs);
-
-
     }
 
     public void autoNotificaciones(){
@@ -516,12 +523,74 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         this.runOnUiThread(refreshRunnable);
     }
 
+    public void revisarDenunciasUsuario(){
+        this.runOnUiThread(revisarDenunciasUsuarioRunnable);
+    }
+
     private Runnable refreshRunnable = new Runnable() {
         public void run() {
             mMap.clear();
             app.getListaProductos().clear();
             app.setListaSmartphone(null);
             cargarDatos();
+        }
+    };
+
+    private Runnable revisarDenunciasUsuarioRunnable= new Runnable() {
+        public void run() {
+
+            int numAdv=app.buscarYNotificarDenunciasUsuario(usuario.getUsername());
+
+            if (usuario.getNumeroDenuncias() != numAdv){
+
+                if (numAdv < 3 ){
+                    usuario.setNumeroDenuncias(numAdv);
+                    Intent intent = new Intent();
+                    PendingIntent pendingIntent = PendingIntent.getActivity(MapsActivity.this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+                    //notificacion
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(MapsActivity.this);
+                    builder.setContentIntent(pendingIntent);
+                    builder.setAutoCancel(true);
+                    builder.setSmallIcon(android.R.drawable.stat_notify_error);
+                    builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.logo));
+
+                    Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                    builder.setSound(sound);
+                    int contDenuncia = 3-numAdv;
+                    builder.setContentTitle("¡ ADVERTENCIA NUMERO:  !"+ contDenuncia);
+                    builder.setContentText("Su publicacion ha sido eliminada.");
+                    builder.setSubText("Tu publicación ha recibido más de 2 denuncias, si tienes 3 publicaciones eliminadas quedaras bloqueado en la App");
+
+                    //Enviar notificacion
+                    NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                    notificationManager.notify(NOTIFICACION_ID, builder.build());
+                }
+                if (numAdv == 0){
+                    usuario.setNumeroDenuncias(0);
+                    Intent intent = new Intent(MapsActivity.this,LoginActivity.class);
+                    PendingIntent pendingIntent = PendingIntent.getActivity(MapsActivity.this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+                    //notificacion
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(MapsActivity.this);
+                    builder.setContentIntent(pendingIntent);
+                    builder.setAutoCancel(true);
+                    builder.setSmallIcon(android.R.drawable.stat_notify_error);
+                    builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.logo));
+
+                    Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                    builder.setSound(sound);
+
+                    builder.setContentTitle("¡Has sido bloqueado! ");
+                    builder.setContentText("Motivo: Tener mas de 2 publicaciones eliminadas por denuncias.");
+
+
+                    //Enviar notificacion
+                    NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                    notificationManager.notify(NOTIFICACION_ID, builder.build());
+                }
+            }
+
         }
     };
 

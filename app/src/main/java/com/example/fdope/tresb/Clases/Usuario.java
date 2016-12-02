@@ -17,6 +17,7 @@ public class Usuario implements Parcelable {
     private ArrayList<Producto> listaFavoritos;
     private ArrayList<Producto> notificaciones;
     private boolean recibirNotificacion;
+    private int numeroDenuncias;
 
     public Usuario(String nombre, String apellidos, String email, String password, String username) {
         this.nombre = nombre;
@@ -26,6 +27,7 @@ public class Usuario implements Parcelable {
         this.username = username;
         this.listaFavoritos = new ArrayList<Producto>();
         this.notificaciones = new ArrayList<Producto>();
+        this.numeroDenuncias=3;
     }
     public Usuario(String nombre, String apellidos, String email, String password, String username,boolean recibirNotificacion ) {
         this.nombre = nombre;
@@ -36,6 +38,7 @@ public class Usuario implements Parcelable {
         this.listaFavoritos = new ArrayList<Producto>();
         this.notificaciones = new ArrayList<Producto>();
         this.recibirNotificacion = recibirNotificacion;
+        this.numeroDenuncias=3;
     }
 
     public ArrayList<Producto> getNotificaciones() {
@@ -52,6 +55,14 @@ public class Usuario implements Parcelable {
 
     public void setListaFavoritos(ArrayList<Producto> listaFavoritos) {
         this.listaFavoritos = listaFavoritos;
+    }
+
+    public int getNumeroDenuncias() {
+        return numeroDenuncias;
+    }
+
+    public void setNumeroDenuncias(int numeroDenuncias) {
+        this.numeroDenuncias = numeroDenuncias;
     }
 
     public String getNombre() {
@@ -184,6 +195,7 @@ public class Usuario implements Parcelable {
         dest.writeList(this.listaFavoritos);
         dest.writeList(this.notificaciones);
         dest.writeByte(this.recibirNotificacion ? (byte) 1 : (byte) 0);
+        dest.writeInt(this.numeroDenuncias);
     }
 
     protected Usuario(Parcel in) {
@@ -197,6 +209,7 @@ public class Usuario implements Parcelable {
         this.notificaciones = new ArrayList<Producto>();
         in.readList(this.notificaciones, Producto.class.getClassLoader());
         this.recibirNotificacion = in.readByte() != 0;
+        this.numeroDenuncias = in.readInt();
     }
 
     public static final Creator<Usuario> CREATOR = new Creator<Usuario>() {

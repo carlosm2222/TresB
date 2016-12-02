@@ -310,4 +310,50 @@ public class ConsultasUsuarios {
         return false;
     }
 
+    public static int buscarDenunciasUsuario(String username){
+        DB db=new DB();
+        Connection c =db.connect();
+    try {
+        ResultSet resultSet = db.execute("SELECT * FROM ('"+username+"');");
+        if (resultSet != null)
+        {
+            while(resultSet.next()){
+                int resp = resultSet.getInt("");
+                return resp;
+            }
+        }
+        else
+            return 3;
+
+    }catch (Exception e){
+
+    }
+    return 3;
+
+    }
+
+    public static boolean consultarUsuarioSiEstaBloqueado(String username){
+        DB db=new DB();
+        Connection c =db.connect();
+        //false = no esta bloqueado. true = bloquado
+
+        try {
+
+            ResultSet resultSet = db.execute("SELECT * FROM ('"+username+"');");
+            if (resultSet != null)
+            {
+                while(resultSet.next()){
+                    boolean resp = resultSet.getBoolean("");
+                    return resp;
+                }
+            }
+            else
+                return false;
+
+        }catch (Exception e){
+
+        }
+        return false;
+    }
+
 }
