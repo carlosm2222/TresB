@@ -27,7 +27,7 @@
                 android:layout_alignStart="@+id/precio1" />
 
             <ImageView
-                android:id="@+id/img1"
+                android:id="@+id/imagen1"
                 android:layout_width="100dp"
                 android:layout_height="140dp"
                 android:layout_marginTop="17dp"
@@ -51,7 +51,7 @@
                 android:id="@+id/marca1"
                 android:textAppearance="@style/TextAppearance.AppCompat"
                 android:layout_above="@+id/modelo1"
-                android:layout_alignStart="@+id/img1" />
+                android:layout_alignStart="@+id/imagen1" />
 
             <TextView
                 android:text="Modelo: "
