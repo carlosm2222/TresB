@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 
@@ -69,6 +70,16 @@ public class MarkerActivity extends DialogFragment {
         else
             botonFav.setImageResource(R.drawable.ic_star_border_black_24dp);
 
+        botonFav.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (flag==false)
+                    Toast.makeText(getActivity(), "Agregar a favoritos", Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(getActivity(), "Eliminar de favoritos", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
         botonFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,9 +104,21 @@ public class MarkerActivity extends DialogFragment {
                 startActivity(intent);
             }
         });
-
+        botonDenuncia.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(getActivity(), "Denunciar", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
         botonComentarios= (FloatingActionButton)rootView.findViewById(R.id.comentarios);
-
+        botonComentarios.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(getActivity(), "Comentarios", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
         botonComentarios.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
