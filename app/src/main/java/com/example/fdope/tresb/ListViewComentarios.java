@@ -30,9 +30,11 @@ public class ListViewComentarios extends AppCompatActivity {
     private EditText inputComentario;
     private boolean flag,pressed=false;
     private ImageButton like, dislike;
+    private int mg, nomg;
    // private Button enviar;
     private String username;
     private int idEvento;
+    private TextView mgs,nomgs;
     private TextWatcher mTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -62,6 +64,11 @@ public class ListViewComentarios extends AppCompatActivity {
         idEvento = bundle.getInt("idEvento");
         username = bundle.getString("username");
         list= ConsultaComentarios.listarComentarios(idEvento);
+        contarrMg();
+        mgs = (TextView)findViewById(R.id.totalmg);
+        mgs.setText("Comentarios postivos: "+mg);
+        nomgs = (TextView)findViewById(R.id.totalnomg);
+        nomgs.setText("Comentarios negativos: "+nomg);
         if (!list.isEmpty()){
              ComentarioAdapter listadapter = new ComentarioAdapter(ListViewComentarios.this,R.layout.lista_comentarios,list);
              lista.setAdapter(listadapter);
@@ -69,6 +76,15 @@ public class ListViewComentarios extends AppCompatActivity {
             Toast.makeText(this, "No hay comentarios para esta publicación.", Toast.LENGTH_SHORT).show();
 
     }
+
+    private void contarrMg() {
+            for (int i=0;i<list.size();i++)
+                if (list.get(i).isLike())
+                    mg+=1;
+                else
+                    nomg+=1;
+    }
+
 
     public void checkFieldsForEmptyValues() {
         Button enviar = (Button)findViewById(R.id.enviarcomentario);
