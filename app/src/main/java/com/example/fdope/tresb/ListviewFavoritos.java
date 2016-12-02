@@ -48,35 +48,18 @@ public class ListviewFavoritos extends AppCompatActivity implements PostEliminar
 
             listadapter = new ListAdapterFavorito(ListviewFavoritos.this,R.layout.list_fila_fav,usuario.getListaFavoritos());
             lista.setAdapter(listadapter);
-
-                lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-                        AlertDialog.Builder adb=new AlertDialog.Builder(ListviewFavoritos.this);
-                        adb.setTitle("Delete?");
-                        adb.setMessage("Are you sure you want to delete " + position);
-                        final int positionToRemove = position;
-                        adb.setNegativeButton("Cancel", null);
-                        adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                usuario.getListaFavoritos().remove(positionToRemove);
-                                listadapter.notifyDataSetChanged();
-                            }});
-                        adb.show();
-                    }
-            });
         }
     }
 
     @Override
     public void productoEliminado(Producto peliminado) {
 
-        if(usuario.eliminarFavorito(peliminado)){
-            listadapter.notifyDataSetChanged();
-            if (usuario.buscarFav(peliminado)==null)
-                Toast.makeText(this,"Producto eliminado de favoritos",Toast.LENGTH_SHORT).show();
-        }
-        else
-        Toast.makeText(this,"Error al eliminar "+peliminado.mostrarmodelo(),Toast.LENGTH_SHORT).show();
+            if(usuario.eliminarFav(peliminado)){
+                    Toast.makeText(this, peliminado.mostrarMarca()+ " "+peliminado.mostrarmodelo()+"Eliminado de favoritos.", Toast.LENGTH_SHORT).show();
+                    listadapter.notifyDataSetChanged();
+            }
+            else
+            Toast.makeText(this,"No se pudo eliminar de la BD ",Toast.LENGTH_SHORT).show();
     }
 
 }

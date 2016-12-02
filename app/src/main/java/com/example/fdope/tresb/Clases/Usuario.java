@@ -117,6 +117,13 @@ public class Usuario implements Parcelable {
         }
         return false;
     }
+    public boolean eliminarFav(Producto p){
+        if (buscarFav(p)!=null){
+                if(listaFavoritos.remove(p))
+                    return true;
+            }
+        return false;
+    }
 
     public Producto buscarEnNotificaciones(Producto p){
         for (int i=0; i<notificaciones.size() ; i++)

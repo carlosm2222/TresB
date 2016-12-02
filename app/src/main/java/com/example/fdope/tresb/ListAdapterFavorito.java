@@ -91,6 +91,8 @@ public class ListAdapterFavorito extends ArrayAdapter<Producto> {
                     if (listaProd.size()>0) {
                         if (listaProd.get(position) != null) {
                             enviar.productoEliminado(listaProd.get(position));
+//                            listaProd.remove(position);
+                            notifyDataSetChanged();
                         }
                     }
             }
