@@ -27,7 +27,7 @@
             android:onClick="registrarUsuario"/>
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:ems="10"
@@ -37,7 +37,7 @@
             android:layout_alignStart="@+id/apellidos" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:ems="10"
@@ -47,7 +47,7 @@
             android:layout_alignStart="@+id/usuario" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
             android:ems="10"
@@ -57,26 +57,6 @@
             android:layout_alignStart="@+id/pass" />
 
         <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:ems="10"
-            android:id="@+id/pass"
-            android:hint="Contraseña"
-            android:layout_below="@+id/usuario"
-            android:layout_centerHorizontal="true" />
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
-            android:ems="10"
-            android:id="@+id/correo"
-            android:hint="E-mail"
-            android:layout_centerVertical="true"
-            android:layout_alignStart="@+id/pass2" />
-
-        <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
@@ -84,6 +64,26 @@
             android:id="@+id/pass2"
             android:hint="Confirmar contraseña"
             android:layout_below="@+id/pass"
-            android:layout_alignStart="@+id/pass" />
+            android:layout_alignParentStart="true" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:ems="10"
+            android:id="@+id/pass"
+            android:hint="Contraseña"
+            android:layout_below="@+id/usuario"
+            android:layout_alignParentStart="true" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:ems="10"
+            android:id="@+id/correo"
+            android:hint="E-mail"
+            android:layout_below="@+id/pass2"
+            android:layout_alignParentStart="true" />
     </RelativeLayout>
 </RelativeLayout>
