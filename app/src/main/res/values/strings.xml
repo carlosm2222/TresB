@@ -18,5 +18,7 @@
     <string name="logout">Cerrar sesión</string>
 
     <string name="facebook_app_id">223440068079453</string>
+    <string name="clp">$CLP</string>
+    <string name="la_oferta_se_publicar_en_la_geolocalizaci_n_actual">*La oferta se publicará en la geolocalización actual.</string>
 
 </resources>

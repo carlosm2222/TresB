@@ -10,6 +10,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -38,6 +39,7 @@ dependencies {
     compile 'com.bowyer.app:fab-toolbar:1.1.0@aar'
     compile 'com.github.fafaldo:fab-toolbar:1.2.0'
     compile 'com.github.clans:fab:1.6.2'
+    compile 'com.android.support:multidex:+'
 
     compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha8'
 }
