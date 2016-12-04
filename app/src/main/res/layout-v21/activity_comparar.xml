@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+
+        <RelativeLayout
+            android:layout_height="300dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_width="160dp">
+
+            <TextView
+                android:text="Tienda: "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tienda1"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:layout_marginBottom="48dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignStart="@+id/precio1" />
+
+            <ImageView
+                android:id="@+id/imagen1"
+                android:layout_width="100dp"
+                android:layout_height="140dp"
+                android:layout_marginTop="17dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
+
+
+            <TextView
+                android:text="Precio: $"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/precio1"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:layout_above="@+id/tienda1"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:text="Marca: "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/marca1"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:layout_above="@+id/modelo1"
+                android:layout_alignStart="@+id/imagen1" />
+
+            <TextView
+                android:text="Modelo: "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/modelo1"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:layout_above="@+id/precio1"
+                android:layout_alignStart="@+id/marca1" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_height="300dp"
+            android:layout_marginEnd="31dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_width="160dp">
+
+            <ImageView
+                android:id="@+id/img2"
+                android:layout_width="100dp"
+                android:layout_height="140dp"
+                android:layout_marginTop="17dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:text="Modelo: "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/modelo2"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:layout_marginTop="17dp"
+                android:layout_alignTop="@+id/marca2"
+                android:layout_alignStart="@+id/marca2" />
+
+            <TextView
+                android:text="Precio: $"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/precio2"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:layout_alignStart="@+id/modelo2"
+                android:layout_below="@+id/modelo2" />
+
+            <TextView
+                android:text="Tienda: "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tienda2"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:layout_below="@+id/precio2"
+                android:layout_alignStart="@+id/precio2" />
+
+            <TextView
+                android:text="Marca: "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/marca2"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:layout_marginTop="16dp"
+                android:layout_below="@+id/img2"
+                android:layout_alignStart="@+id/img2" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:orientation="horizontal"
+            android:layout_height="300dp"
+            android:layout_width="30dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true">
+
+            <Button
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:id="@+id/salirComparar"
+                android:background="@drawable/mr_ic_close_light"
+                android:backgroundTint="@android:color/holo_red_dark"
+                android:layout_weight="1"
+                android:layout_alignParentTop="true" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

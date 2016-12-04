@@ -58,7 +58,7 @@
         android:id="@+id/filtrar"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:onClick="enviarFiltros (ActivityFiltrarProductos)" />
+        android:onClick="enviarFiltros" />
 
     <EditText
         android:layout_width="match_parent"

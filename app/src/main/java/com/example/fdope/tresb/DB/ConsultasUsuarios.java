@@ -322,6 +322,7 @@ public class ConsultasUsuarios {
         try {
 
             ResultSet resultSet = db.execute("SELECT * FROM consultarusuariobloqueado('"+username+"');");
+
             if (resultSet != null)
             {
                 while(resultSet.next()){
