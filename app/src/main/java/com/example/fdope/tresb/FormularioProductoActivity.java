@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -43,6 +44,7 @@ public class FormularioProductoActivity extends AppCompatActivity {
         this.spinnerTipo = (Spinner) findViewById(R.id.spinnertipo);
         this.inputProveedor = (EditText) findViewById(R.id.inputproveedor);
         mImageView = (ImageView) findViewById(R.id.imageView2);
+        checkFieldsForEmptyValues();
 
     }
 
@@ -112,6 +114,19 @@ public class FormularioProductoActivity extends AppCompatActivity {
                     }
                 }
             }
+        }
+    }
+
+    public void checkFieldsForEmptyValues() {
+        Button b = (Button) findViewById(R.id.agregar);
+
+        String modelo   = this.inputModelo.getText().toString();   //Método que valida si los campos del login están vacios o no
+        String precio = this.inputPrecio.getText().toString();
+
+        if (modelo.equals("") || precio.equals("")) {
+            b.setEnabled(false);
+        } else {
+            b.setEnabled(true);
         }
     }
 
