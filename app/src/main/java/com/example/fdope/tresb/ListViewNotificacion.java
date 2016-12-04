@@ -6,9 +6,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.fdope.tresb.Clases.Usuario;
-import com.example.fdope.tresb.Factoria.Producto;
-
-import java.util.ArrayList;
 
 public class ListViewNotificacion extends AppCompatActivity {
 

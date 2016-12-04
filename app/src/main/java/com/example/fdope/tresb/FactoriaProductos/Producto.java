@@ -1,12 +1,6 @@
-package com.example.fdope.tresb.Factoria;
-
-import android.graphics.Bitmap;
+package com.example.fdope.tresb.FactoriaProductos;
 
 import com.google.android.gms.maps.model.LatLng;
-
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
 
 /**
  * Created by SS on 12-10-2016.
@@ -14,8 +8,6 @@ import java.util.ArrayList;
 
 public interface Producto {
 
-
-   // public Boolean guardarDatosBD() throws IOException, SQLException;
     public String mostrarMarca();
     public String mostrarmodelo();
     public int mostrarPrecio();

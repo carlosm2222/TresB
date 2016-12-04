@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -14,8 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.fdope.tresb.Clases.Comentario;
-import com.example.fdope.tresb.Clases.ComentarioAdapter;
-import com.example.fdope.tresb.Clases.Usuario;
 import com.example.fdope.tresb.DB.ConsultaComentarios;
 
 import java.util.ArrayList;

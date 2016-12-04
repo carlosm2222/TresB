@@ -4,14 +4,13 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.fdope.tresb.Clases.Usuario;
 import com.example.fdope.tresb.DB.ConsultasProductos;
-import com.example.fdope.tresb.Factoria.Producto;
+import com.example.fdope.tresb.FactoriaProductos.Producto;
 
 import java.util.ArrayList;
 

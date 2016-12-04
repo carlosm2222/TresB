@@ -1,4 +1,4 @@
-package com.example.fdope.tresb.Factoria;
+package com.example.fdope.tresb.FactoriaProductos;
 
 import android.graphics.Bitmap;
 
@@ -14,5 +14,5 @@ public interface ProductosFactory {
 
     public Producto crearProducto(String username,String nombre_categoria, String marca, String modelo, int precio, String proveedor, LatLng latLng, byte[] img, int largo,int idEvento)  ;
     public Producto crearProducto(String username,String nombre_categoria, String marca, String modelo, int precio, String proveedor, LatLng latLng, Bitmap img)  ;
-    public Producto guardarProductoBD(Producto producto) throws SQLException;
+    public boolean guardarProductoBD(Producto producto) throws SQLException;
 }

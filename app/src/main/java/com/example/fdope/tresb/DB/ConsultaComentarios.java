@@ -2,10 +2,6 @@ package com.example.fdope.tresb.DB;
 
 import com.example.fdope.tresb.Clases.Comentario;
 
-import com.example.fdope.tresb.Factoria.Celular;
-import com.example.fdope.tresb.Factoria.Producto;
-import com.google.android.gms.maps.model.LatLng;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;

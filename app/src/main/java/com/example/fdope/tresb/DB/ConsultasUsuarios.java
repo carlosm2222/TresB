@@ -1,16 +1,9 @@
 package com.example.fdope.tresb.DB;
 
-import android.util.Log;
-
 import com.example.fdope.tresb.Clases.Usuario;
-import com.example.fdope.tresb.Factoria.Celular;
-import com.example.fdope.tresb.Factoria.Producto;
 
-import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
 import java.util.ArrayList;
 
 /**
@@ -89,8 +82,9 @@ public class ConsultasUsuarios {
                     String nombre = resultSet.getString("nombre");
                     String apellidos = resultSet.getString("apellido");
                     String email = resultSet.getString("correo");
-                    boolean noti = resultSet.getBoolean("recibirNotificacion");
-                    Usuario usuario = new Usuario(nombre,apellidos,email,password,username,noti);
+                    boolean noti = resultSet.getBoolean("recibirnotificacion");
+                    int denuncias = resultSet.getInt("denunciascliente");
+                    Usuario usuario = new Usuario(nombre,apellidos,email,password,username,noti,denuncias);
                     return usuario;
                 }
             }
@@ -106,12 +100,6 @@ public class ConsultasUsuarios {
         Connection c =db.connect();
 
         try {
-            /*
-            CallableStatement oCall = c.prepareCall("{ ? = call agregarfavorito(?,?) }");
-            oCall.registerOutParameter(1, Types.BOOLEAN);
-            oCall.setString(3,user);
-            oCall.setInt(2,idEvento);
-            ResultSet resultSet  = oCall.executeQuery();*/
             ResultSet resultSet = db.execute(" SELECT * FROM agregarfavorito("+ idEvento +",'"+ user +"');");
             if (resultSet != null)
             {
@@ -134,13 +122,7 @@ public class ConsultasUsuarios {
         Connection c =db.connect();
 
         try {
-/*
-            CallableStatement oCall = c.prepareCall("{ ? = call quitarfavorito(?,?) }");
-            oCall.registerOutParameter(1, Types.BOOLEAN);
-            oCall.setString(3,user);
-            oCall.setInt(2,idEvento);
-            ResultSet resultSet = oCall.executeQuery();
-            */
+
             ResultSet resultSet = db.execute(" SELECT * FROM quitarfavorito("+ idEvento +",'"+ user +"');");
             if (resultSet != null)
             {
@@ -314,11 +296,11 @@ public class ConsultasUsuarios {
         DB db=new DB();
         Connection c =db.connect();
     try {
-        ResultSet resultSet = db.execute("SELECT * FROM ('"+username+"');");
+        ResultSet resultSet = db.execute("SELECT * FROM buscarnumerodenunciasusuario('"+username+"');");
         if (resultSet != null)
         {
             while(resultSet.next()){
-                int resp = resultSet.getInt("");
+                int resp = resultSet.getInt("buscarnumerodenunciasusuario");
                 return resp;
             }
         }
@@ -339,11 +321,11 @@ public class ConsultasUsuarios {
 
         try {
 
-            ResultSet resultSet = db.execute("SELECT * FROM ('"+username+"');");
+            ResultSet resultSet = db.execute("SELECT * FROM consultarusuariobloqueado('"+username+"');");
             if (resultSet != null)
             {
                 while(resultSet.next()){
-                    boolean resp = resultSet.getBoolean("");
+                    boolean resp = resultSet.getBoolean("consultarusuariobloqueado");
                     return resp;
                 }
             }

@@ -1,26 +1,21 @@
 package com.example.fdope.tresb;
 
-import android.content.DialogInterface;
-import android.support.v4.media.MediaMetadataCompat;
-import android.support.v7.app.AlertDialog;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.fdope.tresb.Clases.Usuario;
-import com.example.fdope.tresb.DB.ConsultasUsuarios;
-import com.example.fdope.tresb.Factoria.Producto;
+import com.example.fdope.tresb.FactoriaProductos.Producto;
 
 public class ListviewFavoritos extends AppCompatActivity implements PostEliminarFav{
 
     private ListView lista;
     private Usuario usuario;
-    private Producto p;
     private CheckBox notificacion;
     public ListAdapterFavorito listadapter;
 
@@ -31,8 +26,7 @@ public class ListviewFavoritos extends AppCompatActivity implements PostEliminar
         lista = (ListView) findViewById(R.id.listaProd);
         notificacion = (CheckBox) findViewById(R.id.checkBoxNoti);
 
-        Bundle bundle = getIntent().getExtras();
-        usuario = bundle.getParcelable("user");
+        usuario = getIntent().getExtras().getParcelable("user");
 
         if (usuario!=null){
 
@@ -54,11 +48,17 @@ public class ListviewFavoritos extends AppCompatActivity implements PostEliminar
     }
 
     @Override
-    public void productoEliminado(Producto peliminado) {
-        if(ConsultasUsuarios.eliminarFav(usuario.getUsername(),peliminado.mostrarIdEvento())){
-            Toast.makeText(this, peliminado.mostrarMarca()+ " "+peliminado.mostrarmodelo()+"Eliminado de favoritos.", Toast.LENGTH_SHORT).show();
-        }
-        else
-            Toast.makeText(this,"No se pudo eliminar de la BD ",Toast.LENGTH_SHORT).show();
+    public void productoEliminado(Producto delete) {
+
+            if(usuario.eliminarFavPorID(delete.mostrarIdEvento())) {
+                Toast.makeText(this, "Eliminado de favoritos.", Toast.LENGTH_SHORT).show();
+                listadapter.notifyDataSetChanged();
+                Intent intent = new Intent();
+                intent.putExtra("usuarioOut",usuario);
+                setResult(RESULT_OK,intent);
+            }
+           else
+                Toast.makeText(this,"Error al eliminar", Toast.LENGTH_SHORT).show();
+
     }
 }

@@ -2,7 +2,7 @@ package com.example.fdope.tresb.Clases;
 
 import com.example.fdope.tresb.DB.ConsultasProductos;
 import com.example.fdope.tresb.DB.ConsultasUsuarios;
-import com.example.fdope.tresb.Factoria.Producto;
+import com.example.fdope.tresb.FactoriaProductos.Producto;
 
 import java.util.ArrayList;
 
@@ -42,4 +42,6 @@ public class TresB {
         int contDenuncias = ConsultasUsuarios.buscarDenunciasUsuario(username);
         return contDenuncias;
     }
+
+
 }

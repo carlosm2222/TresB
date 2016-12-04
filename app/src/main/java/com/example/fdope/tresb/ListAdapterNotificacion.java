@@ -11,7 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.fdope.tresb.Factoria.Producto;
+import com.example.fdope.tresb.FactoriaProductos.Producto;
 
 import java.util.ArrayList;
 

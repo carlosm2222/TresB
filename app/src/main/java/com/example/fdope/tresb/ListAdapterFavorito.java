@@ -11,9 +11,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.fdope.tresb.Factoria.Producto;
+import com.example.fdope.tresb.FactoriaProductos.Producto;
 
 import java.util.ArrayList;
 
@@ -83,8 +82,6 @@ public class ListAdapterFavorito extends ArrayAdapter<Producto> {
         String usr = "Publicado por: "+p.mostrarCreadorPublicacion();
         usuario.setText(usr);
 
-
-
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,7 +89,6 @@ public class ListAdapterFavorito extends ArrayAdapter<Producto> {
                     if (listaProd.size()>0) {
                         if (listaProd.get(position) != null) {
                             enviar.productoEliminado(listaProd.get(position));
-                            listaProd.remove(position);
                             notifyDataSetChanged();
                         }
                     }

@@ -1,4 +1,4 @@
-package com.example.fdope.tresb.Factoria;
+package com.example.fdope.tresb.FactoriaProductos;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -43,12 +43,16 @@ public class FactoriaElectronica implements ProductosFactory {
     }
 
     @Override
-    public Producto guardarProductoBD(Producto producto)throws SQLException{
+    public boolean guardarProductoBD(Producto producto)throws SQLException{
         int id;
         id=ConsultasProductos.agregarProducto(producto.mostrarCreadorPublicacion(), producto.mostrarMarca(), producto.mostrarmodelo(),
                 producto.mostrarPrecio(), producto.mostrarCategoria(), producto.coordenadasProducto().latitude, producto.coordenadasProducto().longitude, producto.mostrarProveedor(), producto.mostrarImagen(), producto.mostrarImagen().length);
         producto.setIDEvento(id);
-        return producto;
+
+        if (producto.mostrarIdEvento() != 0)
+             return true;
+        else
+            return false;
     }
 
     public static Bitmap resizeImage(Bitmap b, int w, int h) {

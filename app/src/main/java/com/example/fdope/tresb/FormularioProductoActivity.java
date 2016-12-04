@@ -4,41 +4,29 @@ import android.Manifest;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.location.Location;
-import android.media.Image;
-import android.media.ImageReader;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 
-import com.example.fdope.tresb.Factoria.Celular;
-import com.example.fdope.tresb.Factoria.Producto;
-import com.example.fdope.tresb.Factoria.ProductosFactory;
-import com.example.fdope.tresb.Factoria.FactoriaElectronica;
+import com.example.fdope.tresb.FactoriaProductos.Celular;
+import com.example.fdope.tresb.FactoriaProductos.Producto;
+import com.example.fdope.tresb.FactoriaProductos.ProductosFactory;
+import com.example.fdope.tresb.FactoriaProductos.FactoriaElectronica;
 import com.google.android.gms.maps.model.LatLng;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.sql.Types;
-import java.util.Iterator;
 
 public class FormularioProductoActivity extends AppCompatActivity {
-    static final int REQUEST_IMAGE_CAPTURE = 1;
     private Bitmap mImageBitmap;
-    private String mCurrentPhotoPath;
     private ImageView mImageView;
-    private Button botonAgregar;
     private EditText inputModelo, inputPrecio , inputProveedor;
     private Spinner spinnerTipo, spinnerMarca;
     static  final  int request_code = 1;
@@ -79,7 +67,7 @@ public class FormularioProductoActivity extends AppCompatActivity {
 
             ProductosFactory pf = new FactoriaElectronica();
             Producto producto = pf.crearProducto(usuario,nombre_categoria,marca,modelo,precio,proveedor,latLng,img);
-            producto = pf.guardarProductoBD(producto);
+            pf.guardarProductoBD(producto);
             if ( producto !=null){
                 mostrarMensaje();
                 Intent intent = new Intent();

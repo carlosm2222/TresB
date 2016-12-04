@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.example.fdope.tresb.DB.ConsultasUsuarios;
-import com.example.fdope.tresb.Factoria.Producto;
+import com.example.fdope.tresb.FactoriaProductos.Producto;
 
 import java.util.ArrayList;
 
@@ -29,7 +29,7 @@ public class Usuario implements Parcelable {
         this.notificaciones = new ArrayList<Producto>();
         this.numeroDenuncias=3;
     }
-    public Usuario(String nombre, String apellidos, String email, String password, String username,boolean recibirNotificacion ) {
+    public Usuario(String nombre, String apellidos, String email, String password, String username,boolean recibirNotificacion, int numeroDenuncias ) {
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.email = email;
@@ -38,7 +38,7 @@ public class Usuario implements Parcelable {
         this.listaFavoritos = new ArrayList<Producto>();
         this.notificaciones = new ArrayList<Producto>();
         this.recibirNotificacion = recibirNotificacion;
-        this.numeroDenuncias=3;
+        this.numeroDenuncias=numeroDenuncias;
     }
 
     public ArrayList<Producto> getNotificaciones() {
@@ -87,11 +87,15 @@ public class Usuario implements Parcelable {
 
     public Producto buscarFav(Producto p){
         for (int i=0; i<listaFavoritos.size() ; i++){
-            if (listaFavoritos.get(i).mostrarCategoria().equals(p.mostrarCategoria()))
-                if (listaFavoritos.get(i).coordenadasProducto().latitude == p.coordenadasProducto().latitude && listaFavoritos.get(i).coordenadasProducto().longitude == p.coordenadasProducto().longitude)
-                    if (listaFavoritos.get(i).mostrarmodelo().equals(p.mostrarmodelo()))
-                        if (listaFavoritos.get(i).mostrarMarca().equals(p.mostrarMarca()))
-                            if (listaFavoritos.get(i).mostrarPrecio() == p.mostrarPrecio())
+            if (listaFavoritos.get(i).mostrarIdEvento() == p.mostrarIdEvento())
+                                return listaFavoritos.get(i);
+        }
+        return null;
+    }
+
+    public Producto buscarFavPorID(int id){
+        for (int i=0; i<listaFavoritos.size() ; i++){
+            if (listaFavoritos.get(i).mostrarIdEvento() == id)
                                 return listaFavoritos.get(i);
         }
         return null;
@@ -99,11 +103,7 @@ public class Usuario implements Parcelable {
 
     public int buscarPosFav(Producto p){
         for (int i=0; i<listaFavoritos.size() ; i++){
-            if (listaFavoritos.get(i).mostrarCategoria().equals(p.mostrarCategoria()))
-                if (listaFavoritos.get(i).coordenadasProducto().latitude == p.coordenadasProducto().latitude && listaFavoritos.get(i).coordenadasProducto().longitude == p.coordenadasProducto().longitude)
-                    if (listaFavoritos.get(i).mostrarmodelo().equals(p.mostrarmodelo()))
-                        if (listaFavoritos.get(i).mostrarMarca().equals(p.mostrarMarca()))
-                            if (listaFavoritos.get(i).mostrarPrecio() == p.mostrarPrecio())
+            if (listaFavoritos.get(i).mostrarIdEvento() == p.mostrarIdEvento())
                                 return i;
         }
         return 0;
@@ -128,11 +128,13 @@ public class Usuario implements Parcelable {
         }
         return false;
     }
-    public boolean eliminarFav(Producto p){
-        if (buscarFav(p)!=null){
-                if(listaFavoritos.remove(p))
+    public boolean eliminarFavPorID(int id){
+        if (buscarFavPorID(id)!=null){
+            if( ConsultasUsuarios.eliminarFav(username,id)){
+                if(listaFavoritos.remove(buscarFavPorID(id)))
                     return true;
             }
+        }
         return false;
     }
 
@@ -179,6 +181,12 @@ public class Usuario implements Parcelable {
         return ConsultasUsuarios.estadoRecibirNotificacion(username);
     }
 
+    public boolean saberEstadoBloqueo(){
+        if (ConsultasUsuarios.consultarUsuarioSiEstaBloqueado(username))
+            return true;
+        else
+            return false;
+    }
 
     @Override
     public int describeContents() {

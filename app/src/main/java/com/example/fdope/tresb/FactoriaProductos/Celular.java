@@ -1,30 +1,11 @@
-package com.example.fdope.tresb.Factoria;
+package com.example.fdope.tresb.FactoriaProductos;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.icu.text.SimpleDateFormat;
-import android.os.Environment;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Base64;
-import android.widget.Toast;
 
-import com.example.fdope.tresb.DB.ConsultasProductos;
 import com.google.android.gms.maps.model.LatLng;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
-import java.sql.Array;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
 
 /**
  *
@@ -75,6 +56,7 @@ public class Celular implements Producto, Parcelable {
         this.img = img;
         this.largo = largo;
         this.usuario = usuario;
+        this.idEvento=0;
     }
 
     public String getNombre_categoria() {
@@ -170,51 +152,6 @@ public class Celular implements Producto, Parcelable {
 
 
     @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.nombre_categoria);
-        dest.writeString(this.marca);
-        dest.writeString(this.modelo);
-        dest.writeInt(this.precio);
-        dest.writeDouble(this.latitud);
-        dest.writeDouble(this.longitud);
-        dest.writeString(this.proveedor);
-        dest.writeByteArray(this.img);
-        dest.writeInt(this.largo);
-        dest.writeString(this.usuario);
-    }
-
-    protected Celular(Parcel in) {
-        this.nombre_categoria = in.readString();
-        this.marca = in.readString();
-        this.modelo = in.readString();
-        this.precio = in.readInt();
-        this.latitud = in.readDouble();
-        this.longitud = in.readDouble();
-        this.proveedor = in.readString();
-        this.img = in.createByteArray();
-        this.largo = in.readInt();
-        this.usuario = in.readString();
-    }
-
-    public static final Creator<Celular> CREATOR = new Creator<Celular>() {
-        @Override
-        public Celular createFromParcel(Parcel source) {
-            return new Celular(source);
-        }
-
-        @Override
-        public Celular[] newArray(int size) {
-            return new Celular[size];
-        }
-    };
-
-
-    @Override
     public byte[] mostrarImagen() {
         return img;
     }
@@ -271,4 +208,49 @@ public class Celular implements Producto, Parcelable {
         return BitmapFactory.decodeByteArray(bitmap, 0, bitmap.length);
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.nombre_categoria);
+        dest.writeString(this.marca);
+        dest.writeString(this.modelo);
+        dest.writeInt(this.precio);
+        dest.writeDouble(this.latitud);
+        dest.writeDouble(this.longitud);
+        dest.writeString(this.proveedor);
+        dest.writeByteArray(this.img);
+        dest.writeInt(this.largo);
+        dest.writeString(this.usuario);
+        dest.writeInt(this.idEvento);
+    }
+
+    protected Celular(Parcel in) {
+        this.nombre_categoria = in.readString();
+        this.marca = in.readString();
+        this.modelo = in.readString();
+        this.precio = in.readInt();
+        this.latitud = in.readDouble();
+        this.longitud = in.readDouble();
+        this.proveedor = in.readString();
+        this.img = in.createByteArray();
+        this.largo = in.readInt();
+        this.usuario = in.readString();
+        this.idEvento = in.readInt();
+    }
+
+    public static final Creator<Celular> CREATOR = new Creator<Celular>() {
+        @Override
+        public Celular createFromParcel(Parcel source) {
+            return new Celular(source);
+        }
+
+        @Override
+        public Celular[] newArray(int size) {
+            return new Celular[size];
+        }
+    };
 }

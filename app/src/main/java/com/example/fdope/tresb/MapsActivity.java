@@ -24,7 +24,7 @@ import android.widget.Toast;
 import com.example.fdope.tresb.Clases.Filtro;
 import com.example.fdope.tresb.Clases.TresB;
 import com.example.fdope.tresb.DB.ConsultasProductos;
-import com.example.fdope.tresb.Factoria.Producto;
+import com.example.fdope.tresb.FactoriaProductos.Producto;
 import com.example.fdope.tresb.Clases.Usuario;
 import com.facebook.login.LoginManager;
 import com.github.clans.fab.FloatingActionMenu;
@@ -52,10 +52,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private double lng;
     private TresB app;
     static final int request_code = 1;
+    static final int request_code_fav = 5;
     static final int request_code_filtro = 2;
     static final int NOTIFICACION_ID=5;
     private Producto p,prodMomentaneo,productoComp1,productocom2;
     private Usuario usuario;
+    int contDenuncia;
     boolean isOpen = false;
     private boolean flagFiltro = false;
     FloatingActionMenu materialDesignFAM;
@@ -120,6 +122,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             usuario = inBundle.getParcelable("UsuarioIn");
             if (usuario!=null) {
                 Toast.makeText(this, "Bienvenido " + usuario.getNombre(), Toast.LENGTH_SHORT).show();
+                contDenuncia=usuario.getNumeroDenuncias();
             }
             else {
                 Toast.makeText(this, "NO HAY CONEXION ", Toast.LENGTH_SHORT).show();
@@ -162,13 +165,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         cargarDatos();
         miUbicacion();
-        if (usuario!=null)
+        if (usuario!=null) {
+            Toast.makeText(this, "Cargando tus datos", Toast.LENGTH_SHORT).show();
             obtenerFavs();
+        }
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                Bitmap bmp=null;
                 byte[] b=null;
                 boolean fav=false; /// flag= true es favorito , false no es favorito
                 Producto prodFav=null;
@@ -177,9 +181,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                         String titulo  = app.getListaProductos().get(i).mostrarMarca()+" "+app.getListaProductos().get(i).mostrarmodelo();
                         String spin = "$ "+app.getListaProductos().get(i).mostrarPrecio()+" CLP en Tienda: "+app.getListaProductos().get(i).mostrarProveedor()+". Publicado por: "+app.getListaProductos().get(i).mostrarCreadorPublicacion();
-                        int idEvento = app.getListaProductos().get(i).mostrarIdEvento();
 
                         if (titulo.equals(marker.getTitle()) && spin.equals(marker.getSnippet())) {
+
+                            int idEvento = app.getListaProductos().get(i).mostrarIdEvento();
 
                             prodMomentaneo=app.getListaProductos().get(i);
                             b = app.getListaProductos().get(i).mostrarImagen();// se obtiene la imagen del producto
@@ -228,7 +233,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         {
             if(usuario.eliminarFavorito(prodMomentaneo)){
                 Toast.makeText(this, "Eliminado de favorito", Toast.LENGTH_SHORT).show();
-                flagfav = 2;
+                flagfav = 0;
                 refresh();
             }
         }
@@ -311,7 +316,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Location location = obetnerUbicacion();
         intent.putExtra("coordenadas", location);
         intent.putExtra("usuario",usuario.getUsername());
-        startActivityForResult(intent, request_code);
+        startActivity(intent);
+    }
+
+    public void ventanaFav(View view){
+        Intent intent = new Intent(this,ListviewFavoritos.class);
+        intent.putExtra("user",usuario);
+        startActivityForResult(intent, request_code_fav);
     }
 
     @Override
@@ -324,13 +335,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     if (data != null) {
                         p = data.getExtras().getParcelable("productoOut");
                         this.app.addProducto(p);
-                        agregarMarcadorProductos(p);
+                        refresh();
                         Toast.makeText(this, "Agregado al mapa correctamente.", Toast.LENGTH_SHORT).show();
+
                     } else
                         Toast.makeText(this, "Error al agregar el producto", Toast.LENGTH_SHORT).show();
                 }
             }
-        } else if (requestCode == request_code_filtro) {
+        }
+        if (requestCode == request_code_filtro) {
             switch (requestCode) {
                 case (FILTRO_OK): {
                     if (data!=null) {
@@ -340,6 +353,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             }
         }
+        if (requestCode == request_code_fav)
+            if (data != null){
+                Toast.makeText(this, "Favoritos actualizados", Toast.LENGTH_SHORT).show();
+                usuario = (data.getExtras().getParcelable("usuarioOut"));
+
+            }
     }
 
     private void filtrarProductos(Filtro filtro) {
@@ -453,12 +472,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         finish();
     }
 
-    public void ventanaFav(View view){
-        Intent intent = new Intent(this,ListviewFavoritos.class);
-        intent.putExtra("user",usuario);
-        startActivity(intent);
-    }
-
     public void cargarDatos() {
         try {
             // obtendo la lista de productos de la bd
@@ -541,10 +554,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             int numAdv=app.buscarYNotificarDenunciasUsuario(usuario.getUsername());
 
-            if (usuario.getNumeroDenuncias() != numAdv){
-
-                if (numAdv < 3 ){
+                if (numAdv < usuario.getNumeroDenuncias() ){
                     usuario.setNumeroDenuncias(numAdv);
+
                     Intent intent = new Intent();
                     PendingIntent pendingIntent = PendingIntent.getActivity(MapsActivity.this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
@@ -557,10 +569,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                     builder.setSound(sound);
-                    int contDenuncia = 3-numAdv;
-                    builder.setContentTitle("¡ ADVERTENCIA NUMERO:  !"+ contDenuncia);
+                    contDenuncia = 3-numAdv;
+                    builder.setContentTitle("¡ ADVERTENCIA NUMERO: "+ contDenuncia+" !");
                     builder.setContentText("Su publicacion ha sido eliminada.");
-                    builder.setSubText("Tu publicación ha recibido más de 2 denuncias, si tienes 3 publicaciones eliminadas quedaras bloqueado en la App");
+                    builder.setSubText("Si tienes 3 publicaciones eliminadas quedaras bloqueado en la App");
 
                     //Enviar notificacion
                     NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -582,14 +594,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     builder.setSound(sound);
 
                     builder.setContentTitle("¡Has sido bloqueado! ");
-                    builder.setContentText("Motivo: Tener mas de 2 publicaciones eliminadas por denuncias.");
+                    builder.setContentText("Motivo: Tener mas de 3 publicaciones eliminadas por denuncias.");
 
 
                     //Enviar notificacion
                     NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                     notificationManager.notify(NOTIFICACION_ID, builder.build());
                 }
-            }
 
         }
     };

@@ -86,18 +86,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 else
                     Toast.makeText(getApplicationContext(), "NOSE PUDO OBTENER PERFIL DE FACEBOOK", Toast.LENGTH_SHORT).show();
-                /*GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
-
-                    @Override
-                    public void onCompleted(JSONObject object, GraphResponse response) {
-                        usuario = getFacebookData(object);
-                        nextActivity(usuario);
-                    }
-                });
-                Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,first_name,last_name,email"); // Parámetros que pedimos a facebook
-                request.setParameters(parameters);
-                request.executeAsync();*/
             }
 
             @Override
@@ -133,10 +121,16 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void nextActivity(Usuario u) {
-        Intent main = new Intent(this, InicioActivity.class);
-        main.putExtra("UsuarioIn",u);
-        startActivity(main);
-        finish();
+        if (u!=null){
+            if (! u.saberEstadoBloqueo()){
+                Intent main = new Intent(this, InicioActivity.class);
+                main.putExtra("UsuarioIn",u);
+                startActivity(main);
+                finish();
+            }
+            else
+                Toast.makeText(this," Tu cuenta esta bloqueada ",Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -225,39 +219,6 @@ public class LoginActivity extends AppCompatActivity {
     private Usuario obtenerUsuario(String u) {
             return ConsultasUsuarios.obtenerUsuario(u);
     }
-    /*
-
-    private Usuario getFacebookData(JSONObject object) {
-
-
-        Usuario u = new Usuario();
-        String id = null;
-        try {
-            id = object.getString("id");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        if (object.has("first_name"))
-            try {
-                usuario.setNombre(object.getString("first_name"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        if (object.has("last_name"))
-            try {
-                usuario.setApellidos(object.getString("last_name"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        if (object.has("email"))
-            try {
-                usuario.setEmail(object.getString("email"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-    return u;
-    }
-    */
 }
 
 

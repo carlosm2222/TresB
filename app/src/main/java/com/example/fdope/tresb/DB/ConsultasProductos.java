@@ -1,10 +1,9 @@
 package com.example.fdope.tresb.DB;
 
-import com.example.fdope.tresb.Factoria.Celular;
-import com.example.fdope.tresb.Factoria.FactoriaElectronica;
-import com.example.fdope.tresb.Factoria.Producto;
+import com.example.fdope.tresb.FactoriaProductos.FactoriaElectronica;
+import com.example.fdope.tresb.FactoriaProductos.Producto;
 import com.example.fdope.tresb.Clases.Filtro;
-import com.example.fdope.tresb.Factoria.ProductosFactory;
+import com.example.fdope.tresb.FactoriaProductos.ProductosFactory;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.sql.Connection;
@@ -44,7 +43,7 @@ public class ConsultasProductos {
                     String mode = resultado.getString("modelo");
                     String prov = resultado.getString("proveedor");
                     int idevento= resultado.getInt("id_evento");
-                    if (tipo.equals("Smartphone")){
+                    if ( (tipo.equals("Smartphone")) && idevento!=0){
                         ProductosFactory pf = new FactoriaElectronica();
                         Producto producto = pf.crearProducto(user,tipo,marc,mode,precio,prov,latLng,img,largo,idevento);
                         listap.add(producto);
@@ -127,7 +126,8 @@ public class ConsultasProductos {
                     String mode = resultado.getString("modelo");
                     String prov = resultado.getString("proveedor");
                     int idevento= resultado.getInt("id_evento");
-                    if (tipo.equals("Smartphone")){
+                    if ( (tipo.equals("Smartphone")) && idevento!=0){
+
                         ProductosFactory pf = new FactoriaElectronica();
                         Producto producto = pf.crearProducto(user,tipo,marc,mode,precio,prov,latLng,img,largo,idevento);
                         lista.add(producto);
