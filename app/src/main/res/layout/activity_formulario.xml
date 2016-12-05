@@ -126,15 +126,6 @@
         android:layout_below="@+id/inputproveedor"
         android:layout_alignParentStart="true" />
 
-    <TextView
-        android:text="@string/la_oferta_se_publicar_en_la_geolocalizaci_n_actual"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView7"
-        android:textStyle="normal|italic"
-        android:layout_above="@+id/agregar"
-        android:layout_centerHorizontal="true" />
-
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -146,8 +137,8 @@
         android:layout_alignStart="@+id/textView7" />
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="90dp"
+        android:layout_height="120dp"
         app2:srcCompat="@android:drawable/ic_menu_report_image"
         android:id="@+id/imageView2"
         android:layout_below="@+id/inputproveedor"
@@ -173,5 +164,15 @@
         android:layout_below="@+id/inputprecio"
         android:layout_alignParentStart="true"
         android:layout_marginTop="13dp" />
+
+    <TextView
+        android:text="@string/la_oferta_se_publicar_en_la_geolocalizaci_n_actual"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView7"
+        android:textStyle="normal|italic"
+        android:layout_alignBaseline="@+id/agregar"
+        android:layout_alignBottom="@+id/agregar"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

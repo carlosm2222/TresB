@@ -43,5 +43,4 @@ public class TresB {
         return contDenuncias;
     }
 
-
 }

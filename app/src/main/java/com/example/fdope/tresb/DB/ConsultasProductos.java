@@ -101,7 +101,47 @@ public class ConsultasProductos {
     }
 
     public static ArrayList<Producto> listarRecientes(){
-        return null;
+        DB base = new DB();
+        Connection c= base.connect();
+
+        ArrayList<Producto> listap = new ArrayList<Producto>();
+        try{
+
+            ResultSet resultado = base.select("SELECT * FROM ultimaspublicaciones();");
+            if(resultado !=null){
+
+                while(resultado.next()){
+
+                    String user = resultado.getString("usuario");
+                    double lat = resultado.getDouble("latitud");
+                    double lng = resultado.getDouble("longitud");
+                    LatLng latLng = new LatLng(lat,lng);
+                    int largo = resultado.getInt("largo");
+                    byte[] img = resultado.getBytes("archivo");
+                    String tipo = resultado.getString("nombre_categoria");
+                    String marc = resultado.getString("marca");
+                    int precio = resultado.getInt("precio");
+                    String mode = resultado.getString("modelo");
+                    String prov = resultado.getString("proveedor");
+                    int idevento= resultado.getInt("id_evento");
+                    if ( (tipo.equals("Smartphone")) && idevento!=0){
+                        ProductosFactory pf = new FactoriaElectronica();
+                        Producto producto = pf.crearProducto(user,tipo,marc,mode,precio,prov,latLng,img,largo,idevento);
+                        listap.add(producto);
+                    }
+
+                }
+                return listap;
+            }
+        }
+        catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return listap;
+
+
+
     }
 
 

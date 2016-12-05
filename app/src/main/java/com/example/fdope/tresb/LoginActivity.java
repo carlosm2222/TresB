@@ -219,6 +219,7 @@ public class LoginActivity extends AppCompatActivity {
     private Usuario obtenerUsuario(String u) {
             return ConsultasUsuarios.obtenerUsuario(u);
     }
+
 }
 
 

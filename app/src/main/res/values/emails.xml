@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="lista_tipo_emails">
+        <item>mail</item>
+    </string-array>
+
+    <string-array name="lista_emails">
+        <item>"@gmail.com"</item>
+        <item>"@hotmail.com"</item>
+        <item>"@outlook.es"</item>
+        <item>"@outlook.com"</item>
+        <item>"@live.com"</item>
+        <item>"@yahoo.com"</item>
+
+    </string-array>
+    <string name="email">emails</string>
+    <string name="emails">emails</string>
+</resources>

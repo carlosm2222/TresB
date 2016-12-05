@@ -31,7 +31,7 @@ public class InicioActivity extends AppCompatActivity {
             if (usuario==null)
                 Toast.makeText(this, "ERROR EN LA CONEXION", Toast.LENGTH_SHORT).show();
 
-            ArrayList<Producto>  recientes = ConsultasProductos.listarProductos();
+            ArrayList<Producto>  recientes = ConsultasProductos.listarRecientes();
 
             if (recientes!=null){
                 if (recientes.size()>0){
@@ -39,11 +39,11 @@ public class InicioActivity extends AppCompatActivity {
                     listView.setAdapter(listadapter);
                 }
                 else {
-                    Toast.makeText(this,"No hay productos agregados recientemente",Toast.LENGTH_LONG).show();
+                    Toast.makeText(this,"No hay productos agregados en las ultimas 24 hrs",Toast.LENGTH_LONG).show();
                     irMapa();
                 }
             }else
-                Toast.makeText(this,"No se pudo cargar datos",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,"No se pudo cargar los datos",Toast.LENGTH_SHORT).show();
         }
     }
 
