@@ -8,6 +8,8 @@ import android.location.Location;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,6 +33,21 @@ public class FormularioProductoActivity extends AppCompatActivity {
     private EditText inputModelo, inputPrecio , inputProveedor;
     private Spinner spinnerTipo, spinnerMarca;
     static  final  int request_code = 1;
+    private TextWatcher mTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            // check Fields For Empty Values
+            checkFieldsForEmptyValues();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +56,13 @@ public class FormularioProductoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_formulario);
 
         this.inputModelo = (EditText) findViewById(R.id.inputmodelo);
+        this.inputModelo.addTextChangedListener(mTextWatcher);
         this.inputPrecio = (EditText) findViewById(R.id.inputprecio);
+        this.inputPrecio.addTextChangedListener(mTextWatcher);
         this.spinnerMarca = (Spinner) findViewById(R.id.spinnermarca);
         this.spinnerTipo = (Spinner) findViewById(R.id.spinnertipo);
         this.inputProveedor = (EditText) findViewById(R.id.inputproveedor);
+        this.inputProveedor.addTextChangedListener(mTextWatcher);
         mImageView = (ImageView) findViewById(R.id.imageView2);
         checkFieldsForEmptyValues();
 
@@ -111,6 +131,7 @@ public class FormularioProductoActivity extends AppCompatActivity {
                         Bundle bundle = data.getExtras();
                         mImageBitmap = (Bitmap)bundle.get("data");
                         mImageView.setImageBitmap(mImageBitmap);
+                        checkFieldsForEmptyValues();
                     }
                 }
             }
@@ -123,12 +144,9 @@ public class FormularioProductoActivity extends AppCompatActivity {
         String modelo   = this.inputModelo.getText().toString();   //Método que valida si los campos del login están vacios o no
         String precio = this.inputPrecio.getText().toString();
         String proveedor =  this.inputProveedor.getText().toString();
-        if (modelo.equals("") || precio.equals("") || proveedor.equals("")) {
+        if (modelo.equals("") || precio.equals("")|| proveedor.equals("") || mImageBitmap==null) {
             b.setEnabled(false);
-        } else {
+        } else
             b.setEnabled(true);
-        }
     }
-
-
 }
