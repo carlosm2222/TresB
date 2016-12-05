@@ -158,15 +158,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }, 5000, 600000);
     }
-
-
+    
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         cargarDatos();
         miUbicacion();
         if (usuario!=null) {
-            Toast.makeText(this, "Cargando tus datos", Toast.LENGTH_SHORT).show();
             obtenerFavs();
         }
 
