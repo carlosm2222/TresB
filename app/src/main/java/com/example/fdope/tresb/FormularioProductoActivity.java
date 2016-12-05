@@ -122,8 +122,8 @@ public class FormularioProductoActivity extends AppCompatActivity {
 
         String modelo   = this.inputModelo.getText().toString();   //Método que valida si los campos del login están vacios o no
         String precio = this.inputPrecio.getText().toString();
-
-        if (modelo.equals("") || precio.equals("")) {
+        String proveedor =  this.inputProveedor.getText().toString();
+        if (modelo.equals("") || precio.equals("") || proveedor.equals("")) {
             b.setEnabled(false);
         } else {
             b.setEnabled(true);
