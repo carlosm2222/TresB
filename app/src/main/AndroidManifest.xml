@@ -39,47 +39,17 @@
         <activity
             android:name=".MapsActivity"
             android:label="Maps"
-            android:parentActivityName=".LoginActivity"
             android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".LoginActivity" />
-
-            <intent-filter>
-                <action android:name="android.intent.action.MapsActivity" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".ActivityFiltrarProductos"
             android:label="Filtrar"
-            android:parentActivityName=".MapsActivity"
             android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MapsActivity" />
-
-            <intent-filter>
-                <action android:name="android.intent.action.ActivityFiltrarProductos" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".FormularioProductoActivity"
             android:label="Formulario"
-            android:parentActivityName=".MapsActivity"
             android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MapsActivity" />
-
-            <intent-filter>
-                <action android:name="android.intent.action.FormularioActivity" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
         </activity>
 
         <meta-data
