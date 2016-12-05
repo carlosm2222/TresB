@@ -2,6 +2,7 @@ package com.example.fdope.tresb;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -122,10 +123,26 @@ public class MarkerActivity extends DialogFragment {
         botonComentarios.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(),ListViewComentarios.class);
-                intent.putExtra("idEvento",idEvento);
-                intent.putExtra("username",username);
-                startActivity(intent);
+                final ProgressDialog ringProgressDialog = ProgressDialog.show(getActivity(), "", "Cargando comentarios ...", true);
+                ringProgressDialog.setCancelable(true);
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+
+                            // Here you should write your time consuming task...
+                            Intent intent = new Intent(getActivity(),ListViewComentarios.class);
+                            intent.putExtra("idEvento",idEvento);
+                            intent.putExtra("username",username);
+                            startActivity(intent);
+                            // Let the progress ring for 10 seconds...
+                            Thread.sleep(1000);
+                        } catch (Exception e) {
+                        }
+                        ringProgressDialog.dismiss();
+                    }
+                }).start();
             }
         });
 

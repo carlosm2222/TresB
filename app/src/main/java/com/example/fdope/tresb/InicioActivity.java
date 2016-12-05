@@ -50,6 +50,7 @@ public class InicioActivity extends AppCompatActivity implements EnviarInfoDesde
     }
 
     public void irMapa(View view){
+
         nextActivity(usuario);
     }
 
@@ -61,6 +62,7 @@ public class InicioActivity extends AppCompatActivity implements EnviarInfoDesde
     }
 
     private void nextActivity(Usuario u) {
+        Toast.makeText(this,"Cargando ofertas...",Toast.LENGTH_SHORT).show();
         Intent main = new Intent(this, MapsActivity.class);
         main.putExtra("UsuarioIn",u);
         startActivity(main);

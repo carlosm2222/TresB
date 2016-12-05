@@ -3,6 +3,7 @@ package com.example.fdope.tresb;
 import android.app.FragmentManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -108,7 +109,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         floatingActionButton4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ventanaFav(v);
+                final View view= v;
+                ringProgressDialog.setCancelable(true);
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+
+                            // Here you should write your time consuming task...
+                            ventanaFav(view);
+                            // Let the progress ring for 10 seconds...
+                            Thread.sleep(10000);
+                        } catch (Exception e) {
+                        }
+                        ringProgressDialog.dismiss();
+                    }
+                }).start();
+
 
             }
         });
