@@ -1,4 +1,4 @@
-package com.example.fdope.tresb.FactoriaProductos;
+package com.example.fdope.tresb;
 
 import android.os.AsyncTask;
 
@@ -44,6 +44,7 @@ public class RetreiveFeedTask  extends AsyncTask<String, Void, String> {
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
             message.setSubject(subject);
             message.setContent(textMessage, "text/html; charset=utf-8");
+
             Transport.send(message);
         } catch(MessagingException e) {
             e.printStackTrace();

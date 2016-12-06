@@ -1,10 +1,7 @@
 package com.example.fdope.tresb;
 
-import android.app.ProgressDialog;
-import android.content.Context;
+
 import android.content.Intent;
-import android.content.pm.PackageInstaller;
-import android.media.tv.TvInputService;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -15,27 +12,13 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 import com.example.fdope.tresb.DB.ConsultasUsuarios;
-import com.example.fdope.tresb.FactoriaProductos.RetreiveFeedTask;
 
 
 import java.util.Properties;
 import javax.mail.Authenticator;
-import javax.mail.Message;
-import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.os.AsyncTask;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
 
 public class FormularioRegistro extends AppCompatActivity {
     private EditText inputNombres, inputApellidos , inputUsuario, inputPassword,inputEmail,inputPass2;
