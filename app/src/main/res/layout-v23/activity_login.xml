@@ -64,7 +64,8 @@
         android:layout_marginTop="11dp"
         android:onClick="iniciarSesion"
         android:layout_below="@+id/password"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Button" />
 
     <RelativeLayout
         android:layout_width="match_parent"
