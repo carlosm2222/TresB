@@ -20,6 +20,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.fdope.tresb.DB.ConsultasProductos;
+import com.example.fdope.tresb.FactoriaProductos.Producto;
 import com.github.clans.fab.FloatingActionButton;
 
 public class MarkerActivity extends DialogFragment {
@@ -65,7 +67,10 @@ public class MarkerActivity extends DialogFragment {
         mImageView.setImageBitmap(bmp);
         botonFav = (FloatingActionButton) rootView.findViewById(R.id.favorito);
         botonDenuncia = (FloatingActionButton) rootView.findViewById(R.id.denunciar);
-
+        if (ConsultasProductos.consultarDenunciaHecha(idEvento,username))
+            botonDenuncia.setEnabled(false);
+        else
+            botonDenuncia.setEnabled(true);
         if (flag)
             botonFav.setImageResource(R.drawable.ic_star_black_24dp);
         else
@@ -102,6 +107,7 @@ public class MarkerActivity extends DialogFragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(),DenunciarActivity.class);
                 intent.putExtra("idEvento",idEvento);
+                intent.putExtra("username",username);
                 startActivity(intent);
             }
         });

@@ -23,6 +23,7 @@ public class DenunciarActivity extends AppCompatActivity {
     private int idEvento;
     private RadioGroup radio;
     private RadioButton radioBoton;
+    private String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +31,7 @@ public class DenunciarActivity extends AppCompatActivity {
         setContentView(R.layout.activity_denunciar);
         Bundle bundle = getIntent().getExtras();
         idEvento = bundle.getInt("idEvento");
+        username=bundle.getString("username");
         b = (Button) findViewById(R.id.Denunciar);
         radio = (RadioGroup) findViewById(R.id.radio);
         b.setEnabled(false);
@@ -55,11 +57,11 @@ public class DenunciarActivity extends AppCompatActivity {
                 // find the radiobutton by returned id
                 radioBoton = (RadioButton) findViewById(selectedId);
 
-                if (ConsultasProductos.agregarDenuncia(idEvento,(String)radioBoton.getText())==true) {
+                if (ConsultasProductos.agregarDenuncia(idEvento,(String)radioBoton.getText(),username)==true) {
                     Toast.makeText(DenunciarActivity.this, "Denuncia enviada", Toast.LENGTH_SHORT).show();
                     finish();
                 }
-                else if (ConsultasProductos.agregarDenuncia(idEvento,(String)radioBoton.getText())==false){
+                else if (ConsultasProductos.agregarDenuncia(idEvento,(String)radioBoton.getText(),username)==false){
                     Toast.makeText(DenunciarActivity.this, "No se pudo enviar su denuncia.", Toast.LENGTH_SHORT).show();
                     finish();
                 }

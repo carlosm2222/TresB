@@ -184,16 +184,39 @@ public class ConsultasProductos {
        return new ArrayList<Producto>();
     }
 
-    public static boolean agregarDenuncia (int idEvento, String motivo){
+    public static boolean agregarDenuncia (int idEvento, String motivo,String username){
         DB db= new DB();
         Connection c = db.connect();
 
         try {
-            ResultSet resultSet = db.execute("SELECT * FROM agregardenuncia("+idEvento+",'"+motivo+"');");
+            ResultSet resultSet = db.execute("SELECT * FROM agregardenuncia("+idEvento+",'"+motivo+"','"+username+"');");
             if (resultSet != null)
             {
                 while(resultSet.next()){
                     boolean resp = resultSet.getBoolean("agregardenuncia");
+                    return resp;
+                }
+            }
+            else
+                return false;
+
+        }catch (Exception e){
+
+        }
+        db.desconectarBd();
+        return false;
+    }
+
+    public static boolean consultarDenunciaHecha(int idEvento, String username) {
+        DB db= new DB();
+        Connection c = db.connect();
+
+        try {
+            ResultSet resultSet = db.execute("SELECT * FROM consultadenuncia("+idEvento+",'"+username+"');");
+            if (resultSet != null)
+            {
+                while(resultSet.next()){
+                    boolean resp = resultSet.getBoolean("consultadenuncia");
                     return resp;
                 }
             }
