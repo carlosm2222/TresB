@@ -127,8 +127,8 @@ public class FormularioRegistro extends AppCompatActivity {
 
     private void enviarMailRegistro(String email){
         String subject, textMessage;
-        subject = "Confirmacion de registro";
-        textMessage ="Grasias por registrarte en TresB ! disfruta de la aplicacion publicando y/o buscando productos de tu interes !";
+        subject = "Confirmación de registro";
+        textMessage ="¡Gracias por registrarte en TresB! \n Ahora podrás disfrutar de la aplicacion publicando y/o buscando productos de tu interés.";
 
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
