@@ -92,6 +92,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignBottom="@+id/correo"
             android:layout_width="180dp"
-            android:entries="@array/lista_tipo_emails" />
+            android:entries="@array/lista_emails"
+            android:popupBackground="@android:color/background_light"/>
     </RelativeLayout>
 </RelativeLayout>
