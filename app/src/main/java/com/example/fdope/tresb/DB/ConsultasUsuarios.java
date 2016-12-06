@@ -45,6 +45,29 @@ public class ConsultasUsuarios {
         return false;
     }
 
+    public  static boolean registrar(String nombre, String apellidos, String email, String password, String username,String idFacebook) {
+        DB db=new DB();
+        Connection c =db.connect();
+
+        try {
+            ResultSet resultSet = db.execute("SELECT * FROM agregarclientefacebook('"+username+"','"+password+"','"+nombre+"','"+apellidos+"','"+email+"','"+idFacebook+"');");
+            if (resultSet != null)
+            {
+                while(resultSet.next()){
+                    boolean resp = resultSet.getBoolean("agregarclientefacebook");
+                    return resp;
+                }
+            }
+            else
+                return false;
+
+
+        }catch (Exception e){
+
+        }
+        return false;
+    }
+
     public static boolean checkUsuario(String username,String password) {
         DB db=new DB();
         Connection c =db.connect();

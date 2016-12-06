@@ -232,7 +232,7 @@ public class LoginActivity extends AppCompatActivity implements InfoPostDialog{
 
             if (!username.equals("")){
                 if (!ConsultasUsuarios.verificarNombreUsuario(username)){
-                    if(ConsultasUsuarios.registrar(profile.getFirstName(), profile.getLastName(), "", profile.getId(), username)){
+                    if(ConsultasUsuarios.registrar(profile.getFirstName(), profile.getLastName(), "email", "pass", username,profile.getId())){
                         Toast.makeText(getApplicationContext(), "Grasias por registrarte", Toast.LENGTH_SHORT).show();
                         nextActivity(ConsultasUsuarios.obtenerUsuario(username));
                     }
