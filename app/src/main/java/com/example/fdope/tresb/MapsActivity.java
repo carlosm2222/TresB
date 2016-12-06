@@ -110,6 +110,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
                 final View view= v;
+                final ProgressDialog ringProgressDialog = ProgressDialog.show(MapsActivity.this, "", "Cargando favoritos ...", true);
                 ringProgressDialog.setCancelable(true);
 
                 new Thread(new Runnable() {
