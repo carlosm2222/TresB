@@ -104,7 +104,7 @@ public class FormularioRegistro extends AppCompatActivity {
         String apellidos=this.inputApellidos.getText().toString();
         String usuario = this.inputUsuario.getText().toString();
         String pass = this.inputPassword.getText().toString();
-        String email = this.inputEmail.getText().toString();
+        String email = this.inputEmail.getText().toString()+this.spinnerEmail.getSelectedItem().toString();
 
         //guardar datos en bd
         if (ConsultasUsuarios.checkUsuario(usuario,pass))
