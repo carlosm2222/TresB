@@ -7,4 +7,6 @@ package com.example.fdope.tresb;
 public interface InfoPostDialog {
     void onFinishDialogFavorito(boolean flag);
     void onFinishDialogComparar(boolean flag);
+    void postIngresarUsuarioFacebook(String username);
+    void salir(boolean salir);
 }

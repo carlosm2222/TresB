@@ -68,6 +68,52 @@ public class ConsultasUsuarios {
         return false;
     }
 
+    public static boolean checkUsuarioFacebook(String id) {
+        DB db=new DB();
+        Connection c =db.connect();
+
+        try {
+
+            ResultSet resultSet = db.execute("SELECT * FROM buscarusuariofacebook('"+id+"');");
+            if (resultSet != null)
+            {
+                while(resultSet.next()){
+                    boolean resp = resultSet.getBoolean("buscarusuariofacebook");
+                    return resp;
+                }
+            }
+            else
+                return false;
+
+        }catch (Exception e){
+
+        }
+        return false;
+    }
+
+    public static boolean verificarNombreUsuario(String username) {
+        DB db=new DB();
+        Connection c =db.connect();
+
+        try {
+
+            ResultSet resultSet = db.execute("SELECT * FROM verificarusuario('"+username+"');");
+            if (resultSet != null)
+            {
+                while(resultSet.next()){
+                    boolean resp = resultSet.getBoolean("verificarusuario");
+                    return resp;
+                }
+            }
+            else
+                return false;
+
+        }catch (Exception e){
+
+        }
+        return false;
+    }
+
     public static Usuario obtenerUsuario(String username){
         DB db=new DB();
         Connection c =db.connect();
@@ -85,6 +131,32 @@ public class ConsultasUsuarios {
                     boolean noti = resultSet.getBoolean("recibirnotificacion");
                     int denuncias = resultSet.getInt("denunciascliente");
                     Usuario usuario = new Usuario(nombre,apellidos,email,password,username,noti,denuncias);
+                    return usuario;
+                }
+            }
+        }catch (Exception e){
+
+        }
+        return null;
+    }
+
+    public static Usuario obtenerUsuarioFacebook(String id){
+        DB db=new DB();
+        Connection c =db.connect();
+
+        try {
+
+            ResultSet resultSet = db.execute("SELECT * FROM obtener_usuariofacebook('"+id+"');");
+            if (resultSet!=null){
+                while(resultSet.next()){
+                    String user = resultSet.getString("usuario");
+                    String password = resultSet.getString("contrasena");
+                    String nombre = resultSet.getString("nombre");
+                    String apellidos = resultSet.getString("apellido");
+                    String email = resultSet.getString("correo");
+                    boolean noti = resultSet.getBoolean("recibirnotificacion");
+                    int denuncias = resultSet.getInt("denunciascliente");
+                    Usuario usuario = new Usuario(nombre,apellidos,email,password,user,noti,denuncias);
                     return usuario;
                 }
             }

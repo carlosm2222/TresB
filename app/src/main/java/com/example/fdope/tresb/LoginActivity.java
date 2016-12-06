@@ -1,5 +1,6 @@
 package com.example.fdope.tresb;
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -20,14 +21,15 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class LoginActivity extends AppCompatActivity {
-    public static final int  reques_usuario = 3;
+public class LoginActivity extends AppCompatActivity implements InfoPostDialog{
+    private Profile profile;
     private CallbackManager callbackManager;
     private AccessTokenTracker accessTokenTracker;
     private ProfileTracker profileTracker;
@@ -67,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
         profileTracker = new ProfileTracker() {
             @Override
             protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile) {
-                registrarUsuarioFacebookYEntrar(newProfile);;
+               // registrarUsuarioFacebookYEntrar(newProfile);
             }
         };
         accessTokenTracker.startTracking();
@@ -79,10 +81,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onSuccess(LoginResult loginResult) {
              AccessToken accessToken = loginResult.getAccessToken();
-                Profile profile = Profile.getCurrentProfile();
+                profile = Profile.getCurrentProfile();
                 if (profile!=null) {
-                    registrarUsuarioFacebookYEntrar(profile);
-                    Toast.makeText(getApplicationContext(), "Cargando mapa...", Toast.LENGTH_SHORT).show();
+                    //registrarUsuarioFacebookYEntrar(profile);
                 }
                 else
                     Toast.makeText(getApplicationContext(), "NOSE PUDO OBTENER PERFIL DE FACEBOOK", Toast.LENGTH_SHORT).show();
@@ -111,12 +112,12 @@ public class LoginActivity extends AppCompatActivity {
 
     public void registrarUsuarioFacebookYEntrar(Profile profile){
         //GUARDAR PERFIL FACEBOOK EN BD E INGRESO
-        if(ConsultasUsuarios.checkUsuario(profile.getName(),profile.getId())){ // SI YA ESTA EN LA BD SOLO ENTRA
-            nextActivity(ConsultasUsuarios.obtenerUsuario(profile.getName()));
+
+        if( ConsultasUsuarios.checkUsuarioFacebook(profile.getId())){ // SI YA ESTA EN LA BD SOLO ENTRA
+            nextActivity(ConsultasUsuarios.obtenerUsuarioFacebook(profile.getId()));
         }
         else { // SE GUARDA EL USUARIO QUE ENTRA CON FACEBOOK EN LA BD
-            ConsultasUsuarios.registrar(profile.getFirstName(),profile.getLastName(),"",profile.getId(),profile.getName());
-            nextActivity(ConsultasUsuarios.obtenerUsuario(profile.getName()));
+            mostrarVentanaObtenerUsuarioFacebook();
         }
     }
 
@@ -136,7 +137,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Profile profile = Profile.getCurrentProfile();
+        profile = Profile.getCurrentProfile();
         if (profile!=null)      //Si hay un perfil de fb activo se envian los datos del perfil
             registrarUsuarioFacebookYEntrar(profile);
         else if (usuario!=null) //si hay un perfil de usuario activo se envian datos del usuario
@@ -220,6 +221,47 @@ public class LoginActivity extends AppCompatActivity {
             return ConsultasUsuarios.obtenerUsuario(u);
     }
 
+    public void mostrarVentanaObtenerUsuarioFacebook(){
+        FragmentManager fm = getFragmentManager();
+        VentanaUsuarioFacebook dialogFragment = new VentanaUsuarioFacebook();
+        dialogFragment.show(fm, "Sample Fragment");
+    }
+
+    @Override
+    public void postIngresarUsuarioFacebook(String username) {
+
+            if (!username.equals("")){
+                if (!ConsultasUsuarios.verificarNombreUsuario(username)){
+                    if(ConsultasUsuarios.registrar(profile.getFirstName(), profile.getLastName(), "", profile.getId(), username)){
+                        Toast.makeText(getApplicationContext(), "Grasias por registrarte", Toast.LENGTH_SHORT).show();
+                        nextActivity(ConsultasUsuarios.obtenerUsuario(username));
+                    }
+                }
+                else {
+                    Toast.makeText(this, "Nombre no disponible", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+    }
+
+    @Override
+    public void salir(boolean salir) {
+        if (salir){
+            accessTokenTracker.stopTracking();
+            profileTracker.stopTracking();
+            LoginManager.getInstance().logOut();
+        }
+    }
+
+    @Override
+    public void onFinishDialogFavorito(boolean flag) {
+
+    }
+
+    @Override
+    public void onFinishDialogComparar(boolean flag) {
+
+    }
 }
 
 

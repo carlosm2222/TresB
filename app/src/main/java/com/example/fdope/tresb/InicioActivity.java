@@ -41,7 +41,6 @@ public class InicioActivity extends AppCompatActivity implements EnviarInfoDesde
                     listView.setAdapter(listadapter);
                 }
                 else {
-                    Toast.makeText(this,"No hay productos agregados en las ultimas 24 hrs",Toast.LENGTH_LONG).show();
                     irMapa();
                 }
             }else

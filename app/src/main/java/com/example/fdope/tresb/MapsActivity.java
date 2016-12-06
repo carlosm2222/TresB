@@ -297,7 +297,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    private void mostrarVentanaPin(String titulo, String info, byte[] img, boolean flag, int idEvento,boolean flagChecbox) {
+    @Override
+    public void salir(boolean salir) {
+    }
+
+    @Override
+    public void postIngresarUsuarioFacebook(String username) {
+    }
+
+    private void mostrarVentanaPin(String titulo, String info, byte[] img, boolean flag, int idEvento, boolean flagChecbox) {
         FragmentManager fm = getFragmentManager();
         MarkerActivity dialogFragment = new MarkerActivity ();
         Bundle bundle = new Bundle();
