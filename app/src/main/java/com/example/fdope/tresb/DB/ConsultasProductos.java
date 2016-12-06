@@ -229,6 +229,29 @@ public class ConsultasProductos {
         db.desconectarBd();
         return false;
     }
+
+    public static boolean verificarPublicador(int idEvento, String username) {
+        DB db= new DB();
+        Connection c = db.connect();
+
+        try {
+            ResultSet resultSet = db.execute("SELECT * FROM consultarpublicador("+idEvento+",'"+username+"');");
+            if (resultSet != null)
+            {
+                while(resultSet.next()){
+                    boolean resp = resultSet.getBoolean("consultarpublicador");
+                    return resp;
+                }
+            }
+            else
+                return false;
+
+        }catch (Exception e){
+
+        }
+        db.desconectarBd();
+        return false;
+    }
 }
 
 
