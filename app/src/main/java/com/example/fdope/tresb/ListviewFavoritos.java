@@ -4,15 +4,15 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.fdope.tresb.Clases.Usuario;
 import com.example.fdope.tresb.FactoriaProductos.Producto;
+import com.google.android.gms.maps.model.LatLng;
 
-public class ListviewFavoritos extends AppCompatActivity implements PostEliminarFav{
+public class ListviewFavoritos extends AppCompatActivity implements EnviarInfoDesdeListsAdapter {
 
     private ListView lista;
     private Usuario usuario;
@@ -59,6 +59,11 @@ public class ListviewFavoritos extends AppCompatActivity implements PostEliminar
             }
            else
                 Toast.makeText(this,"Error al eliminar", Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void recibirCoordenadas(LatLng latLng) {
 
     }
 }

@@ -11,10 +11,12 @@ import android.widget.Toast;
 import com.example.fdope.tresb.Clases.Usuario;
 import com.example.fdope.tresb.DB.ConsultasProductos;
 import com.example.fdope.tresb.FactoriaProductos.Producto;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
+import java.util.Map;
 
-public class InicioActivity extends AppCompatActivity {
+public class InicioActivity extends AppCompatActivity implements EnviarInfoDesdeListsAdapter {
     public Usuario usuario;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,5 +65,20 @@ public class InicioActivity extends AppCompatActivity {
         main.putExtra("UsuarioIn",u);
         startActivity(main);
         finish();
+    }
+    @Override
+    public void productoEliminado(Producto delete) {
+
+    }
+
+    @Override
+    public void recibirCoordenadas(LatLng latLng) {
+        Intent intent = new Intent(this,MapsActivity.class);
+        intent.putExtra("coordenadas",latLng);
+        intent.putExtra("UsuarioIn",usuario);
+        intent.putExtra("flag",true);
+        startActivity(intent);
+        finish();
+
     }
 }

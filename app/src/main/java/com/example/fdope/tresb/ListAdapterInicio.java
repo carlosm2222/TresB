@@ -2,12 +2,14 @@ package com.example.fdope.tresb;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,11 +24,14 @@ import java.util.ArrayList;
 public class ListAdapterInicio extends ArrayAdapter<Producto> {
     public Activity context;
     private ArrayList<Producto> listaProd;
+    private EnviarInfoDesdeListsAdapter mCallBack;
+
 
     public ListAdapterInicio(Activity context, int resource, ArrayList<Producto> listaProd) {
         super(context, resource);
         this.context=context;
         this.listaProd = listaProd;
+        mCallBack=(EnviarInfoDesdeListsAdapter)context;
     }
 
     @Override
@@ -50,7 +55,7 @@ public class ListAdapterInicio extends ArrayAdapter<Producto> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, final View convertView, ViewGroup parent) {
 
         View rowView = convertView;
         if (convertView == null)
@@ -68,6 +73,7 @@ public class ListAdapterInicio extends ArrayAdapter<Producto> {
         TextView precio = (TextView)rowView.findViewById(R.id.precio);
         TextView tienda = (TextView) rowView.findViewById(R.id.tienda);
         TextView usuario = (TextView) rowView.findViewById(R.id.usuario);
+        ImageButton map = (ImageButton) rowView.findViewById(R.id.botonmapa);
 
         imagen.setImageBitmap(bpm);
         String tit = p.mostrarMarca() + " "+p.mostrarmodelo();
@@ -78,6 +84,15 @@ public class ListAdapterInicio extends ArrayAdapter<Producto> {
         tienda.setText(prov);
         String usr = "Publicado por: "+p.mostrarCreadorPublicacion();
         usuario.setText(usr);
+
+        map.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCallBack.recibirCoordenadas(listaProd.get(position).coordenadasProducto());
+            }
+        });
+
+
         return rowView;
     }
 }

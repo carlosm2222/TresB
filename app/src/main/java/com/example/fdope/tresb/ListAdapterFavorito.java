@@ -21,13 +21,13 @@ public class ListAdapterFavorito extends ArrayAdapter<Producto> {
     public Activity context;
     private ArrayList<Producto> listaProd;
     private Producto peliminado;
-    private PostEliminarFav enviar;
+    private EnviarInfoDesdeListsAdapter enviar;
 
     public ListAdapterFavorito(Activity context, int resource, ArrayList<Producto> listaProd) {
         super(context, resource);
         this.context=context;
         this.listaProd = listaProd;
-        enviar = (PostEliminarFav) context;
+        enviar = (EnviarInfoDesdeListsAdapter) context;
     }
 
 

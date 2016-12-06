@@ -65,6 +65,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private int flagfav=0; /// flag= true es favorito , false no es favorito
     private int flagComparacion1=0;
     private int flagComparacion2=0;
+    private boolean flagInicio=false;
+    private LatLng coordenadasProductoInicio=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,10 +121,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
         if (inBundle != null) {
+
             usuario = inBundle.getParcelable("UsuarioIn");
+            coordenadasProductoInicio = inBundle.getParcelable("coordenadas");
+            flagInicio=inBundle.getBoolean("flag");
+
             if (usuario!=null) {
                 Toast.makeText(this, "Bienvenido " + usuario.getNombre(), Toast.LENGTH_SHORT).show();
                 contDenuncia=usuario.getNumeroDenuncias();
+
             }
             else {
                 Toast.makeText(this, "NO HAY CONEXION ", Toast.LENGTH_SHORT).show();
@@ -163,7 +170,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         cargarDatos();
-        miUbicacion();
+        if(flagInicio) {
+            moverCamaraHaciaProducto(coordenadasProductoInicio);
+        }
+        else
+            miUbicacion();
+
         if (usuario!=null) {
             obtenerFavs();
         }
@@ -210,13 +222,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             break;
                         }
                     }
-                CameraUpdate ubicacionpin= CameraUpdateFactory.newLatLngZoom(marker.getPosition(),20);
-                mMap.animateCamera(ubicacionpin);
+                moverCamaraHaciaProducto(marker.getPosition());
                     return true;
                 }
             });
     }
 
+    public void moverCamaraHaciaProducto(LatLng latLng){
+        CameraUpdate ubicacionpin= CameraUpdateFactory.newLatLngZoom(latLng,20);
+        mMap.animateCamera(ubicacionpin);
+    }
 
     @Override // RECIBE EL ESTADO DEL CHECKBOX FAVORITOS
     public void onFinishDialogFavorito(boolean flag) {

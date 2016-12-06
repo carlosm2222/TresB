@@ -50,4 +50,22 @@
         android:layout_alignStart="@+id/precio"
         android:layout_marginBottom="15dp" />
 
+    <TextView
+        android:text="Ver en mapa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView11"
+        android:layout_below="@+id/botonmapa"
+        android:layout_alignParentEnd="true" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@mipmap/logo"
+        android:id="@+id/botonmapa"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/textView11"
+        android:layout_marginStart="15dp" />
+
 </RelativeLayout>
