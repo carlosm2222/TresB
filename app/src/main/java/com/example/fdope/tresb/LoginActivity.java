@@ -244,12 +244,12 @@ public class LoginActivity extends AppCompatActivity implements InfoPostDialog{
             if (!username.equals("")){
                 if (!ConsultasUsuarios.verificarNombreUsuario(username)){
                     if(ConsultasUsuarios.registrar(profile.getFirstName(), profile.getLastName(), "email", "pass", username,profile.getId())){
-                        Toast.makeText(getApplicationContext(), "Grasias por registrarte", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Gracias por registrarse", Toast.LENGTH_SHORT).show();
                         nextActivity(ConsultasUsuarios.obtenerUsuario(username));
                     }
                 }
                 else {
-                    Toast.makeText(this, "Nombre no disponible", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Nombre no disponible, intente con otro.", Toast.LENGTH_SHORT).show();
                 }
             }
 
