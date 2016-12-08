@@ -3,8 +3,11 @@ package com.example.fdope.tresb;
 import android.Manifest;
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Location;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -41,6 +44,9 @@ public class FormularioProductoActivity extends AppCompatActivity  {
     private ArrayList<String>  listaMarcas;
     private ArrayList<String>  listaCategorias;
     private ArrayAdapter<String> adapterListaMarcas,adapterListaModelos,adapterListaCategorias;
+
+    static  final int CAMERA_PERMISSION_CODE = 23;
+
     private TextWatcher mTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -146,12 +152,11 @@ public class FormularioProductoActivity extends AppCompatActivity  {
 
 
     public void takePicture (View v){
-        int permissionCheck = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.CAMERA);
-        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-        startActivityForResult(intent,request_code);
-
-
+        if(isCameraAccessAllowed()){
+            Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+            startActivityForResult(intent,request_code);
+        }else
+            requestCameraPermission();
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -182,4 +187,58 @@ public class FormularioProductoActivity extends AppCompatActivity  {
             b.setEnabled(true);
     }
 
+    //We are calling this method to check the permission status
+    private boolean isCameraAccessAllowed() {
+        //Getting the permission status
+        int result = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
+
+        //If permission is granted returning true
+        if (result == PackageManager.PERMISSION_GRANTED)
+            return true;
+
+        //If permission is not granted returning false
+        return false;
+    }
+
+    //Requesting permission
+    private void requestCameraPermission(){
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.CAMERA)){
+            //If the user has denied the permission previously your code will come to this block
+            //Here you can explain why you need this permission
+            //Explain here why you need this permission
+        }
+
+        //And finally ask for the permission
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.CAMERA},CAMERA_PERMISSION_CODE);
+    }
+
+    //This method will be called when the user will tap on allow or deny
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case CAMERA_PERMISSION_CODE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
+
 }
+
+
