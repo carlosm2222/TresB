@@ -252,6 +252,71 @@ public class ConsultasProductos {
         db.desconectarBd();
         return false;
     }
+
+    public static ArrayList<String> listarMarcas() {
+        DB db= new DB();
+        Connection c = db.connect();
+        ArrayList<String> listaMarcas = new ArrayList<String>();
+        try {
+            ResultSet resultSet = db.execute("SELECT * FROM listarmarcas();");
+            if (resultSet != null)
+            {
+                while(resultSet.next()){
+                    String marca = resultSet.getString("marca");
+                    listaMarcas.add(marca);
+                }
+            }
+            return listaMarcas;
+
+        }catch (Exception e){
+
+        }
+        return listaMarcas;
+    }
+
+    public static ArrayList<String> listarModelos(String marca,String categoria) {
+        DB db= new DB();
+        Connection c = db.connect();
+        ArrayList<String> listaMarcas = new ArrayList<String>();
+        try {
+            ResultSet resultSet = db.execute("SELECT * FROM listarmodelos('"+marca+"','"+categoria+"');");
+            if (resultSet != null)
+            {
+                while(resultSet.next()){
+                    String modelo = resultSet.getString("modelo");
+                    listaMarcas.add(modelo);
+                }
+            }
+            return listaMarcas;
+
+        }catch (Exception e){
+
+        }
+        return listaMarcas;
+    }
+
+    public static ArrayList<String> listarCategorias() {
+        DB db= new DB();
+        Connection c = db.connect();
+        ArrayList<String> lista = new ArrayList<String>();
+        try {
+            ResultSet resultSet = db.execute("SELECT * FROM listarcategorias();");
+            if (resultSet != null)
+            {
+                while(resultSet.next()){
+                    String categoria = resultSet.getString("nombre_categoria");
+                    lista.add(categoria);
+                }
+            }
+            return lista;
+
+        }catch (Exception e){
+
+        }
+        return lista;
+    }
+
+
 }
 
 

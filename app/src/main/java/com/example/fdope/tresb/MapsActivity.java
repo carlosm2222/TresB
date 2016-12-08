@@ -609,9 +609,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                     builder.setSound(sound);
-                    contDenuncia = 3-numAdv;
-                    builder.setContentTitle("¡ ADVERTENCIA NUMERO: "+ contDenuncia+" !");
-                    builder.setContentText("Su publicacion ha sido eliminada.");
+                    builder.setContentTitle("¡ ADVERTENCIA !");
+                    builder.setContentText("Tu publicacion ha sido eliminada.");
                     builder.setSubText("Si tienes 3 publicaciones eliminadas quedaras bloqueado en la App");
 
                     //Enviar notificacion

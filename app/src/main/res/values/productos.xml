@@ -5,20 +5,14 @@
     </string-array>
 
     <string-array name="lista_marcas">
-        <item>Acer</item>
         <item>Alcatel</item>
         <item>Apple</item>
-        <item>Asus</item>
-        <item>Avvio</item>
         <item>Azumi</item>
-        <item>Blu</item>
-        <item>Bmobile</item>
-        <item>HTC</item>
         <item>Huawei</item>
         <item>Lenovo</item>
         <item>LG</item>
-        <item>Microsoft</item>
         <item>Motorola</item>
+        <item>Own</item>
         <item>Samsung</item>
         <item>Sony</item>
         <item>ZTE</item>

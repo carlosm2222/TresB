@@ -24,7 +24,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/spinnermarca"
-        android:entries="@array/lista_marcas"
         android:gravity="center_vertical|center|start"
         style="@style/Platform.Widget.AppCompat.Spinner"
         android:layout_below="@+id/textView3"

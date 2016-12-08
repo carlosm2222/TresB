@@ -6,17 +6,24 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.fdope.tresb.Clases.Filtro;
+import com.example.fdope.tresb.DB.ConsultasProductos;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class ActivityFiltrarProductos extends AppCompatActivity {
     private EditText inputPrecioMin , inputPrecioMax;
     private Spinner spinnerTipo, spinnerMarca;
     public static final int FILTRO_OK=2;
+    private ArrayAdapter<String> adapterListaMarcas;
+    private ArrayList<String> listaMarcas;
     private TextWatcher mTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -35,11 +42,16 @@ public class ActivityFiltrarProductos extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        listaMarcas= new ArrayList<String>();
         setContentView(R.layout.activity_filtrar_productos);
         inputPrecioMax = (EditText) findViewById(R.id.inputpreciomaximo);
         inputPrecioMin = (EditText) findViewById(R.id.inputpreciominimo);
         spinnerMarca = (Spinner) findViewById(R.id.spinnermarca);
         spinnerTipo = (Spinner) findViewById(R.id.spinnertipo);
+
+        listaMarcas= ConsultasProductos.listarMarcas();
+        adapterListaMarcas = new ArrayAdapter<String>(ActivityFiltrarProductos.this,R.layout.spinner_item,R.id.item,listaMarcas);
+        spinnerMarca.setAdapter(adapterListaMarcas);
 
         inputPrecioMin.addTextChangedListener(mTextWatcher);
         inputPrecioMax.addTextChangedListener(mTextWatcher);
