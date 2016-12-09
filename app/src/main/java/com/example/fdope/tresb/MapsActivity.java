@@ -175,14 +175,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }, 30000, 120000);
 
-    // inicia alos 5 seg de abrir la app en mapa y cada 5 min  ejecuta
+    // inicia alos 5 seg de abrir la app en mapa y cada 1 min  ejecuta
         timer2.scheduleAtFixedRate(new TimerTask() {
 
             @Override
             public void run() {
                 revisarDenunciasUsuario();
             }
-        }, 5000, 600000);
+        }, 5000, 60000);
     }
     
     @Override
@@ -191,6 +191,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         cargarDatos();
         if(flagInicio) {
             moverCamaraHaciaProducto(coordenadasProductoInicio);
+            miUbicacionSinCamaraAnimada();
         }
         else
             miUbicacion();
@@ -375,11 +376,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     if (data != null) {
                         p = data.getExtras().getParcelable("productoOut");
                         this.app.addProducto(p);
-                        refresh();
                         Toast.makeText(this, "Agregado al mapa correctamente.", Toast.LENGTH_SHORT).show();
 
                     } else
                         Toast.makeText(this, "Error al agregar el producto", Toast.LENGTH_SHORT).show();
+
+                    refresh();
                 }
             }
         }
@@ -395,7 +397,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         if (requestCode == request_code_fav)
             if (data != null){
-                Toast.makeText(this, "Favoritos actualizados", Toast.LENGTH_SHORT).show();
                 usuario = (data.getExtras().getParcelable("usuarioOut"));
 
             }
@@ -445,6 +446,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setMyLocationEnabled(true);
         mMap.animateCamera(miUbicacion);
     }
+    public void agregarMarcadoSinMovDeCamara(Double lat, Double lng) {
+        LatLng coordenadas = new LatLng(lat, lng);
+        CameraUpdate miUbicacion = CameraUpdateFactory.newLatLngZoom(coordenadas, 16);
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        mMap.setMyLocationEnabled(true);
+    }
 
     public void agregarMarcadorProductos(Producto p){
 
@@ -466,6 +475,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             lat = location.getLatitude();
             lng = location.getLongitude();
             agregarMarcado(lat, lng);
+        }
+    }
+    private void actualizarUbicacion2(Location location) {
+        if (location != null) {
+            lat = location.getLatitude();
+            lng = location.getLongitude();
+            agregarMarcadoSinMovDeCamara(lat, lng);
         }
     }
 
@@ -496,6 +512,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         actualizarUbicacion(location);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,150000,0,locListener);
+    }
+
+    private void miUbicacionSinCamaraAnimada() {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        mMap.setMyLocationEnabled(true);
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        actualizarUbicacion2(location);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,150000,0,locListener);
     }
 

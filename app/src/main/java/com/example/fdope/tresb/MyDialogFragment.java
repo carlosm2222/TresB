@@ -21,7 +21,7 @@ public class MyDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 dismiss();
-                getActivity().finish();
+               getActivity().finish();
             }
         });
         return rootView;
