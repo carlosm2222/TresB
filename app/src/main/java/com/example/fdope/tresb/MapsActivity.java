@@ -555,24 +555,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    public ArrayList<Producto> buscarProductoPorMarcaModelo(Producto p){
-        ArrayList<Producto> lista = new ArrayList<Producto>();
-
-        //busco coincidencias
-        for (int i = 0; i< app.getListaProductos().size(); i++){
-            if (p.mostrarMarca().equals(app.getListaProductos().get(i).mostrarMarca()))
-                if ( (p.mostrarmodelo().equals(app.getListaProductos().get(i).mostrarmodelo())) && ( p.mostrarIdEvento() != app.getListaProductos().get(i).mostrarIdEvento())   )
-                    lista.add(app.getListaProductos().get(i));
-        }
-
-        return lista;
-    }
 
     public ArrayList<Producto> buscarProdParaNotificar(){
+
         ArrayList<Producto> listProdNoti = new ArrayList<Producto>();
 
         for (int i= 0; i< usuario.getListaFavoritos().size() ; i++){
-            ArrayList<Producto> temp =  buscarProductoPorMarcaModelo(usuario.getListaFavoritos().get(i));
+            ArrayList<Producto> temp =  app.buscarProductoPorMarcaModelo(usuario.getListaFavoritos().get(i),usuario.getUsername());
             if (temp !=null){
                 for (int j=0; j<temp.size(); j++)
                     listProdNoti.add(temp.get(j));
@@ -582,18 +571,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void obtenerFavs(){
-        ArrayList<Integer> idsEventos = usuario.listarFavoritos();
-        ArrayList<Producto> favs = new ArrayList<Producto>();
-        if (idsEventos != null) {
-            for (int i = 0; i < app.getListaProductos().size(); i++)
-                for (int j = 0; j < idsEventos.size(); j++)
-                    if (app.getListaProductos().get(i).mostrarIdEvento() == idsEventos.get(j)) {
-                        favs.add(app.getListaProductos().get(i));
-                    }
-        }
 
-        if (favs!=null)
-            usuario.setListaFavoritos(favs);
+        if( app.obtenerFavs(usuario.listarFavoritos()) != null)
+            usuario.setListaFavoritos(app.obtenerFavs(usuario.listarFavoritos()));
     }
 
     public void autoNotificaciones(){
@@ -620,10 +600,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Runnable revisarDenunciasUsuarioRunnable= new Runnable() {
         public void run() {
 
-            int numAdv=app.buscarYNotificarDenunciasUsuario(usuario.getUsername());
 
-                if (numAdv < usuario.getNumeroDenuncias() ){
-                    usuario.setNumeroDenuncias(numAdv);
+                if ( app.buscarNotificacionAdvBD(usuario.getUsername()) ){
 
                     Intent intent = new Intent();
                     PendingIntent pendingIntent = PendingIntent.getActivity(MapsActivity.this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
@@ -645,8 +623,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                     notificationManager.notify(NOTIFICACION_ID, builder.build());
                 }
-                if (numAdv == 0){
-                    usuario.setNumeroDenuncias(0);
+                if ( app.saberEstadoBloqueoDeUsuario(usuario.getUsername()) ){
+
                     Intent intent = new Intent(MapsActivity.this,LoginActivity.class);
                     PendingIntent pendingIntent = PendingIntent.getActivity(MapsActivity.this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
@@ -667,6 +645,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     //Enviar notificacion
                     NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                     notificationManager.notify(NOTIFICACION_ID, builder.build());
+                    logout();
                 }
 
         }
@@ -675,13 +654,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Runnable notificacionesRunnable = new Runnable() {
         public void run() {
 
+
             ArrayList<Producto> coicidencias = buscarProdParaNotificar();
             if (coicidencias!=null){
                 if (coicidencias.size()>0){
                     for (int i = 0; i < coicidencias.size(); i++) {
 
-                        if (usuario.buscarNotificacionBD(coicidencias.get(i)) == false) {
-                            if (usuario.agregarNotificacion(coicidencias.get(i))) {
+                        if ( !usuario.buscarNotificacionFavBD(coicidencias.get(i)) ) {
+
+                            if (usuario.agregarNotificacionFav(coicidencias.get(i))) {
 
                                 Intent intent = new Intent(MapsActivity.this, ListViewNotificacion.class);
                                 intent.putExtra("noti", usuario);

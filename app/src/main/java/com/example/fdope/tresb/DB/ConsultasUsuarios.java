@@ -256,20 +256,36 @@ public class ConsultasUsuarios {
         return favoritos;
     }
 
-    public static boolean agregarNotificacion(int idEvento, String user){
+    public static boolean agregarNotificacionFav(int idEvento, String user,String tipo){
         DB db=new DB();
         Connection c =db.connect();
-        try {/*
-            CallableStatement oCall = c.prepareCall("{ ? = call agregarnotificacion(?,?) }");
-            oCall.registerOutParameter(1, Types.BOOLEAN);
-            oCall.setString(3,user);
-            oCall.setInt(2,idEvento);
-            ResultSet resultSet =  oCall.executeQuery();*/
-            ResultSet resultSet = db.execute("SELECT * FROM agregarnotificacion("+idEvento+",'"+user+"');");
+        try {
+            ResultSet resultSet = db.execute("SELECT * FROM agregarnotificacionfav("+idEvento+",'"+user+"','"+tipo+"');");
             if (resultSet != null)
             {
                 while(resultSet.next()){
-                    boolean resp = resultSet.getBoolean("agregarnotificacion");
+                    boolean resp = resultSet.getBoolean("agregarnotificacionfav");
+                    return resp;
+                }
+            }
+            else
+                return false;
+
+        }catch (Exception e){
+
+        }
+        return false;
+    }
+
+    public static boolean agregarNotificacionAdv(String user,String tipo,boolean estado){
+        DB db=new DB();
+        Connection c =db.connect();
+        try {
+            ResultSet resultSet = db.execute("SELECT * FROM agregarnotificacionadv('"+user+"','"+tipo+"','"+estado+"');");
+            if (resultSet != null)
+            {
+                while(resultSet.next()){
+                    boolean resp = resultSet.getBoolean("agregarnotificacionadv");
                     return resp;
                 }
             }
@@ -308,7 +324,7 @@ public class ConsultasUsuarios {
         return false;
     }
 
-    public static boolean consultarNotificacion(int idEvento, String user){
+    public static boolean consultarNotificacionFav(int idEvento, String user,String tipo){
         DB db=new DB();
         Connection c =db.connect();
         try {/*
@@ -317,7 +333,28 @@ public class ConsultasUsuarios {
             oCall.setString(3,user);
             oCall.setInt(2,idEvento);
             ResultSet resultSet =oCall.executeQuery();*/
-            ResultSet resultSet = db.execute("SELECT * FROM saberestadonotificacion("+idEvento+",'"+user+"');");
+            ResultSet resultSet = db.execute("SELECT * FROM saberestadonotificacionfav("+idEvento+",'"+user+"','"+tipo+"');");
+            if (resultSet != null)
+            {
+                while(resultSet.next()){
+                    boolean resp = resultSet.getBoolean("saberestadonotificacion");
+                    return resp;
+                }
+            }
+            else
+                return false;
+
+        }catch (Exception e){
+
+        }
+        return false;
+    }
+
+    public static boolean consultarNotificacionAdv(String user,String tipo){
+        DB db=new DB();
+        Connection c =db.connect();
+        try {
+            ResultSet resultSet = db.execute("SELECT * FROM saberestadonotificacionadv('"+user+"','"+tipo+"');");
             if (resultSet != null)
             {
                 while(resultSet.next()){

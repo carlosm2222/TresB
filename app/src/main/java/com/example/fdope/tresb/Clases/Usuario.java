@@ -146,8 +146,10 @@ public class Usuario implements Parcelable {
         return null;
     }
 
-    public boolean agregarNotificacion(Producto p){
-        if(ConsultasUsuarios.agregarNotificacion(p.mostrarIdEvento(),username)) {
+    public boolean agregarNotificacionFav(Producto p){
+        String tipo_not ="Favoritos";
+
+        if(ConsultasUsuarios.agregarNotificacionFav(p.mostrarIdEvento(),username,tipo_not)) {
             notificaciones.add(p);
             return true;
         }
@@ -155,8 +157,9 @@ public class Usuario implements Parcelable {
             return false;
     }
 
-    public boolean buscarNotificacionBD(Producto p){
-        if (ConsultasUsuarios.consultarNotificacion(p.mostrarIdEvento(),username))
+    public boolean buscarNotificacionFavBD(Producto p){
+        String tipo_not ="Favoritos";
+        if (ConsultasUsuarios.consultarNotificacionFav(p.mostrarIdEvento(),username,tipo_not))
             return true;
         else
             return false;
@@ -181,12 +184,6 @@ public class Usuario implements Parcelable {
         return ConsultasUsuarios.estadoRecibirNotificacion(username);
     }
 
-    public boolean saberEstadoBloqueo(){
-        if (ConsultasUsuarios.consultarUsuarioSiEstaBloqueado(username))
-            return true;
-        else
-            return false;
-    }
 
     @Override
     public int describeContents() {

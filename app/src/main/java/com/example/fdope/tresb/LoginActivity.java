@@ -133,7 +133,7 @@ public class LoginActivity extends AppCompatActivity implements InfoPostDialog{
 
     private void nextActivity(Usuario u) {
         if (u!=null){
-            if (! u.saberEstadoBloqueo()){
+            if (!ConsultasUsuarios.consultarUsuarioSiEstaBloqueado(u.getUsername())){
                 Intent main = new Intent(this, InicioActivity.class);
                 main.putExtra("UsuarioIn",u);
                 startActivity(main);
@@ -197,6 +197,7 @@ public class LoginActivity extends AppCompatActivity implements InfoPostDialog{
         if (u!=null) {//Validar datos en BD
             //setear en usuario nombre y apellido
             usuario=u;
+            nextActivity(u);
 
         } else
             Toast.makeText(getApplicationContext(), "Credenciales no coinciden.", Toast.LENGTH_SHORT).show();
