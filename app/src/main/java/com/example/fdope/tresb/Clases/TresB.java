@@ -3,7 +3,6 @@ package com.example.fdope.tresb.Clases;
 import com.example.fdope.tresb.DB.ConsultasProductos;
 import com.example.fdope.tresb.DB.ConsultasUsuarios;
 import com.example.fdope.tresb.FactoriaProductos.Producto;
-import com.example.fdope.tresb.InfoPostDialog;
 
 import java.util.ArrayList;
 
@@ -14,28 +13,28 @@ import java.util.ArrayList;
 public class TresB {
 
     private String nombre;
-    private ArrayList<Producto> listaSmartphone;
+    private ArrayList<Producto> listaProductos;
 
 
 
     public TresB() {
         this.nombre = "TRES B";
-        this.listaSmartphone = null;
+        this.listaProductos = null;
     }
 
     public ArrayList<Producto> getListaProductos() {
-        return listaSmartphone;
+        return listaProductos;
     }
 
-    public void setListaSmartphone(ArrayList<Producto> listaSmartphone) {
-        this.listaSmartphone = listaSmartphone;
+    public void setListaProductos(ArrayList<Producto> listaProductos) {
+        this.listaProductos = listaProductos;
     }
     public void addProducto(Producto p){
-        this.listaSmartphone.add(p);
+        this.listaProductos.add(p);
     }
 
     public void obtenerProductos(){
-        listaSmartphone=ConsultasProductos.listarProductos();
+        listaProductos =ConsultasProductos.listarProductos();
     }
 
     public int buscarYNotificarDenunciasUsuario(String username){
@@ -48,10 +47,10 @@ public class TresB {
 
         ArrayList<Producto> favs = new ArrayList<Producto>();
         if (idsEventos != null) {
-            for (int i = 0; i < listaSmartphone.size(); i++)
+            for (int i = 0; i < listaProductos.size(); i++)
                 for (int j = 0; j < idsEventos.size(); j++)
-                    if (listaSmartphone.get(i).mostrarIdEvento() == idsEventos.get(j)) {
-                        favs.add(listaSmartphone.get(i));
+                    if (listaProductos.get(i).mostrarIdEvento() == idsEventos.get(j)) {
+                        favs.add(listaProductos.get(i));
                     }
         }
           return favs;
@@ -61,10 +60,10 @@ public class TresB {
         ArrayList<Producto> lista = new ArrayList<Producto>();
 
         //busco coincidencias
-        for (int i = 0; i< listaSmartphone.size(); i++){
-            if (p.mostrarMarca().equals(listaSmartphone.get(i).mostrarMarca()))
-                if ( (p.mostrarmodelo().equals(listaSmartphone.get(i).mostrarmodelo())) && ( p.mostrarIdEvento() != listaSmartphone.get(i).mostrarIdEvento()) && ( !p.mostrarCreadorPublicacion().equals(username)) )
-                    lista.add(listaSmartphone.get(i));
+        for (int i = 0; i< listaProductos.size(); i++){
+            if (p.mostrarMarca().equals(listaProductos.get(i).mostrarMarca()))
+                if ( (p.mostrarmodelo().equals(listaProductos.get(i).mostrarmodelo())) && ( p.mostrarIdEvento() != listaProductos.get(i).mostrarIdEvento()) && ( !p.mostrarCreadorPublicacion().equals(username)) )
+                    lista.add(listaProductos.get(i));
         }
         return lista;
     }

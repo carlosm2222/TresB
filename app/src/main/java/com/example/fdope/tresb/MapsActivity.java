@@ -7,7 +7,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Criteria;
 import android.location.Location;
@@ -358,7 +357,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void refresh() {
         mMap.clear();
         this.app.getListaProductos().clear();
-        this.app.setListaSmartphone(null);
+        this.app.setListaProductos(null);
         cargarDatos();
     }
 
@@ -602,7 +601,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         public void run() {
             mMap.clear();
             app.getListaProductos().clear();
-            app.setListaSmartphone(null);
+            app.setListaProductos(null);
             cargarDatos();
         }
     };
