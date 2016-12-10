@@ -167,8 +167,6 @@ public class MarkerActivity extends DialogFragment {
         infoProd.setGravity(Gravity.CENTER);
         infoProd.setTypeface(null, Typeface.BOLD);
         prodsnippet.setText(info);
-        verificarDenuncia(); //verifica si el usuario ya hizo una denuncia a la oferta
-        verificarPublicador();
         salir.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -179,25 +177,4 @@ public class MarkerActivity extends DialogFragment {
 
         return rootView;
     }
-
-    private void verificarPublicador() {
-        if (ConsultasProductos.verificarPublicador(idEvento,username)){
-            botonDenuncia.setEnabled(false);
-            botonComentarios.setEnabled(false); //si el usuario es publicador de la oferta no podrá comentar ni denunciar la oferta
-        }
-        else{
-            botonDenuncia.setEnabled(true);
-            botonComentarios.setEnabled(true); //sino se habilita
-        }
-    }
-
-
-
-    private void verificarDenuncia() {
-        if (ConsultasProductos.consultarDenunciaHecha(idEvento,username))
-            botonDenuncia.setEnabled(false); //si ya ha hecho denuncia el boton denuncia se encuentra deshabilidato
-        else
-            botonDenuncia.setEnabled(true); //sino se habilita
-    }
-
 }

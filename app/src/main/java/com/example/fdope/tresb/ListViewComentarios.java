@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.fdope.tresb.Clases.Comentario;
 import com.example.fdope.tresb.DB.ConsultaComentarios;
+import com.example.fdope.tresb.DB.ConsultasProductos;
 
 import java.util.ArrayList;
 
@@ -56,7 +57,6 @@ public class ListViewComentarios extends AppCompatActivity {
         inputComentario.addTextChangedListener(mTextWatcher);
         like = (ImageButton)findViewById(R.id.botonlike);
         dislike= (ImageButton)findViewById(R.id.botondislike);
-        checkFieldsForEmptyValues();
         Bundle bundle = getIntent().getExtras();
         idEvento = bundle.getInt("idEvento");
         username = bundle.getString("username");
@@ -71,6 +71,12 @@ public class ListViewComentarios extends AppCompatActivity {
              lista.setAdapter(listadapter);
         } else
             Toast.makeText(this, "No hay comentarios para esta publicación.", Toast.LENGTH_SHORT).show();
+        if (verificarPublicador()){
+            Toast.makeText(this, "No puede comentar si ha sido el publicador de la oferta.", Toast.LENGTH_SHORT).show();
+            inputComentario.setEnabled(false);
+        }
+        else
+            checkFieldsForEmptyValues();
 
     }
 
@@ -127,5 +133,16 @@ public class ListViewComentarios extends AppCompatActivity {
 
         else
             Toast.makeText(this,"No se pudo publicar su comentario",Toast.LENGTH_SHORT).show();
+    }
+    private boolean verificarPublicador() {
+        Button enviar = (Button)findViewById(R.id.enviarcomentario);
+        if (ConsultasProductos.verificarPublicador(idEvento,username)){
+            like.setEnabled(false);
+            dislike.setEnabled(false);
+            enviar.setEnabled(false);
+            return true;
+            //si el usuario es publicador de la oferta no podrá comentar
+        }
+        return false;
     }
 }

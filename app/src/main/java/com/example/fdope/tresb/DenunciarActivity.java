@@ -35,14 +35,19 @@ public class DenunciarActivity extends AppCompatActivity {
         b = (Button) findViewById(R.id.Denunciar);
         radio = (RadioGroup) findViewById(R.id.radio);
         b.setEnabled(false);
-        radio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                b.setEnabled(true);
-            }
-        });
-        addListenerOnButton();
+        if (verificarDenuncia()) {
+            Toast.makeText(DenunciarActivity.this, "Usted ya ha denunciado esta publicación.", Toast.LENGTH_SHORT).show();
+            radio.setEnabled(false);
+        }else {
+            addListenerOnButton();
+            radio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup group, int checkedId) {
+                    b.setEnabled(true);
+                }
+            });
 
+        }
     }
 
     public void addListenerOnButton() {
@@ -70,5 +75,10 @@ public class DenunciarActivity extends AppCompatActivity {
 
         });
 
+    }
+    private boolean verificarDenuncia() {
+        if (ConsultasProductos.consultarDenunciaHecha(idEvento,username))
+            return true;
+        return false;
     }
 }
