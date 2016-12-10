@@ -138,6 +138,17 @@ public class Usuario implements Parcelable {
         return false;
     }
 
+    public boolean agregarNotificacionFav(Producto p){
+        String tipo_not ="Favoritos";
+
+        if(ConsultasUsuarios.agregarNotificacionFav(p.mostrarIdEvento(),username,tipo_not)) {
+            notificaciones.add(p);
+            return true;
+        }
+        else
+            return false;
+    }
+
 
     public ArrayList<Integer> listarFavoritos(){
          ArrayList<Integer> ids = ConsultasUsuarios.obtenerFavoritos(username);

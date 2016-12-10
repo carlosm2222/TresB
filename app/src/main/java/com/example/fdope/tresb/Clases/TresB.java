@@ -13,6 +13,7 @@ import java.util.ArrayList;
 public class TresB {
 
     private String nombre;
+    private String descripcion;
     private ArrayList<Producto> listaProductos;
 
 
@@ -101,16 +102,6 @@ public class TresB {
         return null;
     }
 
-    public boolean agregarNotificacionFav(Producto p,String username,ArrayList<Producto> notificaciones){
-        String tipo_not ="Favoritos";
-
-        if(ConsultasUsuarios.agregarNotificacionFav(p.mostrarIdEvento(),username,tipo_not)) {
-            notificaciones.add(p);
-            return true;
-        }
-        else
-            return false;
-    }
 
     public boolean buscarNotificacionFavBD(Producto p,String username){
         String tipo_not ="Favoritos";

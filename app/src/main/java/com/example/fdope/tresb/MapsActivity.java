@@ -671,7 +671,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                         if ( !app.buscarNotificacionFavBD(coicidencias.get(i),usuario.getUsername()) ) {
 
-                            if (app.agregarNotificacionFav(coicidencias.get(i),usuario.getUsername(),usuario.getNotificaciones())) {
+                            if (usuario.agregarNotificacionFav(coicidencias.get(i))) {
 
                                 Intent intent = new Intent(MapsActivity.this, ListViewNotificacion.class);
                                 intent.putExtra("noti", usuario);
