@@ -44,7 +44,7 @@ public class TresB {
         return contDenuncias;
     }
 
-    public ArrayList<Producto> obtenerFavs(ArrayList<Integer> idsEventos){
+    public ArrayList<Producto> buscarFavEnListaProductos(ArrayList<Integer> idsEventos){
 
         ArrayList<Producto> favs = new ArrayList<Producto>();
         if (idsEventos != null) {
@@ -93,14 +93,6 @@ public class TresB {
             return false;
     }
 
-
-    public Producto buscarEnNotificaciones(Producto p,ArrayList<Producto> notificaciones){
-        for (int i=0; i<notificaciones.size() ; i++)
-            if (notificaciones.get(i).mostrarIdEvento() == (p.mostrarIdEvento()))
-                return notificaciones.get(i);
-
-        return null;
-    }
 
 
     public boolean buscarNotificacionFavBD(Producto p,String username){

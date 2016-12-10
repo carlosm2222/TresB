@@ -13,7 +13,6 @@ public interface Producto {
     public int mostrarPrecio();
     public LatLng coordenadasProducto();
     public byte[] mostrarImagen();
-    public int largoImg();
     public String mostrarCreadorPublicacion();
     public String mostrarProveedor();
     public String mostrarCategoria();

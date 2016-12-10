@@ -183,10 +183,6 @@ public class Celular implements Producto, Parcelable {
     public String mostrarmodelo(){
         return modelo;
     }
-    @Override
-    public int largoImg(){
-        return largo;
-    }
 
     @Override
     public String mostrarCategoria() {

@@ -581,8 +581,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void obtenerFavs(){
 
-        if( app.obtenerFavs(usuario.listarFavoritos()) != null)
-            usuario.setListaFavoritos(app.obtenerFavs(usuario.listarFavoritos()));
+        if( app.buscarFavEnListaProductos(usuario.listarFavoritos()) != null)
+            usuario.setListaFavoritos(app.buscarFavEnListaProductos(usuario.listarFavoritos()));
     }
 
     public void autoNotificaciones(){
@@ -655,6 +655,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                     notificationManager.notify(NOTIFICACION_ID, builder.build());
                     logout();
+                    finish();
                 }
 
         }

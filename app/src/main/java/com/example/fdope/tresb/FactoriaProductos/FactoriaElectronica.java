@@ -32,7 +32,7 @@ public class FactoriaElectronica implements ProductosFactory {
     public Producto crearProducto(String username,String nombre_categoria, String marca, String modelo, int precio, String proveedor, LatLng latLng, Bitmap img)  {
 
         Bitmap imgRecortada = resizeImage(img,100,140);
-        String imagen = BitMapToString(imgRecortada);
+        String imagen = bitMapToString(imgRecortada);
         byte[] b = stringToByte(imagen);
         int largo = b.length;
 
@@ -55,7 +55,7 @@ public class FactoriaElectronica implements ProductosFactory {
             return false;
     }
 
-    public static Bitmap resizeImage(Bitmap b, int w, int h) {
+    public  Bitmap resizeImage(Bitmap b, int w, int h) {
 
         // cargamos la imagen de origen
         Bitmap BitmapOrg = b;
@@ -87,17 +87,13 @@ public class FactoriaElectronica implements ProductosFactory {
     }
 
 
-    public byte[] getByteArray(Bitmap bitmap) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
-        return stream.toByteArray();
-    }
+
 
     public Bitmap getBitmap(byte[] bitmap) {
         return BitmapFactory.decodeByteArray(bitmap, 0, bitmap.length);
     }
 
-    public String BitMapToString(Bitmap bitmap){
+    public String bitMapToString(Bitmap bitmap){
         ByteArrayOutputStream baos=new  ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG,0, baos);
         byte [] b=baos.toByteArray();

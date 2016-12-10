@@ -169,6 +169,15 @@ public class Usuario implements Parcelable {
         return ConsultasUsuarios.estadoRecibirNotificacion(username);
     }
 
+    public Producto buscarEnNotificaciones(Producto p,ArrayList<Producto> notificaciones){
+        for (int i=0; i<notificaciones.size() ; i++)
+            if (notificaciones.get(i).mostrarIdEvento() == (p.mostrarIdEvento()))
+                return notificaciones.get(i);
+
+        return null;
+    }
+
+
 
     @Override
     public int describeContents() {
