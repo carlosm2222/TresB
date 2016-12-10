@@ -241,7 +241,7 @@ public class ConsultasUsuarios {
         ArrayList<Integer> favoritos = new ArrayList<Integer>();
         try {
 
-            ResultSet resultSet = db.execute("SELECT id_evento FROM getinfofavorito('"+username+"');");
+            ResultSet resultSet = db.execute("SELECT id_evento FROM getfavoritos('"+username+"');");
             if (resultSet!=null){
                 while(resultSet.next()){
                     int idEvento = resultSet.getInt("id_evento");
