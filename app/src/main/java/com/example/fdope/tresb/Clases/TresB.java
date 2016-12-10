@@ -63,12 +63,10 @@ public class TresB {
         //busco coincidencias
         for (int i = 0; i< listaSmartphone.size(); i++){
             if (p.mostrarMarca().equals(listaSmartphone.get(i).mostrarMarca()))
-                if ( (p.mostrarmodelo().equals(listaSmartphone.get(i).mostrarmodelo())) && ( p.mostrarIdEvento() != listaSmartphone.get(i).mostrarIdEvento())  )
+                if ( (p.mostrarmodelo().equals(listaSmartphone.get(i).mostrarmodelo())) && ( p.mostrarIdEvento() != listaSmartphone.get(i).mostrarIdEvento()) && ( !p.mostrarCreadorPublicacion().equals(username)) )
                     lista.add(listaSmartphone.get(i));
         }
-
         return lista;
-        //&& ( !p.mostrarCreadorPublicacion().equals(username))
     }
 
     public boolean saberEstadoBloqueoDeUsuario(String username){
@@ -94,4 +92,33 @@ public class TresB {
         else
             return false;
     }
+
+
+    public Producto buscarEnNotificaciones(Producto p,ArrayList<Producto> notificaciones){
+        for (int i=0; i<notificaciones.size() ; i++)
+            if (notificaciones.get(i).mostrarIdEvento() == (p.mostrarIdEvento()))
+                return notificaciones.get(i);
+
+        return null;
+    }
+
+    public boolean agregarNotificacionFav(Producto p,String username,ArrayList<Producto> notificaciones){
+        String tipo_not ="Favoritos";
+
+        if(ConsultasUsuarios.agregarNotificacionFav(p.mostrarIdEvento(),username,tipo_not)) {
+            notificaciones.add(p);
+            return true;
+        }
+        else
+            return false;
+    }
+
+    public boolean buscarNotificacionFavBD(Producto p,String username){
+        String tipo_not ="Favoritos";
+        if (ConsultasUsuarios.consultarNotificacionFav(p.mostrarIdEvento(),username,tipo_not))
+            return true;
+        else
+            return false;
+    }
+
 }

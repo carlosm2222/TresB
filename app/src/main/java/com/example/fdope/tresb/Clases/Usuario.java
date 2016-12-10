@@ -138,32 +138,6 @@ public class Usuario implements Parcelable {
         return false;
     }
 
-    public Producto buscarEnNotificaciones(Producto p){
-        for (int i=0; i<notificaciones.size() ; i++)
-            if (notificaciones.get(i).mostrarIdEvento() == (p.mostrarIdEvento()))
-                return notificaciones.get(i);
-
-        return null;
-    }
-
-    public boolean agregarNotificacionFav(Producto p){
-        String tipo_not ="Favoritos";
-
-        if(ConsultasUsuarios.agregarNotificacionFav(p.mostrarIdEvento(),username,tipo_not)) {
-            notificaciones.add(p);
-            return true;
-        }
-        else
-            return false;
-    }
-
-    public boolean buscarNotificacionFavBD(Producto p){
-        String tipo_not ="Favoritos";
-        if (ConsultasUsuarios.consultarNotificacionFav(p.mostrarIdEvento(),username,tipo_not))
-            return true;
-        else
-            return false;
-    }
 
     public ArrayList<Integer> listarFavoritos(){
          ArrayList<Integer> ids = ConsultasUsuarios.obtenerFavoritos(username);

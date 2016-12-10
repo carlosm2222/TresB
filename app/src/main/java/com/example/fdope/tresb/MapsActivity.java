@@ -670,9 +670,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if (coicidencias.size()>0){
                     for (int i = 0; i < coicidencias.size(); i++) {
 
-                        if ( !usuario.buscarNotificacionFavBD(coicidencias.get(i)) ) {
+                        if ( !app.buscarNotificacionFavBD(coicidencias.get(i),usuario.getUsername()) ) {
 
-                            if (usuario.agregarNotificacionFav(coicidencias.get(i))) {
+                            if (app.agregarNotificacionFav(coicidencias.get(i),usuario.getUsername(),usuario.getNotificaciones())) {
 
                                 Intent intent = new Intent(MapsActivity.this, ListViewNotificacion.class);
                                 intent.putExtra("noti", usuario);
@@ -689,7 +689,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 builder.setSound(sound);
 
                                 builder.setContentTitle("Nuevos productos!");
-                                builder.setContentText("Productos de su interes: " + coicidencias.get(i).mostrarMarca() + " " + coicidencias.get(i).mostrarmodelo());
+                                builder.setContentText("Producto de su interes: " + coicidencias.get(i).mostrarMarca() + " " + coicidencias.get(i).mostrarmodelo());
                                 builder.setSubText("toque para ver los productos, apresurate !");
 
                                 //Enviar notificacion

@@ -327,17 +327,12 @@ public class ConsultasUsuarios {
     public static boolean consultarNotificacionFav(int idEvento, String user,String tipo){
         DB db=new DB();
         Connection c =db.connect();
-        try {/*
-            CallableStatement oCall = c.prepareCall("{ ? = call saberestadonotificacion(?,?) }");
-            oCall.registerOutParameter(1, Types.BOOLEAN);
-            oCall.setString(3,user);
-            oCall.setInt(2,idEvento);
-            ResultSet resultSet =oCall.executeQuery();*/
+        try {
             ResultSet resultSet = db.execute("SELECT * FROM saberestadonotificacionfav("+idEvento+",'"+user+"','"+tipo+"');");
             if (resultSet != null)
             {
                 while(resultSet.next()){
-                    boolean resp = resultSet.getBoolean("saberestadonotificacion");
+                    boolean resp = resultSet.getBoolean("saberestadonotificacionfav");
                     return resp;
                 }
             }
@@ -358,7 +353,7 @@ public class ConsultasUsuarios {
             if (resultSet != null)
             {
                 while(resultSet.next()){
-                    boolean resp = resultSet.getBoolean("saberestadonotificacion");
+                    boolean resp = resultSet.getBoolean("saberestadonotificacionadv");
                     return resp;
                 }
             }
