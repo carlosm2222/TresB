@@ -47,7 +47,7 @@ import java.util.TimerTask;
 import static com.example.fdope.tresb.ActivityFiltrarProductos.FILTRO_OK;
 
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,InfoPostDialog {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, InfoPostDialog {
     private GoogleMap mMap;
     private double lat;
     private double lng;
@@ -55,19 +55,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     static final int request_code = 1;
     static final int request_code_fav = 5;
     static final int request_code_filtro = 2;
-    static final int NOTIFICACION_ID=5;
-    private Producto p,prodMomentaneo,productoComp1,productocom2;
+    static final int NOTIFICACION_ID = 5;
+    private Producto p, prodMomentaneo, productoComp1, productocom2;
     private Usuario usuario;
     int contDenuncia;
     boolean isOpen = false;
     private boolean flagFiltro = false;
     FloatingActionMenu materialDesignFAM;
-    FloatingActionButton floatingActionButton1, floatingActionButton2, floatingActionButton3,floatingActionButton4,floatingActionButton5;
-    private int flagfav=0; /// flag= true es favorito , false no es favorito
-    private int flagComparacion1=0;
-    private int flagComparacion2=0;
-    private boolean flagInicio=false;
-    private LatLng coordenadasProductoInicio=null;
+    FloatingActionButton floatingActionButton1, floatingActionButton2, floatingActionButton3, floatingActionButton4, floatingActionButton5;
+    private int flagfav = 0; /// flag= true es favorito , false no es favorito
+    private int flagComparacion1 = 0;
+    private int flagComparacion2 = 0;
+    private boolean flagInicio = false;
+    private LatLng coordenadasProductoInicio = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,13 +89,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
         floatingActionButton2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (flagFiltro==false)
-                filtrarProducto(v);
-                else if (flagFiltro==true) {
+                if (flagFiltro == false)
+                    filtrarProducto(v);
+                else if (flagFiltro == true) {
                     cargarDatos();
                     floatingActionButton2.setImageResource(R.drawable.ic_search_black_24dp);
                     floatingActionButton2.setLabelText("Filtrar");
-                    flagFiltro=false;
+                    flagFiltro = false;
                 }
             }
         });
@@ -109,7 +109,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         floatingActionButton4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final View view= v;
+                final View view = v;
                 final ProgressDialog ringProgressDialog = ProgressDialog.show(MapsActivity.this, "", "Cargando favoritos ...", true);
                 ringProgressDialog.setCancelable(true);
 
@@ -121,7 +121,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             // Here you should write your time consuming task...
                             ventanaFav(view);
                             // Let the progress ring for 10 seconds...
-                            Thread.sleep(10000);
+                            Thread.sleep(1000);
                         } catch (Exception e) {
                         }
                         ringProgressDialog.dismiss();
@@ -143,14 +143,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             usuario = inBundle.getParcelable("UsuarioIn");
             coordenadasProductoInicio = inBundle.getParcelable("coordenadas");
-            flagInicio=inBundle.getBoolean("flag");
+            flagInicio = inBundle.getBoolean("flag");
 
-            if (usuario!=null) {
+            if (usuario != null) {
                 Toast.makeText(this, "Bienvenido " + usuario.getNombre(), Toast.LENGTH_SHORT).show();
-                contDenuncia=usuario.getNumeroDenuncias();
+                contDenuncia = usuario.getNumeroDenuncias();
 
-            }
-            else {
+            } else {
                 Toast.makeText(this, "NO HAY CONEXION ", Toast.LENGTH_SHORT).show();
                 logout();
                 finish();
@@ -167,15 +166,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void run() {
                 //La función a ejecutar
-                    if ( !flagFiltro )
-                        autoRefresh();
-                    if ( usuario.estadoRecibirNotificacion() )// si tiene activada el recibir notificacion se ejecuta las notificaciones
-                        autoNotificaciones();
+                if (!flagFiltro)
+                    autoRefresh();
+                if (usuario.estadoRecibirNotificacion())// si tiene activada el recibir notificacion se ejecuta las notificaciones
+                    autoNotificaciones();
 
             }
         }, 30000, 120000);
 
-    // inicia alos 5 seg de abrir la app en mapa y cada 1 min  ejecuta
+        // inicia alos 5 seg de abrir la app en mapa y cada 1 min  ejecuta
         timer2.scheduleAtFixedRate(new TimerTask() {
 
             @Override
@@ -184,10 +183,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }, 5000, 60000);
     }
-    
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mMap.setMyLocationEnabled(true);
         cargarDatos();
         if(flagInicio) {
             moverCamaraHaciaProducto(coordenadasProductoInicio);
